@@ -1,0 +1,12 @@
+div.ques_login {
+  margin: 10% 40%;
+}
+
+div.ques_login h1 {
+  font-size: 50px;
+  color: blue;
+}
+
+div.ques_login h3 {
+  color: red;
+}
