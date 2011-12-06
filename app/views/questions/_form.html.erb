@@ -1,37 +1,83 @@
+<script>
+
+</script>
+
+<% content_for(:js_css) do %>
+<%= stylesheet_link_tag 'ques_form' %>
+<%= javascript_include_tag '' %>
+<% end %>
+
 <%= form_for(@question) do |f| %>
-  <% if @question.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@question.errors.count, "error") %> prohibited this question from being saved:</h2>
-
-      <ul>
-      <% @question.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
+  <div id = "form_left">
+    <div class="field">
+      <%= f.label :tag %>&nbsp;&nbsp;
+      <%= f.text_field :tag %><span class='error'><%= @question.errors[:tag].join(', ') %></span>
     </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :body %><br />
-    <%= f.text_area :body %>
+    <div class="field">
+      <%= f.label :body, 'Question?' %>&nbsp;&nbsp;<span class='error'><%= @question.errors[:body].join(', ') %></span><br/>
+      <%= f.text_area :body, :rows => 5, :cols => 70 %>
+    </div>
+    <div class="field">
+      <%= f.label :ques_type %><br/>
+      <%= f.radio_button :ques_type, 'Subjective', :checked => true, :onclick => "change_answer_div(this.value)" %>
+      <%= f.label :ques_type_subjective, "Subjective" %>&nbsp;
+      <%= f.radio_button :ques_type, 'Multiple Choice', :onclick => "change_answer_div(this.value)" %>
+      <%= f.label :ques_type_multiple_choice, "Multiple Choice" %>
+      <%= f.radio_button :ques_type, 'Multiple Choice/Answer', :onclick => "change_answer_div(this.value)" %>
+      <%= f.label :ques_type_multiple_choiceanswer, "Multiple Choice/Answer" %>
+    </div>
+    <div><span id = "for_option" class = "hide" style = "padding-right: 150px;">Options&nbsp;&nbsp;</span><span>Answer</span>&nbsp;&nbsp;<span class="error"><%= @question.errors[:answer].join(', ') %></span></div>
+    <div id = "for_option_error" ><span class="error"><%= @question.errors[:option].join(', ') %></span></div>
+    
+    <div class ="field" id = "answer_type">
+      <% f.fields_for :answers do |ans| %>
+         <%= f.text_area :body, :rows => 5, :cols => 70 %>
+      <% end %>
+    </div>
+    
   </div>
-  <div class="field">
-    <%= f.label :level %><br />
-    <%= f.text_field :level %>
-  </div>
-  <div class="field">
-    <%= f.label :category_id %><br />
-    <%= f.text_field :category_id %>
-  </div>
-  <div class="field">
-    <%= f.label :admin_id %><br />
-    <%= f.text_field :admin_id %>
-  </div>
-  <div class="field">
-    <%= f.label :type %><br />
-    <%= f.text_field :type %>
-  </div>
+  <div id = "form_right">
+    <div class="field" id = "ques_category">
+      <span class='error'><%= @question.errors[:category_id].join(', ') %></span><br/>
+      <%= f.label :category_id %><br/>
+      <%= f.select :category_id, Category.all.collect {|c| [c.name, c.id]} %>
+    </div>
+    <div class="field" id = "ques_level">
+      <span class='error'><%= @question.errors[:level].join(', ') %></span><br/>
+      <%= f.label :level %><br/>
+      <%= f.select :level, Question::LEVEL %>
+    </div>
+  </div><br/>
+  
   <div class="actions">
     <%= f.submit %>
   </div>
 <% end %>
+<script>
+
+if ("<%= @type %>") {
+  var b = $("input[type = 'radio']")
+  for(var i = 0; i< b.length; i++) {
+    if(b[i].value == "<%= @type %>") {
+      b[i].checked = "checked";
+      break;
+    }
+  }
+  change_answer_div("<%= @type %>")
+}
+
+function change_answer_div(val) {
+  if (val == "Subjective") {
+    $("#for_option").addClass("hide");
+    $("#for_option_error").addClass("hide");
+    $("#answer_type").html("<%= escape_javascript(render :partial => 'subjective', :locals => {:f => #{f} }) %>")
+  } else if (val == "Multiple Choice") {
+    $("#for_option").removeClass("hide");
+    $("#for_option_error").removeClass("hide");
+    $("#answer_type").html("<%= escape_javascript(render :partial => 'multiple_choice', :locals => {:f => #{f}}) %>")
+  }
+}
+
+$("#question_tag").autoSuggest("/ques_tags.js", {minChars: 1, matchCase: false, selectedItemProp: "name", searchObjProps: "name", startText: "not to be used", asHtmlID:"tags",  neverSubmit: true});
+
+</script>

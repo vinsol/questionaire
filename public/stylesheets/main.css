@@ -1,0 +1,211 @@
+body
+{
+	margin: 0;
+}
+
+div#mainHead
+{
+	background-color:#000f2e;
+}
+
+div#mainHead p
+{
+	font-size:13px;
+}
+
+div#mainHead h1
+{
+	color:#ffffff;
+	margin:0px 0 20px 30px;
+}
+
+div.mainMenu
+{
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border:1px outset white;
+	margin:0 30px 0 30px;
+	padding:2px 0px 1px;
+	background-color:#ededed;
+}
+div.mainMenu ul li
+{
+	font-size:13px;
+}
+
+div.mainMenu ul.firstlist
+{
+	margin:0;
+	list-style-type:none;
+}
+
+div.mainMenu ul.firstlist li
+{
+	margin-left: -19px;
+	padding: 2px 9px;
+	float:left;
+}
+
+div.mainMenu ul.seclist
+{
+	margin:0;
+	list-style-type:  none;
+}
+
+div.mainMenu ul.seclist li
+{
+	margin-left:-19px;
+	padding: 2px 9px;
+	float:right;
+}
+
+div.mainMenu ul li a
+{
+	padding: 4px 8px;
+	text-decoration:none;
+	color:#000000;
+}
+
+div.mainMenu ul li a:hover
+{
+	background-color:#e5e5e5;
+}
+
+div.mainContent
+{
+	padding:10px 30px 0 30px;
+	background-color:#e5e5e5;
+}
+
+div.mainContent p
+{
+	font-size:13px;
+}
+
+div.rightContent
+{
+	border: none;
+	width:350px;
+	padding-left: 10px;
+}
+div.rightContent p
+{
+	font-size:13px;
+}
+
+div#write p
+{
+	font-size:13px;
+}
+
+div#write
+{
+  border-radius: 10px 10px;
+	background-color:#ffffff;
+	padding:1px 15px 20px 30px;
+	width:900px;
+}
+
+#forlink a:hover
+{
+	background-color:#ffffff;
+}
+
+div.rightContent hr
+{
+	margin: -10px;
+}
+div.leftsub
+{
+	border-radius:10px;
+	background-color:#ffffff;
+	padding:2px 0 2px 10px;
+	border: 2px outset white;
+	margin-bottom:30px;
+}
+div.leftsub p
+{
+	font-size:13px;
+}
+div.footer
+{
+	border-radius:10px;
+	background-color:#ffffff;
+	text-align: center;
+}
+div.footer p
+{
+	font-size:13px;
+}
+
+div#mainMenu {
+  background-color:#ffffff;
+  border-bottom:none;
+}
+
+li#firstlist_1 {
+  margin-left:-49px;
+}
+
+li#firstlist_1 a {
+  border-top-left-radius: 10px;
+}
+
+li#firstlist_5 {
+  margin-left:-49px;
+}
+
+li#firstlist_5 a {
+  background-color: #e5e5e5;
+  border-top-left-radius: 10px;
+}
+
+li#seclist_1 a {
+  border-top-right-radius:10px;
+}
+
+li#seclist_1 {
+  margin-right: -9px;
+}
+
+div.ques_login {
+  margin: 15% 40%;
+  width: 250px;
+}
+
+div.ques_login a {
+  text-decoration: none;
+}
+
+div.ques_login a:hover {
+  color: red;
+}
+
+.error {
+	font-size: 12px;
+	color: #b88282;
+}
+
+.field_with_errors {
+  display: inline;
+}
+
+div#tag_name {
+  float:left;
+  padding-left: 50px;
+}
+
+div#tag_count {
+  float: right;
+  padding-right: 50px;
+}
+
+div#level_name {
+  float:left;
+  padding-left: 50px;
+}
+
+div#level_count {
+  float: right;
+  padding-right: 50px;
+}

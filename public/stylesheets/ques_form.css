@@ -1,0 +1,24 @@
+div#form_left {
+  float: left;
+}
+
+div#form_right {
+  float: right;
+  padding-right: 150px;
+}
+
+br {
+  clear:both;
+}
+
+div#form_left .field {
+  padding: 10px 0px;
+}
+
+div#ques_level {
+  padding-top: 120px;
+}
+
+.hide {
+  display : none;
+}

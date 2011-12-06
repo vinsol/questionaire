@@ -1,11 +1,12 @@
 PriyankQuestionaire::Application.routes.draw do
-  
+
   resources :questions
-
-  get "login/index"
-
-  devise_for :admins, :controllers => { :omniauth_callbacks => "admins/omniauth_callbacks" }
-
+  
+  devise_for :admins, :controllers => { :omniauth_callbacks => "admins/omniauth_callbacks"}
+  
+  get 'change_answer_div', :to => 'questions#change_answer_div', :as => 'change_answer_div'
+  get 'for_option_answer', :to => 'questions#for_option_answer', :as => 'for_option_answer'
+  get 'ques_tags', :to => 'questions#ques_tags', :as => 'ques_tags'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -55,7 +56,7 @@ PriyankQuestionaire::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => "welcome#index"
+  root :to => "questions#index"
 
   # See how all your routes lay out with "rake routes"
 

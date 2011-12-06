@@ -11,6 +11,10 @@ gem 'devise', '1.3.4'
 
 gem 'omniauth', '0.2.6'
 
+gem 'acts-as-taggable-on', '~>2.1.0'
+
+gem 'jquery-rails'
+
 # Use unicorn as the web server
 # gem 'unicorn'
 

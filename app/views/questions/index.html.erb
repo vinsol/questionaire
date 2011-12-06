@@ -1,3 +1,6 @@
+<% content_for(:css) do %>
+<%#= stylesheet_link_tag 'home' %>
+<% end %>
 <h1>Listing questions</h1>
 
 <table>
@@ -18,7 +21,7 @@
     <td><%= question.level %></td>
     <td><%= question.category_id %></td>
     <td><%= question.admin_id %></td>
-    <td><%= question.type %></td>
+    <td><%= question.ques_type %></td>
     <td><%= link_to 'Show', question %></td>
     <td><%= link_to 'Edit', edit_question_path(question) %></td>
     <td><%= link_to 'Destroy', question, :confirm => 'Are you sure?', :method => :delete %></td>

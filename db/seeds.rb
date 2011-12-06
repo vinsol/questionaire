@@ -6,4 +6,6 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
-admin = Admin.create!([{:email => "sushant.mittal@vinsol.com"}, {:email => "priyank.gupta@vinsol.com"}])
+#admin = Admin.create!([{:email => "sushant.mittal@vinsol.com"}, {:email => "priyank.gupta@vinsol.com"}])
+
+category = Category.create!([{:name => "Web"}, {:name => "IOS"}, {:name => "Android"}, {:name => "Aptitude"}])

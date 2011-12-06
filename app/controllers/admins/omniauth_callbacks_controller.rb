@@ -10,7 +10,8 @@ class Admins::OmniauthCallbacksController < ApplicationController
     unless @admin
       redirect_to(login_index_url, :notice => 'Unauthorized Access')
     else
-      session["devise.googleapps_data"] = @admin[:id]
+      session["devise.googleapps_data"] = request.env["omniauth.auth"]
+      session[:admin_id] = @admin.id
       redirect_to questions_path
     end
   end
