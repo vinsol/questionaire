@@ -14,13 +14,14 @@ class Question < ActiveRecord::Base
   validates :answer, :presence => true
   validates :category_id, :presence => true
   validates :level, :presence => true
+  
   validate :atleast_two_options
   validate :valid_answer
   
   attr_accessor :tag, :answer, :option
   
   def self.question_tags(str)
-		taggings = Question.tag_counts_on(:tags).collect{|t| [t.id, t.name]}
+		taggings = tag_counts_on(:tags).collect{|t| [t.id, t.name]}
 		question_tags = taggings.select{|tag| tag[1].downcase.match("#{ str }".downcase)}.uniq
     data = Array.new
     question_tags.each do |tag|

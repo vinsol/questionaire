@@ -11,9 +11,12 @@ class QuestionsController < ApplicationController
 
   end
 
+  ### Question -> ques_type => "Subjective" in migration
+  ### Put choices for ques_type in constant
   def new
     @question = Question.new
   end
+
 
   def edit
     @type = @question.ques_type
