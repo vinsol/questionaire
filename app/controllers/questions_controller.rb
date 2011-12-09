@@ -8,13 +8,13 @@ class QuestionsController < ApplicationController
   end
 
   def show
-
   end
 
   ### Question -> ques_type => "Subjective" in migration
   ### Put choices for ques_type in constant
   def new
     @question = Question.new
+    @type = @question.ques_type
   end
 
 
@@ -125,8 +125,7 @@ class QuestionsController < ApplicationController
   
   def change_answer_div
 
-    @question = Question.find(params[:id]) if params[:id] != ""
-    
+    @question = Question.find(params[:id]) unless params[:id].blank?
     if params['type'] == "Multiple Choice"
       @ajax_data = "multiple_choice"
     elsif params['type'] == "Multiple Choice/Answer"
