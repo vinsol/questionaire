@@ -1,0 +1,41 @@
+<div id = "form_left">
+  <div class="field">
+    <%= f.label :tag %>&nbsp;&nbsp;
+    <%= f.text_field :tag, :value => @question.tag_list %><span class='error'><%= @question.errors[:tag].join(', ') %></span>
+  </div>
+  
+  <div class="field">
+    <%= f.label :body, 'Question?' %>&nbsp;&nbsp;<span class='error'><%= @question.errors[:body].join(', ') %></span><br/>
+    <%= f.text_area :body, :rows => 5, :cols => 70 %>
+  </div>
+
+  <div class="field">
+    <%= f.label :ques_type %><br/>
+    <% ["Subjective", "Multiple Choice", "Multiple Choice/Answer"].each do |type| %>
+      <%= f.radio_button :ques_type, type, :checked => @type == type, :onclick => "change_answer_div(this.value)" %>
+      <%= f.label :ques_type, type %>&nbsp;
+    <% end %>
+  </div>
+
+  <div><span id = "for_option" class = "hide" style = "padding-right: 150px;">Options&nbsp;&nbsp;</span><span>Answer</span>&nbsp;&nbsp;<span class="error"><%= @question.errors[:answer].join(', ') %></span></div>
+
+  <div id = "for_option_error" ><span class="error"><%= @question.errors[:option].join(', ') %></span></div>
+
+  <div class="field" id = "answer_type">
+    
+  </div>
+</div>
+
+<div id = "form_right">
+  <div class="field" id = "ques_category">
+    <span class='error'> <%= @question.errors[:category_id].join(', ') %></span><br/>
+    <%= f.label :category_id %> <br/>
+    <%= f.select :category_id, Category.all.collect {|c| [c.name, c.id]} %>
+  </div>
+
+  <div class="field" id = "ques_level">
+    <span class='error'> <%= @question.errors[:level].join(', ') %></span><br/>
+    <%= f.label :level %> <br/>
+    <%= f.select :level, Question::LEVEL %>
+  </div>
+</div><br/>

@@ -1,5 +1,5 @@
 <div class="ques_login">
-<p><%= flash[:notice] %></p>
+<p><span class = "error"><%= flash[:notice] %></span></p>
 
 <%= link_to "Login using Vinsol's account", admin_omniauth_authorize_path(:google_apps) %>
 </div>
