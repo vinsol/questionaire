@@ -11,9 +11,9 @@
 
   <div class="field">
     <%= f.label :ques_type %><br/>
-    <% ["Subjective", "Multiple Choice", "Multiple Choice/Answer"].each do |type| %>
+    <% {:subjective =>"Subjective", :multiple_choice => "Multiple Choice", :multiple_choiceanswer => "Multiple Choice/Answer"}.each do |key, type| %>
       <%= f.radio_button :ques_type, type, :checked => @type == type, :onclick => "change_answer_div(this.value)" %>
-      <%= f.label :ques_type, type %>&nbsp;
+      <%= f.label "ques_type_"+key.to_s, type %>&nbsp;
     <% end %>
   </div>
 
