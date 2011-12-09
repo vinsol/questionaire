@@ -1,118 +1,135 @@
 class QuestionsController < ApplicationController
-  before_filter :admin_signed_in
   
-  # GET /questions
-  # GET /questions.xml
+  before_filter :admin_signed_in
+  before_filter :get_question_by_id, :only => [:show, :edit, :update, :destroy]
+  
   def index
     @questions = Question.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @questions }
-    end
   end
 
-  # GET /questions/1
-  # GET /questions/1.xml
   def show
-    @question = Question.find(params[:id])
 
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @question }
-    end
   end
 
-  # GET /questions/new
-  # GET /questions/new.xml
   def new
     @question = Question.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @question }
-    end
   end
 
-  # GET /questions/1/edit
   def edit
-    @question = Question.find(params[:id])
-    #params[:question] = { :answer => "priyank"}
+    @type = @question.ques_type
   end
 
-  # POST /questions
-  # POST /questions.xml
   def create
     params[:question][:category_id] = params[:question][:category_id].to_i
+    
     @question = Question.new(params[:question])
     @question.admin_id = session[:admin_id]
     @question.tag_list = params[:as_values_tags]
-    if params['question']['ques_type']
-      @type = params['question']['ques_type']
-    end
-      
-    respond_to do |format|
-      if @question.save
-        if params[:question][:option]
-          if params[:question][:answer].class != String
-            params[:question][:option].each do |opt_i, opt|
-              if opt != ""
-                option = Option.create(:body => opt, :question_id => @question.id)
-                params[:question][:answer].each do |ans_i, ans|
-                  if opt_i.to_s == ans
-                    answer = Answer.create(:body => opt, :question_id => @question.id)
-                  end
-                end
-              end
-            end
-          else
-            params[:question][:option].each do |opt_i, opt|
-              if opt != ""
-                option = Option.create(:body => opt, :question_id => @question.id)
-                if opt_i.to_s == params[:question][:answer]
-                  answer = Answer.create(:body => opt, :question_id => @question.id)
-                end
+    
+    @type = params['question']['ques_type'] if params['question']['ques_type']
+    
+    if @question.save
+      if params[:question][:option]
+        if params[:question][:answer].class != String
+          params[:question][:option].each do |opt_i, opt|
+            if opt != ""
+              Option.create(:body => opt, :question_id => @question.id)
+              params[:question][:answer].each do |ans_i, ans|
+                Answer.create(:body => opt, :question_id => @question.id) if opt_i.to_s == ans
               end
             end
           end
         else
-          answer = Answer.create(:body => params[:question][:answer], :question_id => @question.id)
+          params[:question][:option].each do |opt_i, opt|
+            if opt != ""
+              Option.create(:body => opt, :question_id => @question.id)
+              Answer.create(:body => opt, :question_id => @question.id) if opt_i.to_s == params[:question][:answer]
+            end
+          end
         end
-        format.html { redirect_to(@question, :notice => 'Question was successfully created.') }
-        format.xml  { render :xml => @question, :status => :created, :location => @question.id }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @question.errors, :status => :unprocessable_entity }
+        Answer.create(:body => params[:question][:answer], :question_id => @question.id)
       end
+      redirect_to(@question, :notice => 'Question was successfully created.')
+    else
+      render :action => "new"
     end
   end
     
-
-  # PUT /questions/1
-  # PUT /questions/1.xml
   def update
-    @question = Question.find(params[:id])
-
-    respond_to do |format|
-      if @question.update_attributes(params[:question])
-        format.html { redirect_to(@question, :notice => 'Question was successfully updated.') }
-        format.xml  { head :ok }
+    params[:question][:category_id] = params[:question][:category_id].to_i
+    
+    @question.admin_id = session[:admin_id]
+    @question.tag_list = params[:as_values_tags]
+    
+    @type = params['question']['ques_type'] if params['question']['ques_type']
+    
+    answers = @question.answers
+    options = @question.options
+    
+    if @question.update_attributes(params[:question])
+      if params[:question][:option]
+        c = 0
+        params[:question][:option].each do |opt_i, opt|
+          if opt != "" && !options[c].nil?
+            options[c].update_attributes(:body => opt)
+            c += 1
+          elsif opt != "" && options[c].nil?
+            Option.create(:body => opt, :question_id => @question.id)
+          end
+        end
+        (c...options.length).each { |i| options[i].destroy } if (c < options.length)
+              
+        c = 0
+        if params[:question][:answer].class != String
+          params[:question][:option].each do |opt_i, opt|
+            params[:question][:answer].each do |ans_i, ans|
+              if opt != "" && opt_i.to_s == ans
+                if !answers[c].nil?
+                  answers[c].update_attributes(:body => opt)
+                  c += 1
+                else
+                  Answer.create(:body => opt, :question_id => @question.id)
+                end
+                break;
+              end
+            end
+          end
+          (c...answers.length).each { |i| answers[i].destroy } if (c < answers.length)
+        else
+          params[:question][:option].each do |opt_i, opt|
+            answers.first.update_attributes(:body => opt) if (opt != "" && opt_i.to_s == params[:question][:answer])
+          end
+          (1...answers.length).each { |i| answers[i].destroy } if (1 < answers.length)
+        end
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @question.errors, :status => :unprocessable_entity }
+        options.each { |opt| opt.destroy }
+        answers.first.update_attributes(:body => params[:question][:answer])
+        (1...answers.length).each { |i| answers[i].destroy } if (1 < answers.length)
       end
+      
+      redirect_to(@question, :notice => 'Question was successfully updated.') 
+    else
+      render :action => "edit" 
     end
   end
 
-  # DELETE /questions/1
-  # DELETE /questions/1.xml
-  def destroy
-    @question = Question.find(params[:id])
-    @question.destroy
 
-    respond_to do |format|
-      format.html { redirect_to(questions_url) }
-      format.xml  { head :ok }
+  def destroy
+    @question.destroy
+    redirect_to(questions_url) 
+  end
+  
+  def change_answer_div
+
+    @question = Question.find(params[:id]) if params[:id] != ""
+    
+    if params['type'] == "Multiple Choice"
+      @ajax_data = "multiple_choice"
+    elsif params['type'] == "Multiple Choice/Answer"
+      @ajax_data = "multiple_choice_answer"
+    elsif params['type'] == "Subjective"
+      @ajax_data = "subjective"
     end
   end
   
@@ -121,8 +138,8 @@ class QuestionsController < ApplicationController
 		respond_to do |format|			
 			format.html{}
 			format.js{
-					render :json => data
-				}			
+				render :json => data
+			}			
 		end
   end
   
@@ -134,4 +151,9 @@ class QuestionsController < ApplicationController
       redirect_to new_admin_session_path
     end
   end
+  
+  def get_question_by_id
+    @question = Question.find(params[:id])
+  end
+  
 end

@@ -1,0 +1,13 @@
+<h2>Add Admin </h2>
+
+<%= form_for(@admin) do |f| %>
+  <div id = "add_admin">
+    <div class="field">
+      <%= f.label :email %>&nbsp;&nbsp;
+      <%= f.text_field :email %><span class='error'><%= @admin.errors[:email].join(', ') %></span>
+    </div>
+    <div class="actions" id = "add_admin_button">
+      <%= f.submit %>
+    </div>
+  </div>
+<% end %>

@@ -8,15 +8,18 @@
 <% end %>
 
 <%= form_for(@question) do |f| %>
+
   <div id = "form_left">
     <div class="field">
       <%= f.label :tag %>&nbsp;&nbsp;
-      <%= f.text_field :tag %><span class='error'><%= @question.errors[:tag].join(', ') %></span>
+      <%= f.text_field :tag, :value => @question.tag_list %><span class='error'><%= @question.errors[:tag].join(', ') %></span>
     </div>
+
     <div class="field">
       <%= f.label :body, 'Question?' %>&nbsp;&nbsp;<span class='error'><%= @question.errors[:body].join(', ') %></span><br/>
       <%= f.text_area :body, :rows => 5, :cols => 70 %>
     </div>
+
     <div class="field">
       <%= f.label :ques_type %><br/>
       <%= f.radio_button :ques_type, 'Subjective', :checked => true, :onclick => "change_answer_div(this.value)" %>
@@ -26,25 +29,30 @@
       <%= f.radio_button :ques_type, 'Multiple Choice/Answer', :onclick => "change_answer_div(this.value)" %>
       <%= f.label :ques_type_multiple_choiceanswer, "Multiple Choice/Answer" %>
     </div>
+
     <div><span id = "for_option" class = "hide" style = "padding-right: 150px;">Options&nbsp;&nbsp;</span><span>Answer</span>&nbsp;&nbsp;<span class="error"><%= @question.errors[:answer].join(', ') %></span></div>
+
     <div id = "for_option_error" ><span class="error"><%= @question.errors[:option].join(', ') %></span></div>
-    
-    <div class ="field" id = "answer_type">
-      <% f.fields_for :answers do |ans| %>
-         <%= f.text_area :body, :rows => 5, :cols => 70 %>
+
+    <div class="field" id = "answer_type">
+      <% if !!params[:id] && @type == "Subjective" %>
+        <%= text_area_tag "question[answer]", @question.answers.first.body, :rows => 5, :cols => 70 %>
+      <% else %>
+        <%= text_area_tag "question[answer]", nil, :rows => 5, :cols => 70 %>
       <% end %>
     </div>
-    
   </div>
+
   <div id = "form_right">
     <div class="field" id = "ques_category">
-      <span class='error'><%= @question.errors[:category_id].join(', ') %></span><br/>
-      <%= f.label :category_id %><br/>
+      <span class='error'> <%= @question.errors[:category_id].join(', ') %></span><br/>
+      <%= f.label :category_id %> <br/>
       <%= f.select :category_id, Category.all.collect {|c| [c.name, c.id]} %>
     </div>
+
     <div class="field" id = "ques_level">
-      <span class='error'><%= @question.errors[:level].join(', ') %></span><br/>
-      <%= f.label :level %><br/>
+      <span class='error'> <%= @question.errors[:level].join(', ') %></span><br/>
+      <%= f.label :level %> <br/>
       <%= f.select :level, Question::LEVEL %>
     </div>
   </div><br/>
@@ -53,6 +61,8 @@
     <%= f.submit %>
   </div>
 <% end %>
+
+
 <script>
 
 if ("<%= @type %>") {
@@ -65,19 +75,27 @@ if ("<%= @type %>") {
   }
   change_answer_div("<%= @type %>")
 }
-
 function change_answer_div(val) {
+  if ("<%= !!params[:id] %>") {
+    var id = "<%= params[:id] %>";
+  } else {
+    var id = null;
+  }
   if (val == "Subjective") {
     $("#for_option").addClass("hide");
     $("#for_option_error").addClass("hide");
-    $("#answer_type").html("<%= escape_javascript(render :partial => 'subjective', :locals => {:f => #{f} }) %>")
-  } else if (val == "Multiple Choice") {
+  } else {
     $("#for_option").removeClass("hide");
     $("#for_option_error").removeClass("hide");
-    $("#answer_type").html("<%= escape_javascript(render :partial => 'multiple_choice', :locals => {:f => #{f}}) %>")
   }
+   $.ajax({
+    url: '<%= change_answer_div_path %>', 
+    dataType: 'script',
+    type: 'get', 
+    data: 'type='+val+"&id="+id
+  });
 }
 
-$("#question_tag").autoSuggest("/ques_tags.js", {minChars: 1, matchCase: false, selectedItemProp: "name", searchObjProps: "name", startText: "not to be used", asHtmlID:"tags",  neverSubmit: true});
+$("#question_tag").autoSuggest("/ques_tags.js", {minChars: 1, matchCase: false, searchObjProps: "name", startText: "Enter Tags Here", asHtmlID:"tags",  neverSubmit: true, preFill: "<%= @question.tag_list %>"});
 
 </script>

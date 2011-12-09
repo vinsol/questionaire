@@ -3,9 +3,13 @@ require 'uri'
 class Admin < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
+  
+  validates :email, :presence => true
+  validates_uniqueness_of :email, :message => "Admin has already been created"
+  
   devise :omniauthable, :token_authenticatable, :rememberable
   
-  validates_uniqueness_of :vinsol_id
+  # validates_uniqueness_of :vinsol_id
   # Setup accessible (or protected) attributes for your model
   # attr_accessible :email, :remember_me
   

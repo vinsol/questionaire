@@ -3,9 +3,8 @@ class Question < ActiveRecord::Base
   LEVEL = [["Beginner", 0], ["Intermediate", 1], ["Master", 2]]
   
   belongs_to :category
-  has_many :options
-  has_many :answers
-  
+  has_many :options, :dependent => :destroy
+  has_many :answers, :dependent => :destroy
   
   acts_as_taggable
   acts_as_taggable_on :tags
@@ -34,6 +33,7 @@ class Question < ActiveRecord::Base
   end
 		
   private
+  
   
   def valid_answer
     if @option

@@ -209,3 +209,12 @@ div#level_count {
   float: right;
   padding-right: 50px;
 }
+
+div#add_admin {
+  margin: 8% 30%;
+}
+
+div#add_admin_button {
+  margin: 5% 40%;
+}
+

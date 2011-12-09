@@ -24,7 +24,7 @@
 		<ul class="seclist">
 		  <% if session["devise.googleapps_data"] %>
 		    <li id = "seclist_1"><%= link_to "Logout", destroy_admin_session_path %></li>
-			  <li id = "seclist_2"><%= link_to "Add Admin", questions_path %></li>
+			  <li id = "seclist_2"><%= link_to "Add Admin", new_admin_path %></li>
 			  <li id = "seclist_3"><%= link_to "Account Settings", questions_path %></li>
 			<% end %>
 		</ul>
