@@ -23,13 +23,30 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    params[:question][:category_id] = params[:question][:category_id].to_i
     
+    # params[:question][:category_id] = params[:question][:category_id].to_i
+    
+    # params =  { :question => { :body =>"acsdsdfdsf", 
+    #   :ques_type => "Multiple Choice/Answer", 
+    #   :options_attributes => [ {:body => "df"}, { :body => "sdfsf"}, { :body => "sdfdd"}] , 
+    #   :answers_attributes => [ {:body => 1}, {:body => 2}] , :category_id => 1, :level => 0 }, 
+    #   
+    #   :as_values_tags => "" }
+
+      # params =  { :question => { :body =>"acsdsdfdsf", 
+      #   :ques_type => "Multiple Choice/Answer", 
+      #   :options_attributes => { '1' => {:body => "df"}, '2' => { :body => "sdfsf"}, '3' => { :body => "sdfdd"} } , 
+      #   :answers_attributes => { '1' => {:body => '1'}, '2' => {:body => '2'} } , :category_id => 1, :level => 0 }, 
+      # 
+      #   :as_values_tags => "" }
+      # 
+      
     @question = Question.new(params[:question])
     @question.admin_id = session[:admin_id]
     @question.tag_list = params[:as_values_tags]
+    # @question.save
     
-    @type = params['question']['ques_type'] if params['question']['ques_type']
+    # p @question.errors.full_messages
     
     if @question.save
       if params[:question][:option]
@@ -54,9 +71,14 @@ class QuestionsController < ApplicationController
         Answer.create(:body => params[:question][:answer], :question_id => @question.id)
       end
       redirect_to(@question, :notice => 'Question was successfully created.')
+    
     else
+      @type = params[:question][:ques_type] 
       render :action => "new"
     end
+
+    redirect_to(@question, :notice => 'Question was successfully created.')
+    
   end
     
   def update
@@ -124,7 +146,6 @@ class QuestionsController < ApplicationController
   end
   
   def change_answer_div
-
     @question = Question.find(params[:id]) unless params[:id].blank?
     if params['type'] == "Multiple Choice"
       @ajax_data = "multiple_choice"

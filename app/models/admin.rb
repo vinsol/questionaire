@@ -9,6 +9,7 @@ class Admin < ActiveRecord::Base
   validates_uniqueness_of :email, :message => "Admin has already been created"
   
   devise :omniauthable, :token_authenticatable, :rememberable
+  has_many :questions
   
   # validates_uniqueness_of :vinsol_id
   # Setup accessible (or protected) attributes for your model

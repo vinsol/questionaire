@@ -5,18 +5,24 @@ class Question < ActiveRecord::Base
   belongs_to :category
   has_many :options, :dependent => :destroy
   has_many :answers, :dependent => :destroy
+  belongs_to :admin
   
   acts_as_taggable
   acts_as_taggable_on :tags
   
   validates :body, :presence => true
   validates :ques_type, :presence => true
+  ### Should be commented
   validates :answer, :presence => true
   validates :category_id, :presence => true
   validates :level, :presence => true
   
   validate :atleast_two_options
+  ### Should be commented
   validate :valid_answer
+  
+  accepts_nested_attributes_for :answers
+  accepts_nested_attributes_for :options 
   
   attr_accessor :tag, :answer, :option
   
@@ -52,6 +58,7 @@ class Question < ActiveRecord::Base
           answer = []
           @answer.each do |ans_i, ans|
             @option.each do |index, opt|
+              # if (opt != "" && ans[:body] == index.to_s)
               if (opt != "" && ans == index.to_s)
                 answer << opt
               end
