@@ -122,7 +122,7 @@ class QuestionsController < ApplicationController
   
   def change_answer_div
 
-    @question = Question.find(params[:id]) if params[:id] != ""
+    @question = Question.find(params[:id]) unless params[:id].blank?
     if params['type'] == "Multiple Choice"
       @ajax_data = "multiple_choice"
     elsif params['type'] == "Multiple Choice/Answer"

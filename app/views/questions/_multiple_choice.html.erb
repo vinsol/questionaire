@@ -1,6 +1,5 @@
 
-
-<% if params[:id] != "" %>
+<% unless params[:id].blank? %>
   <% (1..4).each do |index| %>
     <% if @question.options[index-1] %>
       <%= text_field_tag "question[option[#{index}]]", @question.options[index-1].body %>&nbsp;&nbsp;&nbsp;&nbsp;<%= radio_button_tag 'question[answer]', value = index %><br/>
@@ -9,20 +8,20 @@
     <% end %>
   <% end %> 
   
-<script>
+  <script>
 
-if( "<%= params[:type] %>" == "Multiple Choice") {
-  var options = $("input[id^= 'question_option_']");
-  for(var i = 0; i<options.length; i++) {
-    if (options[i].value == "<%= @question.answers.first.body %>") {
-      var id = options[i].id.replace("option", "answer");
-      document.getElementById(id).checked = true;
-      break;
+  if( "<%= params[:type] %>" == "Multiple Choice") {
+    var options = $("input[id^= 'question_option_']");
+    for(var i = 0; i<options.length; i++) {
+      if (options[i].value == "<%= @question.answers.first.body %>") {
+        var id = options[i].id.replace("option", "answer");
+        document.getElementById(id).checked = true;
+        break;
+      }
     }
   }
-}
 
-</script> 
+  </script> 
 <% else %>
   <%= text_field_tag "question[option[1]]" %>&nbsp;&nbsp;&nbsp;&nbsp;<%= radio_button_tag 'question[answer]', value = "1", true %><br/>
   <%= text_field_tag "question[option[2]]" %>&nbsp;&nbsp;&nbsp;&nbsp;<%= radio_button_tag 'question[answer]', value = "2" %><br/>

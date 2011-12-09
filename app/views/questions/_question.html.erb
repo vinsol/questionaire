@@ -1,11 +1,11 @@
 <div id = "form_left">
   <div class="field">
     <%= f.label :tag %>&nbsp;&nbsp;
-    <%= f.text_field :tag, :value => @question.tag_list %><span class='error'><%= @question.errors[:tag].join(', ') %></span>
+    <%= f.text_field :tag, :value => @question.tag_list %><span class='error'><%= get_error(@question, :tag) %></span>
   </div>
   
   <div class="field">
-    <%= f.label :body, 'Question?' %>&nbsp;&nbsp;<span class='error'><%= @question.errors[:body].join(', ') %></span><br/>
+    <%= f.label :body, 'Question?' %>&nbsp;&nbsp;<span class='error'><%= get_error(@question, :body) %></span><br/>
     <%= f.text_area :body, :rows => 5, :cols => 70 %>
   </div>
 
@@ -17,9 +17,12 @@
     <% end %>
   </div>
 
-  <div><span id = "for_option" class = "hide" style = "padding-right: 150px;">Options&nbsp;&nbsp;</span><span>Answer</span>&nbsp;&nbsp;<span class="error"><%= @question.errors[:answer].join(', ') %></span></div>
+  <div>
+    <span id = "for_option" class = "hide" style = "padding-right: 150px;"> Options &nbsp;&nbsp; </span>
+    <span>Answer</span>&nbsp;&nbsp;<span class="error"><%= get_error(@question, :answer) %></span>
+  </div>
 
-  <div id = "for_option_error" ><span class="error"><%= @question.errors[:option].join(', ') %></span></div>
+  <div id = "for_option_error" ><span class="error"><%= get_error(@question, :option) %></span></div>
 
   <div class="field" id = "answer_type">
     
@@ -28,13 +31,13 @@
 
 <div id = "form_right">
   <div class="field" id = "ques_category">
-    <span class='error'> <%= @question.errors[:category_id].join(', ') %></span><br/>
+    <span class='error'> <%= get_error(@question, :category_id) %></span><br/>
     <%= f.label :category_id %> <br/>
     <%= f.select :category_id, Category.all.collect {|c| [c.name, c.id]} %>
   </div>
 
   <div class="field" id = "ques_level">
-    <span class='error'> <%= @question.errors[:level].join(', ') %></span><br/>
+    <span class='error'> <%= get_error(@question, :level) %></span><br/>
     <%= f.label :level %> <br/>
     <%= f.select :level, Question::LEVEL %>
   </div>

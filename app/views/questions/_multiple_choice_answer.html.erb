@@ -1,5 +1,5 @@
 
-<% if params[:id] != "" %>
+<% unless params[:id].blank? %>
   <% (1..4).each do |index| %>
     <% if @question.options[index-1] %>
       <%= text_field_tag "question[option[#{index}]]", @question.options[index-1].body %>&nbsp;&nbsp;&nbsp;&nbsp;<%= check_box_tag "question[answer[#{index}]]", value = index %><br/>
