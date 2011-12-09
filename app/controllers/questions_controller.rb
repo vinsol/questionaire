@@ -145,13 +145,6 @@ class QuestionsController < ApplicationController
   
   private
   
-  def admin_signed_in
-    unless session["devise.googleapps_data"]
-      session[:admin_id] = nil
-      redirect_to new_admin_session_path
-    end
-  end
-  
   def get_question_by_id
     @question = Question.find(params[:id])
   end

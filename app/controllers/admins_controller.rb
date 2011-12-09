@@ -1,5 +1,7 @@
 class AdminsController < ApplicationController
-
+  
+  before_filter :admin_signed_in
+  
   def new
     @admin = Admin.new
   end
