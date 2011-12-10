@@ -5,9 +5,11 @@ class QuestionsController < ApplicationController
   
   def index
     @questions = Question.all
+    
   end
 
   def show
+    
   end
 
   ### Question -> ques_type => "Subjective" in migration
@@ -22,119 +24,46 @@ class QuestionsController < ApplicationController
     @type = @question.ques_type
   end
 
-  def create
-    
-    # params[:question][:category_id] = params[:question][:category_id].to_i
-    
-    # params =  { :question => { :body =>"acsdsdfdsf", 
-    #   :ques_type => "Multiple Choice/Answer", 
-    #   :options_attributes => [ {:body => "df"}, { :body => "sdfsf"}, { :body => "sdfdd"}] , 
-    #   :answers_attributes => [ {:body => 1}, {:body => 2}] , :category_id => 1, :level => 0 }, 
-    #   
-    #   :as_values_tags => "" }
 
-      # params =  { :question => { :body =>"acsdsdfdsf", 
-      #   :ques_type => "Multiple Choice/Answer", 
-      #   :options_attributes => { '1' => {:body => "df"}, '2' => { :body => "sdfsf"}, '3' => { :body => "sdfdd"} } , 
-      #   :answers_attributes => { '1' => {:body => '1'}, '2' => {:body => '2'} } , :category_id => 1, :level => 0 }, 
-      # 
-      #   :as_values_tags => "" }
-      # 
-      
+  def create
     @question = Question.new(params[:question])
     @question.admin_id = session[:admin_id]
     @question.tag_list = params[:as_values_tags]
-    # @question.save
+
+    unless (Question.atleast_two_options?(params[:question][:options_attributes]))
+      flash[:option_error] = 'Atleast two and atmost four options are valid'
+    end
     
-    # p @question.errors.full_messages
+    unless (Question.valid_answer?(params[:question][:answers_attributes], params[:question][:options_attributes]))
+      flash[:answer_error] = ' not valid'
+    end
     
-    if @question.save
-      if params[:question][:option]
-        if params[:question][:answer].class != String
-          params[:question][:option].each do |opt_i, opt|
-            if opt != ""
-              Option.create(:body => opt, :question_id => @question.id)
-              params[:question][:answer].each do |ans_i, ans|
-                Answer.create(:body => opt, :question_id => @question.id) if opt_i.to_s == ans
-              end
-            end
-          end
-        else
-          params[:question][:option].each do |opt_i, opt|
-            if opt != ""
-              Option.create(:body => opt, :question_id => @question.id)
-              Answer.create(:body => opt, :question_id => @question.id) if opt_i.to_s == params[:question][:answer]
-            end
-          end
-        end
-      else
-        Answer.create(:body => params[:question][:answer], :question_id => @question.id)
-      end
+    if flash[:option_error].blank? && flash[:answer_error].blank? && @question.save
       redirect_to(@question, :notice => 'Question was successfully created.')
-    
     else
       @type = params[:question][:ques_type] 
       render :action => "new"
     end
-
-    redirect_to(@question, :notice => 'Question was successfully created.')
-    
   end
     
+    
   def update
-    params[:question][:category_id] = params[:question][:category_id].to_i
     
     @question.admin_id = session[:admin_id]
     @question.tag_list = params[:as_values_tags]
+
+    unless (Question.atleast_two_options?(params[:question][:options_attributes]))
+      flash[:option_error] = 'Atleast two and atmost four options are valid'
+    end
     
-    @type = params['question']['ques_type'] if params['question']['ques_type']
+    unless (Question.valid_answer?(params[:question][:answers_attributes], params[:question][:options_attributes]))
+      flash[:answer_error] = ' not valid'
+    end
     
-    answers = @question.answers
-    options = @question.options
-    
-    if @question.update_attributes(params[:question])
-      if params[:question][:option]
-        c = 0
-        params[:question][:option].each do |opt_i, opt|
-          if opt != "" && !options[c].nil?
-            options[c].update_attributes(:body => opt)
-            c += 1
-          elsif opt != "" && options[c].nil?
-            Option.create(:body => opt, :question_id => @question.id)
-          end
-        end
-        (c...options.length).each { |i| options[i].destroy } if (c < options.length)
-              
-        c = 0
-        if params[:question][:answer].class != String
-          params[:question][:option].each do |opt_i, opt|
-            params[:question][:answer].each do |ans_i, ans|
-              if opt != "" && opt_i.to_s == ans
-                if !answers[c].nil?
-                  answers[c].update_attributes(:body => opt)
-                  c += 1
-                else
-                  Answer.create(:body => opt, :question_id => @question.id)
-                end
-                break;
-              end
-            end
-          end
-          (c...answers.length).each { |i| answers[i].destroy } if (c < answers.length)
-        else
-          params[:question][:option].each do |opt_i, opt|
-            answers.first.update_attributes(:body => opt) if (opt != "" && opt_i.to_s == params[:question][:answer])
-          end
-          (1...answers.length).each { |i| answers[i].destroy } if (1 < answers.length)
-        end
-      else
-        options.each { |opt| opt.destroy }
-        answers.first.update_attributes(:body => params[:question][:answer])
-        (1...answers.length).each { |i| answers[i].destroy } if (1 < answers.length)
-      end
-      
+    if flash[:option_error].blank? && flash[:answer_error].blank? && @question.update_attributes(params[:question])
       redirect_to(@question, :notice => 'Question was successfully updated.') 
     else
+      @type = params['question']['ques_type']
       render :action => "edit" 
     end
   end

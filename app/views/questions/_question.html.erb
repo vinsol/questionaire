@@ -16,13 +16,13 @@
       <%= f.label "ques_type_"+key.to_s, type %>&nbsp;
     <% end %>
   </div>
-
+  
   <div>
     <span id = "for_option" class = "hide" style = "padding-right: 150px;"> Options &nbsp;&nbsp; </span>
-    <span>Answer</span>&nbsp;&nbsp;<span class="error"><%= get_error(@question, :answer) %></span>
+    <span>Answer</span>&nbsp;&nbsp;<span class="error"><%= flash[:answer_error] if flash[:answer_error] %></span>
   </div>
 
-  <div id = "for_option_error" ><span class="error"><%= get_error(@question, :option) %></span></div>
+  <div id = "for_option_error" ><span class="error"><%= flash[:option_error] if flash[:option_error] %></span></div>
 
   <div class="field" id = "answer_type">
     

@@ -13,18 +13,18 @@ class Question < ActiveRecord::Base
   validates :body, :presence => true
   validates :ques_type, :presence => true
   ### Should be commented
-  validates :answer, :presence => true
+  #validates :answers, :presence => true
   validates :category_id, :presence => true
   validates :level, :presence => true
   
-  validate :atleast_two_options
+  #validate :atleast_two_options
   ### Should be commented
-  validate :valid_answer
+  #validate :valid_answer
   
-  accepts_nested_attributes_for :answers
-  accepts_nested_attributes_for :options 
+  accepts_nested_attributes_for :answers, :allow_destroy => true 
+  accepts_nested_attributes_for :options, :allow_destroy => true, :reject_if => lambda { |c| c['body'].blank? }
   
-  attr_accessor :tag, :answer, :option
+  attr_accessor :tag
   
   def self.question_tags(str)
 		taggings = tag_counts_on(:tags).collect{|t| [t.id, t.name]}
@@ -41,44 +41,70 @@ class Question < ActiveRecord::Base
 		
   private
   
-  
-  def valid_answer
-    if @option
-      c = 0
-      if @answer
-        if @answer.class == String
-          @option.each do |index, opt|
-            if opt != "" && index.to_s == @answer
-              c += 1
-              break
+  def self.valid_answer?(answer, option)
+    if options?(option)
+      if answers?(answer)
+        c = 0
+        ans_temp = []
+        answer_temp = []
+        answer.each do |ans_i, ans|
+          if ans[:body]
+            answer_temp << ans
+          end
+          option.each do |opt_i, opt|
+            if( !opt['body'].blank? && ans['body'] == opt['body'] )
+              ans_temp << opt
+              break;
             end
           end
-          errors.add(:answer, "not valid") unless c != 0
-        else
-          answer = []
-          @answer.each do |ans_i, ans|
-            @option.each do |index, opt|
-              # if (opt != "" && ans[:body] == index.to_s)
-              if (opt != "" && ans == index.to_s)
-                answer << opt
-              end
-            end
-          end
-          errors.add(:answer, "answer not valid") unless @answer.length == answer.length
         end
+        return true if answer_temp.length == ans_temp.length
+      else
+        return false
       end
-    end      
+    else
+      return true unless answer['1']['body'].blank?
+    end
   end
   
-  def atleast_two_options
-    if @option
+  def self.atleast_two_options?(option)
+    if options?(option)
       c = 0
-      @option.each do |index, opt|
-        if opt != ""
+      option.each do |index, opt|
+        unless opt['body'].blank?
           c += 1
         end
       end
-      errors.add(:option, "atleast two and atmost four options are valid") unless c >= 2 && c <= 4
-    end  
+      return true if c >= 2 && c <= 4
+    else
+      return true
+    end 
   end
+  
+  def self.options?(options)
+    if options
+      options.each do |opt_i, opt|
+        if opt['body']
+          return true
+        end
+      end
+      return false
+    else
+      return false
+    end
+  end
+  
+  def self.answers?(answers)
+    if answers
+      answers.each do |ans_i, ans|
+        if ans['body']
+          return true
+        end
+      end
+      return false
+    else
+      return false
+    end
+  end
+  
 end

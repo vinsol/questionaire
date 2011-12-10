@@ -2,19 +2,33 @@
 <% unless params[:id].blank? %>
   <% (1..4).each do |index| %>
     <% if @question.options[index-1] %>
-      <%= text_field_tag "question[option[#{index}]]", @question.options[index-1].body %>&nbsp;&nbsp;&nbsp;&nbsp;<%= radio_button_tag 'question[answer]', value = index %><br/>
+      <%= text_field_tag "question[options_attributes][#{index}][body]", @question.options[index-1].body %>&nbsp;&nbsp;&nbsp;&nbsp;
+      <%= radio_button_tag 'question[answers_attributes][1][body]', value = index %>
+      <%= hidden_field_tag "question[options_attributes][#{index}][id]", @question.options[index-1].id %>
+      <%= hidden_field_tag "question[options_attributes][#{index}][_destroy]", false %><br/>
     <% else %>
-      <%= text_field_tag "question[option[#{index}]]" %>&nbsp;&nbsp;&nbsp;&nbsp;<%= radio_button_tag 'question[answer]', value = index %><br/>
+      <%= text_field_tag "question[options_attributes][#{index}][body]" %>&nbsp;&nbsp;&nbsp;&nbsp;
+      <%= radio_button_tag 'question[answers_attributes][1][body]', value = index %><br/>
     <% end %>
-  <% end %> 
-  
+  <% end %>
+  <% @question.answers.each_with_index do |answer, index| %>
+    <% if index == 0 %>
+      <%= hidden_field_tag 'question[answers_attributes][1][id]', answer.id %>
+      <%= hidden_field_tag 'question[answers_attributes][1][_destroy]', false %>
+    <% else %>
+      <%= hidden_field_tag "question[answers_attributes][#{index+1}][id]", answer.id %>
+      <%= hidden_field_tag "question[answers_attributes][#{index+1}][_destroy]", "1" %>
+    <% end %>
+  <% end %>
   <script>
 
   if( "<%= params[:type] %>" == "Multiple Choice") {
-    var options = $("input[id^= 'question_option_']");
-    for(var i = 0; i<options.length; i++) {
-      if (options[i].value == "<%= @question.answers.first.body %>") {
-        var id = options[i].id.replace("option", "answer");
+  
+    for(var i = 1; i<=4; i++) {
+      var option = document.getElementById("question_options_attributes_"+i+"_body");
+      if (option.value == "<%= @question.answers.first.body %>") {
+        var val = option.id.slice(-6,-5);
+        var id = "question_answers_attributes_1_body_"+val;
         document.getElementById(id).checked = true;
         break;
       }
@@ -23,10 +37,9 @@
 
   </script> 
 <% else %>
-  <%= text_field_tag "question[option[1]]" %>&nbsp;&nbsp;&nbsp;&nbsp;<%= radio_button_tag 'question[answer]', value = "1", true %><br/>
-  <%= text_field_tag "question[option[2]]" %>&nbsp;&nbsp;&nbsp;&nbsp;<%= radio_button_tag 'question[answer]', value = "2" %><br/>
-  <%= text_field_tag "question[option[3]]" %>&nbsp;&nbsp;&nbsp;&nbsp;<%= radio_button_tag 'question[answer]', value = "3" %><br/>
-  <%= text_field_tag "question[option[4]]" %>&nbsp;&nbsp;&nbsp;&nbsp;<%= radio_button_tag 'question[answer]', value = "4" %>
+  <% (1..4).each do |index| %>
+    <%= text_field_tag "question[options_attributes][#{index}][body]" %>&nbsp;&nbsp;&nbsp;&nbsp;<%= radio_button_tag 'question[answers_attributes][1][body]', value = index, (true if index == 1) %><br/>
+  <% end %>
 <% end %>
 
 
