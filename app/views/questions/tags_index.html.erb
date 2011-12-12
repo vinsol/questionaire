@@ -1,7 +1,4 @@
-<% content_for(:css) do %>
-<%#= stylesheet_link_tag 'home' %>
-<% end %>
-<h2>Listing questions</h2>
+<h2>Tag:: <%= params[:name].upcase %></h2>
 
 <% @questions.each do |question| %>
   <div class = "show_question <%= cycle('list_line_odd', 'list_line_even') %>">
@@ -10,9 +7,6 @@
       &lt;<b>Type: </b><%= question.ques_type %>&gt;&nbsp;&nbsp;&nbsp;
       &lt;<b>Level: </b><%= Question::LEVEL[question.level][0] %>&gt;&nbsp;&nbsp;&nbsp;
       &lt;<b>Category: </b><%= Category.find(question.category_id).name %>&gt;&nbsp;&nbsp;&nbsp;
-      <% if !question.tag_list.empty? %>
-        &lt;<b>Tags: </b><%= question.tag_list %>&gt;
-      <% end %>
     </p>
     <div class = "ques_links">
       <%= link_to 'Show', question %> |
@@ -21,5 +15,4 @@
     </div><br />
   </div>
 <% end %>
-<br/>
 <%= will_paginate @questions %><span style="clear:both"></span>

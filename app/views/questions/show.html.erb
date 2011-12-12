@@ -1,30 +1,36 @@
 <p id="notice"><%= notice %></p>
-
-<p>
-  <b>Body:</b>
-  <%= @question.body %>
-</p>
-
-<p>
-  <b>Level:</b>
-  <%= @question.level %>
-</p>
-
-<p>
-  <b>Category:</b>
-  <%= @question.category_id %>
-</p>
-
-<p>
-  <b>Admin:</b>
-  <%= @question.admin_id %>
-</p>
-
-<p>
-  <b>Type:</b>
-  <%= @question.ques_type %>
-</p>
-
-
-<%= link_to 'Edit', edit_question_path(@question) %> |
-<%= link_to 'Back', questions_path %>
+<div class = "show_question">
+  <p class = "title_ques"><b>Question: </b><%= @question.body %></p>
+  <% if @question.ques_type == "Subjective" %>
+    <p><b>Answer: </b><%= @question.answers.first.body %></p>
+  <% else %>
+    <p style="margin-bottom:2px"><b>Options: </b></p>
+    <ol class = "show_options" type = "a">
+      <% @question.options.each do |option| %>
+        <li><%= option.body %>
+        <% @question.answers.each do |answer| %>
+          <% if option.body == answer.body %>
+            <script>$("li").last().css('font-size','14px')</script>
+            <%= image_tag("correct.jpg", :size => "25x15") %>
+            <% break %>
+          <% end %>
+        <% end %></li>
+      <% end %>
+    </ol>
+    <p style="color:red"><b>*Note: </b>Ticked options are answers.</p>
+  <% end %>
+  <p class = "extras">
+    &lt;<b>Type: </b><%= @question.ques_type %>&gt;&nbsp;&nbsp;&nbsp;
+    &lt;<b>Level: </b><%= Question::LEVEL[@question.level][0] %>&gt;&nbsp;&nbsp;&nbsp;
+    &lt;<b>Category: </b><%= Category.find(@question.category_id).name %>&gt;&nbsp;&nbsp;&nbsp;
+    <% if !@question.tag_list.empty? %>
+      &lt;<b>Tags: </b><%= @question.tag_list %>&gt;
+    <% end %>
+  </p>
+  <div class = "ques_links">
+    <%= link_to 'Edit', edit_question_path(@question) %> |
+    <%= link_to 'New', new_question_path %> |
+    <%= link_to 'Back', questions_path %>
+    
+  </div><br />
+</div>

@@ -4,7 +4,7 @@ class QuestionsController < ApplicationController
   before_filter :get_question_by_id, :only => [:show, :edit, :update, :destroy]
   
   def index
-    @questions = Question.all
+    @questions = Question.where("id is not null").paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
     
   end
 
@@ -72,6 +72,14 @@ class QuestionsController < ApplicationController
   def destroy
     @question.destroy
     redirect_to(questions_url) 
+  end
+  
+  def tags_index
+    @questions = Question.tagged_with(params[:name]).paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+  end
+  
+  def level_index
+    @questions = Question.where("level = ?",params[:id]).paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
   end
   
   def change_answer_div

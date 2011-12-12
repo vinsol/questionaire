@@ -7,10 +7,11 @@ PriyankQuestionaire::Application.routes.draw do
   get 'change_answer_div', :to => 'questions#change_answer_div', :as => 'change_answer_div'
   get 'for_option_answer', :to => 'questions#for_option_answer', :as => 'for_option_answer'
   get 'ques_tags', :to => 'questions#ques_tags', :as => 'ques_tags'
-  #get 'add_admin', :to => 'admins#new_admin'
-  #post 'add_admin', :to => 'admins#create_admin'
-  #get 'admin_created', :to => 'admins#show_admin'
+  
   resources :admins
+ 
+  match '/questions/tags/:name', :to => "questions#tags_index", :as => 'tag_index'
+  match '/questions/level/:id', :to => "questions#level_index", :as => 'level_index'
   
   # The priority is based upon order of creation:
   # first created -> highest priority.
