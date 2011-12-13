@@ -1,5 +1,4 @@
-<p id="notice"><%= notice %></p>
-<div class = "show_question">
+<div class = "show_question" style="font-size:13px;background-color:#2B3B50;font-color:#000000;color:#ffffff;width:700px; padding:2px 10px">
   <p class = "title_ques"><b>Question: </b><%= @question.body %></p>
   <% if @question.ques_type == "Subjective" %>
     <p><b>Answer: </b><%= @question.answers.first.body %></p>
@@ -11,7 +10,7 @@
         <% @question.answers.each do |answer| %>
           <% if option.body == answer.body %>
             <script>$("li").last().css('font-size','14px')</script>
-            <%= image_tag("correct.jpg", :size => "25x15") %>
+            <%= image_tag("popup_check4.png", :size => "30x15") %>
             <% break %>
           <% end %>
         <% end %></li>
@@ -26,11 +25,5 @@
     <% if !@question.tag_list.empty? %>
       &lt;<b>Tags: </b><%= @question.tag_list %>&gt;
     <% end %>
-  </p>
-  <div class = "ques_links">
-    <%= link_to 'Edit', edit_question_path(@question) %> |
-    <%= link_to 'New', new_question_path %> |
-    <%= link_to 'Back', :back %>
-    
-  </div><br />
+  </p><br/>
 </div>

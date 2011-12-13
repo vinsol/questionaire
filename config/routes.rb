@@ -7,6 +7,9 @@ PriyankQuestionaire::Application.routes.draw do
   get 'change_answer_div', :to => 'questions#change_answer_div', :as => 'change_answer_div'
   get 'for_option_answer', :to => 'questions#for_option_answer', :as => 'for_option_answer'
   get 'ques_tags', :to => 'questions#ques_tags', :as => 'ques_tags'
+  get 'make_test', :to => 'questions#make_test', :as => 'make_test'
+  get 'fetch_questions', :to => 'questions#fetch_questions', :as => 'fetch_questions'
+  get 'show_fetch_ques/:id', :to => 'questions#show_fetch_ques', :as => 'show_fetch_ques'
   
   resources :admins
  

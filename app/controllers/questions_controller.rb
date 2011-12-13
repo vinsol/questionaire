@@ -30,11 +30,11 @@ class QuestionsController < ApplicationController
     @question.admin_id = session[:admin_id]
     @question.tag_list = params[:as_values_tags]
 
-    unless (Question.atleast_two_options?(params[:question][:options_attributes]))
+    unless (@question.atleast_two_options?(params[:question][:options_attributes]))
       flash[:option_error] = 'Atleast two and atmost four options are valid'
     end
     
-    unless (Question.valid_answer?(params[:question][:answers_attributes], params[:question][:options_attributes]))
+    unless (@question.valid_answer?(params[:question][:answers_attributes], params[:question][:options_attributes]))
       flash[:answer_error] = ' not valid'
     end
     
@@ -52,11 +52,11 @@ class QuestionsController < ApplicationController
     @question.admin_id = session[:admin_id]
     @question.tag_list = params[:as_values_tags]
 
-    unless (Question.atleast_two_options?(params[:question][:options_attributes]))
+    unless (@question.atleast_two_options?(params[:question][:options_attributes]))
       flash[:option_error] = 'Atleast two and atmost four options are valid'
     end
     
-    unless (Question.valid_answer?(params[:question][:answers_attributes], params[:question][:options_attributes]))
+    unless (@question.valid_answer?(params[:question][:answers_attributes], params[:question][:options_attributes]))
       flash[:answer_error] = ' not valid'
     end
     
@@ -80,6 +80,32 @@ class QuestionsController < ApplicationController
   
   def level_index
     @questions = Question.where("level = ?",params[:id]).paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+  end
+  
+  def make_test
+    
+  end
+  
+  def show_fetch_ques
+    @question = Question.find(params[:id])
+    render :partial => "show_fetch_ques"
+  end
+  
+  def fetch_questions
+    ques = []
+    if params[:tags]
+      params[:tags].each do |tag|
+        ques.push(Question.tagged_with(tag))
+        ques = ques.flatten.uniq
+      end
+    end
+    level = []
+    if params[:level]
+      params[:level].each do |index, val|
+        level.push(val[0])
+      end
+    end
+    @questions = Question.search(ques, params[:type], params[:category], level)
   end
   
   def change_answer_div

@@ -39,9 +39,7 @@ class Question < ActiveRecord::Base
     return data
   end
 		
-  private
-  
-  def self.valid_answer?(answer, option)
+  def valid_answer?(answer, option)
     if options?(option)
       if answers?(answer)
         c = 0
@@ -67,7 +65,7 @@ class Question < ActiveRecord::Base
     end
   end
   
-  def self.atleast_two_options?(option)
+  def atleast_two_options?(option)
     if options?(option)
       c = 0
       option.each do |index, opt|
@@ -81,7 +79,42 @@ class Question < ActiveRecord::Base
     end 
   end
   
-  def self.options?(options)
+  def self.search(tags, type, category, level)
+    sql = ["SELECT questions.* FROM questions WHERE category_id IN (?) ", category]
+    if type
+      sql[0] += "AND ques_type IN (?) "
+      sql.push(type)
+      unless level.empty?
+        sql[0] += "AND level IN (?) "
+        sql.push(level)
+        unless tags.empty?
+          sql[0] += "AND id IN (?) "
+          sql.push(tags)
+        end
+      else
+        unless tags.empty?
+          sql[0] += "AND id IN (?) "
+          sql.push(tags)
+        end
+      end
+    elsif level.empty?
+      sql[0] += "AND level IN (?)"
+      sql.push(level)
+      unless tags.empty?
+        sql[0] += "AND id IN (?) "
+        sql.push(tags)
+      end
+    else
+      sql[0] += "WHERE id IN (?) "
+      sql.push(tags)
+    end
+    find_by_sql(sql)
+  end
+  
+    
+  private
+  
+  def options?(options)
     if options
       options.each do |opt_i, opt|
         if opt['body']
@@ -94,7 +127,7 @@ class Question < ActiveRecord::Base
     end
   end
   
-  def self.answers?(answers)
+  def answers?(answers)
     if answers
       answers.each do |ans_i, ans|
         if ans['body']

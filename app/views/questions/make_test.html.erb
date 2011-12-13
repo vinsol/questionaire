@@ -1,0 +1,147 @@
+<% content_for(:js_css) do %>
+  <%= stylesheet_link_tag 'make_test' %>
+<% end %>
+
+<div id = "form_left">
+  <h2>Prepare a Test</h2>
+  <% form_tag('/make_test', :method => :get) do %>
+    <div class="field">
+      <p><b><%= label_tag :name %></b>&nbsp;&nbsp;<%= text_field_tag :name %>&nbsp;&nbsp;<span class = "error" id = "error1"></span></p>
+    </div>
+
+    <div class="field">
+      <p><b><%= label_tag :instructions, 'Instructions' %></b></p>
+      <%= text_area_tag :instructions,nil, :rows => 3, :cols => 48 %>
+    </div>
+        
+    <div class="field">
+      <p><b><%= label_tag :tag %></b></p>
+      <%= text_field_tag :tag %>
+    </div>
+    
+    <div id = "type_cat">
+      <div class="field" style = "float:left">
+        <p><b><%= label_tag :ques_type %></b></p>
+        <% {:subjective =>"Subjective", :multiple_choice => "Multiple Choice", :multiple_choiceanswer => "Multiple Choice/Answer"}.each do |key, type| %>
+          <p><%= check_box_tag "type[#{key}]", type %><%= label_tag "type_#{key}", type %></p>
+        <% end %>
+      </div>
+      
+      <div class="field" id = "ques_category" style = "float:right">
+        <p><b><%= label_tag :category_id %></b></p>
+        <%= select_tag :category_id, options_for_select(Category.all.collect {|c| [c.name, c.id]}) %>
+      </div><br/>
+    </div>
+    <div id = "level_sets">
+      <div class="field" id = "ques_level" style="float:left">
+        <p><b><%= label_tag :level %></b>&nbsp;&nbsp;<span class = "error" id = "error3"></span></p>
+        <table>
+        <% Question::LEVEL.each do |level| %>
+          <tr>
+            <td><p><%= label_tag "level_#{level[1]}", level[0] %></p></td>
+            <td><%= text_field_tag "level[#{level[1]}]",nil , :size => '2' %></td>
+          </tr>
+        <% end %>
+        </table>
+      </div>
+      <div class="field" style="float:right">
+        <p><b><%= label_tag :sets, "No. of Sets" %></b>&nbsp;&nbsp;<%= text_field_tag :sets,nil, :size => 1 %></p>
+        <span class = "error" id = "error2"></span>
+      </div><br/>
+    </div>
+    <div style="float:right"><%= submit_tag 'Generate', :onclick => "return fetch_questions()" %></div><br/>
+  <% end %>  
+</div>
+<div id = "form_right">
+  <div id = "fetched_ques">
+    <h2>Fetch Questions</h2>  
+  </div>
+</div><br/>
+  
+
+<script>
+  function fetch_questions() {
+    var val = [];
+    var c = false;
+    var d = false;
+    var e = false;
+    if($("#name").val() == "") {
+      document.getElementById("error1").innerHTML = "can't be blank";
+      var c = true;
+    } else {
+      document.getElementById("error1").innerHTML = "";
+      var naam = $("#name").val();
+    }
+    
+    if($("#sets").val() == "") {
+      document.getElementById("error2").innerHTML = "can't be blank";
+      d = true;
+    } else if(!($("#sets").val().match(/^\d+$/))) {
+      document.getElementById("error2").innerHTML = "number expected";
+      d = true;
+    } else {
+      document.getElementById("error2").innerHTML = "";
+      var sets = $("#sets").val();
+    }
+    
+    var ques_level = $("input[id^='level_']");
+    var level = [];
+    for(var i = 0; i < ques_level.length; i++) {
+      if(ques_level[i].value != "") {
+        if(ques_level[i].value.match(/^\d+$/)) {
+          level.push([ques_level[i].id.slice(6),ques_level[i].value]);
+          document.getElementById("error3").innerHTML = "";
+        } else {
+          document.getElementById("error3").innerHTML = "number expected";
+          e = true;
+        }
+      }
+    }
+    
+    if(c || d || e) {
+      return false
+    }
+    if($("#instructions").val() != "") {
+      var instructions = $("#instructions").val();
+    }
+    var ques_tags = $(".as-selection-item");
+    var tags = []
+    for(var i = 0;i < ques_tags.length; i++) {
+      tags.push($(ques_tags[i]).text().slice(1));
+    }
+    
+    var ques_type = $("input[id^='type_']");
+    var type = [];
+    for(var i = 0;i < ques_type.length; i++) {
+      if(ques_type[i].checked == true) {
+        type.push(ques_type[i].value);
+      }
+    }
+
+    var ques_category = $('#category_id').children("option");
+    var category = [];
+    for(var i = 0; i<ques_category.length; i++) {
+      if(ques_category[i].selected) {
+        category.push(ques_category[i].value);
+      }
+    }
+    
+    $.ajax({
+      url: '<%= fetch_questions_path %>', 
+      dataType: 'script',
+      type: 'get', 
+      data: {
+        name: naam,
+        instructions: instructions,
+        tags: tags,
+        type: type,
+        category: category,
+        level: level,
+        sets: sets
+      }
+    });
+    return false;
+  }
+
+  $("#tag").autoSuggest("/ques_tags.js", {minChars: 1, matchCase: false, searchObjProps: "name", startText: "Enter Tags Here", asHtmlID:"tags",  neverSubmit: true });
+</script>

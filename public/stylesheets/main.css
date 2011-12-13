@@ -188,19 +188,16 @@ div#tag_name {
   padding-left: 50px;
 }
 
-div#tag_count {
+div#tag_count, div#level_count {
   float: right;
-  padding-right: 50px;
+  padding-right: 65px;
+  color: #000F2E;
+  font-size: 14px;
 }
 
 div#level_name {
   float:left;
   padding-left: 50px;
-}
-
-div#level_count {
-  float: right;
-  padding-right: 50px;
 }
 
 div#add_admin {
@@ -276,4 +273,8 @@ div#write h2 {
 
 .disabled {
   display: none;
+}
+
+textarea {
+  resize: none;
 }
