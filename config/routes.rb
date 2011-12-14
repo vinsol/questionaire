@@ -1,6 +1,4 @@
 PriyankQuestionaire::Application.routes.draw do
-
-  resources :questions
   
   devise_for :admins, :controllers => { :omniauth_callbacks => "admins/omniauth_callbacks"}
   
