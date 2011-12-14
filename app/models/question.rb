@@ -33,6 +33,7 @@ class Question < ActiveRecord::Base
     return data
   end
 		
+	## Optimize	
   def valid_answer?(answer, option)
     if options?(option)
       if answers?(answer)
@@ -59,6 +60,7 @@ class Question < ActiveRecord::Base
     end
   end
   
+  ## Optimize
   def atleast_two_options?(option)
     if options?(option)
       c = 0
@@ -73,8 +75,10 @@ class Question < ActiveRecord::Base
     end 
   end
   
+  ## Optimize
   def self.search(tags, type, category, level)
-    sql = ["SELECT questions.* FROM questions WHERE category_id IN (?) ", category]
+    sql = ["SELECT questions.* FROM questions WHERE category_id IN () ", category]
+  
     if type
       sql[0] += "AND ques_type IN (?) "
       sql.push(type)
@@ -91,6 +95,7 @@ class Question < ActiveRecord::Base
           sql.push(tags)
         end
       end
+  
     elsif level.empty?
       sql[0] += "AND level IN (?)"
       sql.push(level)
@@ -98,17 +103,22 @@ class Question < ActiveRecord::Base
         sql[0] += "AND id IN (?) "
         sql.push(tags)
       end
+  
     else
       sql[0] += "WHERE id IN (?) "
       sql.push(tags)
     end
+  
     find_by_sql(sql)
   end
   
     
   private
-  
+  ### Optimize
   def options?(options)
+    
+    # options.select { |q| q['body'] && !q['body'].blank? }.empty? if options
+    
     if options
       options.each do |opt_i, opt|
         if opt['body']
@@ -121,6 +131,7 @@ class Question < ActiveRecord::Base
     end
   end
   
+  ## Optimize
   def answers?(answers)
     if answers
       answers.each do |ans_i, ans|

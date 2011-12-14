@@ -4,21 +4,19 @@ class QuestionsController < ApplicationController
   before_filter :get_question_by_id, :only => [:show, :edit, :update, :destroy]
   
   def index
+    ### use Question.all
     @questions = Question.where("id is not null").paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
-    
   end
 
   def show
     
   end
 
-  ### Question -> ques_type => "Subjective" in migration
   ### Put choices for ques_type in constant
   def new
     @question = Question.new
     @type = @question.ques_type
   end
-
 
   def edit
     @type = @question.ques_type
@@ -109,6 +107,7 @@ class QuestionsController < ApplicationController
   end
   
   def change_answer_div
+    ## use where
     @question = Question.find(params[:id]) unless params[:id].blank?
     if params['type'] == "Multiple Choice"
       @ajax_data = "multiple_choice"
@@ -131,6 +130,7 @@ class QuestionsController < ApplicationController
   
   private
   
+  ## Use where
   def get_question_by_id
     @question = Question.find(params[:id])
   end
