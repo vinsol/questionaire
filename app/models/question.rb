@@ -12,14 +12,8 @@ class Question < ActiveRecord::Base
   
   validates :body, :presence => true
   validates :ques_type, :presence => true
-  ### Should be commented
-  #validates :answers, :presence => true
   validates :category_id, :presence => true
   validates :level, :presence => true
-  
-  #validate :atleast_two_options
-  ### Should be commented
-  #validate :valid_answer
   
   accepts_nested_attributes_for :answers, :allow_destroy => true 
   accepts_nested_attributes_for :options, :allow_destroy => true, :reject_if => lambda { |c| c['body'].blank? }
