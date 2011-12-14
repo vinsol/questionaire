@@ -4,7 +4,7 @@
 
 <div id = "form_left">
   <h2>Prepare a Test</h2>
-  <% form_tag('/make_test', :method => :get) do %>
+  <% form_tag() do %>
     <div class="field">
       <p><b><%= label_tag :name %></b>&nbsp;&nbsp;<%= text_field_tag :name %>&nbsp;&nbsp;<span class = "error" id = "error1"></span></p>
     </div>
@@ -143,5 +143,5 @@
     return false;
   }
 
-  $("#tag").autoSuggest("/ques_tags.js", {minChars: 1, matchCase: false, searchObjProps: "name", startText: "Enter Tags Here", asHtmlID:"tags",  neverSubmit: true });
+  $("#tag").autoSuggest("/questions/ques_tags.js", {minChars: 1, matchCase: false, searchObjProps: "name", startText: "Enter Tags Here", asHtmlID:"tags",  neverSubmit: true });
 </script>

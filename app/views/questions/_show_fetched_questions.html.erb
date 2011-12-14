@@ -1,7 +1,9 @@
 
+<% sets = [] %>
 <% if params[:level] %>
   <% questions,beg,int,mast = count_questions_by_level(@questions.dup, params[:level]) %>
-  <% sets = [] %>
+<% else %>
+  <% questions = @questions %>
 <% end %>
 
 <h2 align ="center"><%= params[:name].capitalize %></h2>
@@ -12,7 +14,7 @@
   <div class = "show_question <%= cycle('list_line_odd', 'list_line_even') %>" style="padding:5px">
     <p class = "title_ques" style = "float:left;margin:0"><b><%= index+1 %>. </b><%= question.body %></p>
     <div style="float:right">
-      <%= link_to 'Show', show_fetch_ques_path(question), :rel => "facebox" %>
+      <%= link_to 'Show', show_fetch_ques_questions_path(question), :rel => "facebox" %>
     </div><br/>
   </div>
 <% end %>

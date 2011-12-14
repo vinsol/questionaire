@@ -72,13 +72,13 @@ function change_answer_div(val) {
     $("#for_option_error").removeClass("hide");
   }
    $.ajax({
-    url: '<%= change_answer_div_path %>', 
+    url: '<%= change_answer_div_questions_path %>', 
     dataType: 'script',
     type: 'get', 
     data: 'type='+val+"&id="+id
   });
 }
 
-$("#question_tag").autoSuggest("/ques_tags.js", {minChars: 1, matchCase: false, searchObjProps: "name", startText: "Enter Tags Here", asHtmlID:"tags",  neverSubmit: true, preFill: "<%= @question.tag_list %>"});
+$("#question_tag").autoSuggest("/questions/ques_tags.js", {minChars: 1, matchCase: false, searchObjProps: "name", startText: "Enter Tags Here", asHtmlID:"tags",  neverSubmit: true, preFill: "<%= @question.tag_list %>"});
 
 </script>

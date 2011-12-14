@@ -15,7 +15,7 @@
 		  <% if session["devise.googleapps_data"] %>
 			  <li id = "firstlist_1" ><%= link_to "Home", questions_path %></li>
 			  <li id = "firstlist_2" ><%= link_to "Post Question", new_question_path %></li>
-			  <li id = "firstlist_3" ><%= link_to "Make Test", make_test_path %></li>
+			  <li id = "firstlist_3" ><%= link_to "Make Test", make_test_questions_path %></li>
 			  <li id = "firstlist_4" ><%= link_to "Previous Tests", questions_path %></li>
 			<% else %>
 			  <li id = "firstlist_5" ><%= link_to "Login", questions_path %></li>
@@ -48,7 +48,7 @@
 							  <h4 style="margin:5px 0 5px 0;">Tags</h4>
 							  <p style="margin:10px 0 10px 0;">
 							    <% Question.tag_counts.each do |tag| %>
-							      <div id = "tag_name"><%= link_to tag.name, tag_index_path(tag.name) %></div>
+							      <div id = "tag_name"><%= link_to tag.name, tags_index_questions_path(tag.name) %></div>
 							      <div id = "tag_count"><%= tag.count %></div><br/>
 							    <% end %>
 							  </p>
@@ -57,7 +57,7 @@
 							  <h4 style="margin:5px 0 5px 0;">Level</h4>
 							  <p style="margin:10px 0 10px 0;">
 							    <% ["Beginner", "Intermediate", "Master"].each_with_index do |level, index| %>
-							      <div id = "level_name"><%= link_to level, level_index_path(index) %></div>
+							      <div id = "level_name"><%= link_to level, level_index_questions_path(index) %></div>
 							      <div id = "level_count"><%= Question.count(:group => :level)[index] %></div><br/>
 							    <% end %>
 							  </p>

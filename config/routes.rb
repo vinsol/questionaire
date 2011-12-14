@@ -1,18 +1,23 @@
 PriyankQuestionaire::Application.routes.draw do
+
+  resources :questions do 
+    collection do
+      get 'change_answer_div'
+      get 'ques_tags'
+      get 'make_test'
+      get 'fetch_questions', :as => 'fetch'
+      get 'show_fetch_ques/:id', :action => 'show_fetch_ques', :as => 'show_fetch_ques'
+      match 'tags/:name', :action => 'tags_index', :as => 'tags_index'
+      match 'level/:id', :action => 'level_index', :as => 'level_index'
+    end
+  end
   
   devise_for :admins, :controllers => { :omniauth_callbacks => "admins/omniauth_callbacks"}
   
-  get 'change_answer_div', :to => 'questions#change_answer_div', :as => 'change_answer_div'
-  get 'for_option_answer', :to => 'questions#for_option_answer', :as => 'for_option_answer'
-  get 'ques_tags', :to => 'questions#ques_tags', :as => 'ques_tags'
-  get 'make_test', :to => 'questions#make_test', :as => 'make_test'
-  get 'fetch_questions', :to => 'questions#fetch_questions', :as => 'fetch_questions'
-  get 'show_fetch_ques/:id', :to => 'questions#show_fetch_ques', :as => 'show_fetch_ques'
-  
   resources :admins
  
-  match '/questions/tags/:name', :to => "questions#tags_index", :as => 'tag_index'
-  match '/questions/level/:id', :to => "questions#level_index", :as => 'level_index'
+#  match '/questions/tags/:name', :to => "questions#tags_index", :as => 'tag_index'
+#  match '/questions/level/:id', :to => "questions#level_index", :as => 'level_index'
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

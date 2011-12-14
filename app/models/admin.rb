@@ -4,17 +4,11 @@ class Admin < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   
-  #validates :email, :presence => true
-  ### Rails 3 way
   validates_uniqueness_of :email, :message => "Admin has already been created"
   validates_format_of :email, :with => /\A([^@\s]+)(@vinsol.com)\Z/i, :on => :create
   
   devise :omniauthable, :token_authenticatable, :rememberable
   has_many :questions
-  
-  # validates_uniqueness_of :vinsol_id
-  # Setup accessible (or protected) attributes for your model
-  # attr_accessible :email, :remember_me
   
   ### check the method
   def self.find_for_googleapps_oauth(access_token, signed_in_resource=nil)
