@@ -5,7 +5,7 @@ class QuestionsController < ApplicationController
   
   def index
     ### use Question.all
-    @questions = Question.where("id is not null").paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+    @questions = Question.paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
   end
 
   def show
@@ -13,6 +13,7 @@ class QuestionsController < ApplicationController
   end
 
   ### Put choices for ques_type in constant
+  
   def new
     @question = Question.new
     @type = @question.ques_type
@@ -108,7 +109,7 @@ class QuestionsController < ApplicationController
   
   def change_answer_div
     ## use where
-    @question = Question.find(params[:id]) unless params[:id].blank?
+    @question = Question.where(" id = (?)", params[:id]).first unless params[:id].blank?
     if params['type'] == "Multiple Choice"
       @ajax_data = "multiple_choice"
     elsif params['type'] == "Multiple Choice/Answer"
@@ -132,7 +133,7 @@ class QuestionsController < ApplicationController
   
   ## Use where
   def get_question_by_id
-    @question = Question.find(params[:id])
+    @question = Question.where("id = (?)",params[:id]).first
   end
   
 end

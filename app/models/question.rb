@@ -1,6 +1,7 @@
 class Question < ActiveRecord::Base
 
   LEVEL = [["Beginner", 0], ["Intermediate", 1], ["Master", 2]]
+  TYPE = {:subjective =>"Subjective", :multiple_choice => "Multiple Choice", :multiple_choiceanswer => "Multiple Choice/Answer"}
   
   belongs_to :category
   has_many :options, :dependent => :destroy
@@ -37,26 +38,17 @@ class Question < ActiveRecord::Base
   def valid_answer?(answer, option)
     if options?(option)
       if answers?(answer)
-        c = 0
-        ans_temp = []
-        answer_temp = []
+        ans_temp, answer_temp,c = [], [], 0
         answer.each do |ans_i, ans|
-          if ans[:body]
-            answer_temp << ans
-          end
-          option.each do |opt_i, opt|
-            if( !opt['body'].blank? && ans['body'] == opt['body'] )
-              ans_temp << opt
-              break;
-            end
-          end
+          answer_temp << ans if ans[:body]
+          option.each { |opt_i, opt| ans_temp << opt if( !opt['body'].blank? && ans['body'] == opt['body'] ) }
         end
-        return true if answer_temp.length == ans_temp.length
+        return answer_temp.length == ans_temp.length
       else
         return false
       end
     else
-      return true unless answer['1']['body'].blank?
+      return !answer['1']['body'].blank?
     end
   end
   
@@ -64,11 +56,7 @@ class Question < ActiveRecord::Base
   def atleast_two_options?(option)
     if options?(option)
       c = 0
-      option.each do |index, opt|
-        unless opt['body'].blank?
-          c += 1
-        end
-      end
+      option.each { |q_i, q| c += 1 unless q['body'].blank? }
       return true if c >= 2 && c <= 4
     else
       return true
@@ -77,35 +65,18 @@ class Question < ActiveRecord::Base
   
   ## Optimize
   def self.search(tags, type, category, level)
-    sql = ["SELECT questions.* FROM questions WHERE category_id IN () ", category]
+    sql = ["SELECT questions.* FROM questions WHERE category_id IN (?) ", category]
   
     if type
       sql[0] += "AND ques_type IN (?) "
       sql.push(type)
-      unless level.empty?
-        sql[0] += "AND level IN (?) "
-        sql.push(level)
-        unless tags.empty?
-          sql[0] += "AND id IN (?) "
-          sql.push(tags)
-        end
-      else
-        unless tags.empty?
-          sql[0] += "AND id IN (?) "
-          sql.push(tags)
-        end
-      end
-  
-    elsif level.empty?
+    end
+    unless level.empty?
       sql[0] += "AND level IN (?)"
       sql.push(level)
-      unless tags.empty?
-        sql[0] += "AND id IN (?) "
-        sql.push(tags)
-      end
-  
-    else
-      sql[0] += "WHERE id IN (?) "
+    end
+    unless tags.empty?
+      sql[0] += "AND id IN (?) "
       sql.push(tags)
     end
   
@@ -116,33 +87,12 @@ class Question < ActiveRecord::Base
   private
   ### Optimize
   def options?(options)
-    
-    # options.select { |q| q['body'] && !q['body'].blank? }.empty? if options
-    
-    if options
-      options.each do |opt_i, opt|
-        if opt['body']
-          return true
-        end
-      end
-      return false
-    else
-      return false
-    end
+    !options.select { |q_i,q| !!q['body'] }.empty? if options
   end
   
   ## Optimize
   def answers?(answers)
-    if answers
-      answers.each do |ans_i, ans|
-        if ans['body']
-          return true
-        end
-      end
-      return false
-    else
-      return false
-    end
+    !answers.select { |a_i,a| !!a['body'] }.empty? if answers
   end
   
 end
