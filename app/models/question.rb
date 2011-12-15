@@ -33,7 +33,7 @@ class Question < ActiveRecord::Base
     end
     return data
   end
-		
+  
 	## Optimize	
   def valid_answer?(answer, option)
     if options?(option)

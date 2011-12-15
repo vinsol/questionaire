@@ -16,6 +16,11 @@ gem 'acts-as-taggable-on', '~>2.1.0'
 gem 'jquery-rails'
 
 gem 'will_paginate', '>= 3.0.pre'
+
+gem 'rtf'
+
+gem 'zipruby'
+
 # Use unicorn as the web server
 # gem 'unicorn'
 

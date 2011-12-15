@@ -1,5 +1,5 @@
 
-<% sets = [] %>
+<%# sets = [] %>
 <% if params[:level] %>
   <% questions,beg,int,mast = count_questions_by_level(@questions.dup, params[:level]) %>
 <% else %>
@@ -18,12 +18,14 @@
     </div><br/>
   </div>
 <% end %>
+
+<% make_doc(params[:name], params[:instructions], questions, params[:sets]) %>
+
 <div align="center">
-  <% (1..params[:sets].to_i).each do |i| %>
-    <% sets.push(questions.shuffle.sort_by{rand}.shuffle) %>
-    <%= link_to "Set #{i}" %>&nbsp;&nbsp;
-  <% end %>
+  <% test_name = params[:name].gsub(/\s+/,"_") %>
+  <%= link_to "Sets", download_questions_path(test_name) %>
 </div>
+
 <script>
 jQuery(document).ready(function($) {
   $('a[rel*=facebox]').facebox()

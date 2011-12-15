@@ -129,6 +129,21 @@ class QuestionsController < ApplicationController
 		end
   end
   
+  def download
+    name = params[:test_name]
+    files = Dir.glob('temp_test/*')
+    unless FileTest.exists?("temp_test/"+name+'.zip')
+      Zip::Archive.open('temp_test/'+name+'.zip', Zip::CREATE) do |ar|
+        for file in files
+          ar.add_file(file)
+        end
+      end
+      send_file 'temp_test/'.+name+'.zip'
+    else
+      send_file 'temp_test/'.+name+'.zip'
+    end
+  end
+  
   private
   
   ## Use where
