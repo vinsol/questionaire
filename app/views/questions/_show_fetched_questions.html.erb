@@ -1,14 +1,31 @@
 
-<%# sets = [] %>
 <% if params[:level] %>
   <% questions,beg,int,mast = count_questions_by_level(@questions.dup, params[:level]) %>
 <% else %>
   <% questions = @questions %>
 <% end %>
-
-<h2 align ="center"><%= params[:name].capitalize %></h2>
+<% if params[:level] %>
+  <% params[:level].each do |l_i, l| %>
+    <% if l[0] == "0" && l[1] > beg.to_s %>
+      <span class = "error">Beginner:: <%= beg.to_s+"/"+l[1] %>&nbsp;&nbsp;</span>
+    <% end %>
+    <% if l[0] == "1" && l[1] > int.to_s %>
+      <span class = "error">Intermediate:: <%= int.to_s+"/"+l[1] %>&nbsp;&nbsp;</span>
+    <% end %>
+    <% if l[0] == "2" && l[1] > mast.to_s %>
+      <span class = "error">Master:: <%= mast.to_s+"/"+l[1] %>&nbsp;&nbsp;</span>
+    <% end %>
+  <% end %>
+<% end %>
+<h2 align ="center"><%= params[:name] %></h2>
 <% if params[:instructions] %>
-  <p style="margin-bottom:0"><b>Instructions::</b><pre style="margin-top:2px"><%= params[:instructions] %></pre></p>
+  <p style="margin-bottom:0"><b>Instructions::</b>
+    <p style="margin-top:2px">
+      <% params[:instructions].split(/\n/).each do |inst| %>
+        <%= inst %><br/>
+      <% end %>
+    </p>
+  </p>
 <% end %>
 <% questions.each_with_index do |question, index| %>
   <div class = "show_question <%= cycle('list_line_odd', 'list_line_even') %>" style="padding:5px">

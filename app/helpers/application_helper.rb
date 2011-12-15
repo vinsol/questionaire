@@ -33,6 +33,7 @@ module ApplicationHelper
     styles['PS_QUES'].left_indent = 50
     styles['PS_OPT'].left_indent = 300
     styles['BOLD'].bold = true
+    styles['PS_ANS'].left_indent = 50
     styles['PS_END'].justification = ParagraphStyle::CENTER_JUSTIFY
     
     files = Dir.glob("temp_test/*")

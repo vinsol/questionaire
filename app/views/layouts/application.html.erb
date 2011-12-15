@@ -9,14 +9,15 @@
 </head>
 <body>
  <div id="mainHead">
-  <h1>Vinsol's Questionaire</h1>
+  <h1 style="float:left">Vinsol's Questionaire</h1>
+  <p style="float:right;color:#ffffff;padding-right:35px">Hi!&nbsp;<%= Admin.where("id = ?",session[:admin_id]).first.name.split(" ").select {|n| n[0] = n[0].upcase; n}.join(" ") %></p><br/>
 	<div class="mainMenu" id = "mainMenu">
 		<ul class="firstlist" >
 		  <% if session["devise.googleapps_data"] %>
 			  <li id = "firstlist_1" ><%= link_to "Home", questions_path %></li>
 			  <li id = "firstlist_2" ><%= link_to "Post Question", new_question_path %></li>
 			  <li id = "firstlist_3" ><%= link_to "Make Test", make_test_questions_path %></li>
-			  <li id = "firstlist_4" ><%= link_to "Previous Tests", questions_path %></li>
+			  <!--<li id = "firstlist_4" ><%#= link_to "Previous Tests", questions_path %></li>-->
 			<% else %>
 			  <li id = "firstlist_5" ><%= link_to "Login", questions_path %></li>
 			<% end %>
