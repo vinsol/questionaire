@@ -54,7 +54,7 @@ module ApplicationHelper
         h.apply(styles['CS_TITLE']) << name + " answers"
       end
       
-      if(instructions)
+      unless instructions.empty?
         document.paragraph(styles['PS_INSTRUCT']) do |ins|
           ins.apply(styles['CS_INSTRUCT']) << "Instructions::"
           ins.line_break
@@ -65,32 +65,34 @@ module ApplicationHelper
         end
       end
       
-      questions = questions.shuffle.sort_by{rand}.shuffle
-      questions.each_with_index do |question, index|
-        document.paragraph(styles['PS_QUES']) do |q|
-          q.apply(styles['BOLD']) << (index+1).to_s+". "
-          q << question.body
-        end
-        
-        unless question.options.empty?
-          options = question.options.shuffle.sort_by{rand}.shuffle
-          bullets = ["a.) ", "b.) ", "c.) ", "d.) "]
-          answers_doc.paragraph(styles['PS_ANS']) do |a|
-            a.apply(styles['BOLD']) << (index+1).to_s+". "
-            document.paragraph(styles['PS_OPT']) do |o|
-              options.each_with_index do |opt, opt_i|
-                o.apply(styles['BOLD']) << bullets[opt_i]
-                o << opt.body
-                o.line_break
-                question.answers.each { |ans| a << "("+bullets[opt_i]+ans.body+"   " if ans.body == opt.body }
+      unless questions.empty?
+        questions = questions.shuffle.sort_by{rand}.shuffle
+        questions.each_with_index do |question, index|
+          document.paragraph(styles['PS_QUES']) do |q|
+            q.apply(styles['BOLD']) << (index+1).to_s+". "
+            q << question.body
+          end
+          
+          unless question.options.empty?
+            options = question.options.shuffle.sort_by{rand}.shuffle
+            bullets = ["a.) ", "b.) ", "c.) ", "d.) "]
+            answers_doc.paragraph(styles['PS_ANS']) do |a|
+              a.apply(styles['BOLD']) << (index+1).to_s+". "
+              document.paragraph(styles['PS_OPT']) do |o|
+                options.each_with_index do |opt, opt_i|
+                  o.apply(styles['BOLD']) << bullets[opt_i]
+                  o << opt.body
+                  o.line_break
+                  question.answers.each { |ans| a << "("+bullets[opt_i]+ans.body+"   " if ans.body == opt.body }
+                end
               end
             end
-          end
-        else
-          document.paragraph << ""
-          answers_doc.paragraph(styles['PS_ANS']) do |a|
-            a.apply(styles['BOLD']) << (index+1).to_s+". "
-            a << question.answers.first.body
+          else
+            document.paragraph << ""
+            answers_doc.paragraph(styles['PS_ANS']) do |a|
+              a.apply(styles['BOLD']) << (index+1).to_s+". "
+              a << question.answers.first.body
+            end
           end
         end
       end

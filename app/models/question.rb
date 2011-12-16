@@ -63,20 +63,38 @@ class Question < ActiveRecord::Base
     end 
   end
   
-  def self.search(tags, type, category, level)
-    sql = ["SELECT questions.* FROM questions WHERE category_id IN (?) ", category]
+  def self.get_ques_by_tags(tags)
+    unless tags.empty?
+      ques = []
+      tags.split(/,/).each do |tag|
+        ques.push(Question.tagged_with(tag))
+        ques = ques.flatten.uniq
+      end
+      return ques
+    end
+  end
   
-    if type
-      sql[0] += "AND ques_type IN (?) "
-      sql.push(type)
+  def self.search(tags, type_hash, category, level_hash)
+    sql = ["SELECT questions.* FROM questions WHERE category_id IN (?) ", category]
+    
+    if type_hash
+      type = []
+      type_hash.each { |index, val| type.push(val) }
+      unless type.empty?
+        sql[0] += "AND ques_type IN (?) "
+        sql.push(type)
+      end
     end
     
+    level = []
+    level_hash.each { |index, val| level.push(index) unless val.empty? }
+  
     unless level.empty?
       sql[0] += "AND level IN (?)"
       sql.push(level)
     end
     
-    unless tags.empty?
+    if tags
       sql[0] += "AND id IN (?) "
       sql.push(tags)
     end

@@ -97,23 +97,8 @@ class QuestionsController < ApplicationController
   
   # Optomize
   def fetch_questions
-    ques = []
-    if params[:tags]
-      params[:tags].each do |tag|
-        ques.push(Question.tagged_with(tag))
-        ques = ques.flatten.uniq
-      end
-    end
-    
-    level = []
-  
-    if params[:level]
-      params[:level].each do |index, val|
-        level.push(val[0])
-      end
-    end
-    
-    @questions = Question.search(ques, params[:type], params[:category], level)
+    ques = Question.get_ques_by_tags(params[:as_values_tags])
+    @questions = Question.search(ques, params[:type], params[:category_id], params[:level])
   end
   
 

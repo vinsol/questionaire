@@ -6,7 +6,7 @@
   <h2>Prepare a Test</h2>
 	
 	<!-- Use remote => true for sending ajax request -->
-  <% form_tag() do %>
+  <% form_tag(fetch_questions_path, :remote => true, :method => :get) do %>
 
     <div class="field">
       <p><b><%= label_tag :name %></b>&nbsp;&nbsp;
@@ -31,7 +31,7 @@
         
 				<p><b><%= label_tag :ques_type %></b></p>
         <!-- Use the constant -->
-				<% {:subjective =>"Subjective", :multiple_choice => "Multiple Choice", :multiple_choiceanswer => "Multiple Choice/Answer"}.each do |key, type| %>
+				<% Question::TYPE.each do |key, type| %>
           <p><%= check_box_tag "type[#{key}]", type %> <%= label_tag "type_#{key}", type %></p>
         <% end %>
       </div>
@@ -114,7 +114,6 @@
     for(var i = 0; i < ques_level.length; i++) {
       if(ques_level[i].value != "") {
         if(ques_level[i].value.match(/^\d+$/)) {
-          level.push([ques_level[i].id.slice(6),ques_level[i].value]);
           document.getElementById("error3").innerHTML = "";
         } else {
           document.getElementById("error3").innerHTML = "number expected";
@@ -127,49 +126,12 @@
       return false
     }
 
-    if($("#instructions").val() != "") {
-      var instructions = $("#instructions").val();
-    }
-
     var ques_tags = $(".as-selection-item");
-
     var tags = []
-
     for(var i = 0;i < ques_tags.length; i++) {
       tags.push($(ques_tags[i]).text().slice(1));
     }
-    
-    var ques_type = $("input[id^='type_']");
-    var type = [];
-    for(var i = 0;i < ques_type.length; i++) {
-      if(ques_type[i].checked == true) {
-        type.push(ques_type[i].value);
-      }
-    }
-
-    var ques_category = $('#category_id').children("option");
-    var category = [];
-    for(var i = 0; i<ques_category.length; i++) {
-      if(ques_category[i].selected) {
-        category.push(ques_category[i].value);
-      }
-    }
-    
-    $.ajax({
-      url: '<%= fetch_questions_path %>', 
-      dataType: 'script',
-      type: 'get', 
-      data: {
-        name: naam,
-        instructions: instructions,
-        tags: tags,
-        type: type,
-        category: category,
-        level: level,
-        sets: sets
-      }
-    });
-    return false;
+    $("#as-values-tags").val(tags)
   }
 
   $("#tag").autoSuggest("/questions/ques_tags.js", {minChars: 1, matchCase: false, searchObjProps: "name", startText: "Enter Tags Here", asHtmlID:"tags",  neverSubmit: true });
