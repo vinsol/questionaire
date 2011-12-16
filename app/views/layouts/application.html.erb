@@ -4,13 +4,15 @@
   <title>PriyankQuestionaire</title>
   <%= stylesheet_link_tag 'main', 'autoSuggest','facebox' %>
   <%= yield(:js_css) %>
-  <%= javascript_include_tag :defaults, 'jquery.autoSuggest.minified','facebox' %>
+  <%= javascript_include_tag :defaults, 'jquery.autoSuggest.minified','facebox', 'tab_color' %>
   <%= csrf_meta_tag %>
 </head>
 <body>
  <div id="mainHead">
   <h1 style="float:left">Vinsol's Questionaire</h1>
-  <p style="float:right;color:#ffffff;padding-right:35px">Hi!&nbsp;<%= Admin.where("id = ?",session[:admin_id]).first.name.split(" ").select {|n| n[0] = n[0].upcase; n}.join(" ") %></p><br/>
+  <% if session[:admin_id] %>
+  <p style="float:right;color:#ffffff;padding-right:35px">Hi!&nbsp;<%= Admin.where("id = ?",session[:admin_id]).first.name.split(" ").select {|n| n[0] = n[0].upcase; n}.join(" ") %></p>
+  <% end %><br/>
 	<div class="mainMenu" id = "mainMenu">
 		<ul class="firstlist" >
 		  <% if session["devise.googleapps_data"] %>
