@@ -71,6 +71,10 @@ div.mainMenu ul li a:hover
 	background-color:#e5e5e5;
 }
 
+.tab_color {
+  background-color:#e5e5e5;
+}
+
 div.mainContent
 {
 	padding:10px 30px 0 30px;

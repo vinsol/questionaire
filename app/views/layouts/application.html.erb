@@ -11,7 +11,7 @@
  <div id="mainHead">
   <h1 style="float:left">Vinsol's Questionaire</h1>
   <% if session[:admin_id] %>
-  <p style="float:right;color:#ffffff;padding-right:35px">Hi!&nbsp;<%= Admin.where("id = ?",session[:admin_id]).first.name.split(" ").select {|n| n[0] = n[0].upcase; n}.join(" ") %></p>
+    <p style="float:right;color:#ffffff;padding-right:35px">Hi!&nbsp;<%= Admin.where("id = ?",session[:admin_id]).first.name.split(" ").select {|n| n[0] = n[0].upcase; n}.join(" ") %></p>
   <% end %><br/>
 	<div class="mainMenu" id = "mainMenu">
 		<ul class="firstlist" >
