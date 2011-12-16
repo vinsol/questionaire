@@ -63,7 +63,6 @@ class Question < ActiveRecord::Base
     end 
   end
   
-  ## Optimize
   def self.search(tags, type, category, level)
     sql = ["SELECT questions.* FROM questions WHERE category_id IN (?) ", category]
   
@@ -71,10 +70,12 @@ class Question < ActiveRecord::Base
       sql[0] += "AND ques_type IN (?) "
       sql.push(type)
     end
+    
     unless level.empty?
       sql[0] += "AND level IN (?)"
       sql.push(level)
     end
+    
     unless tags.empty?
       sql[0] += "AND id IN (?) "
       sql.push(tags)
@@ -85,12 +86,10 @@ class Question < ActiveRecord::Base
   
     
   private
-  ### Optimize
   def options?(options)
     !options.select { |q_i,q| !!q['body'] }.empty? if options
   end
   
-  ## Optimize
   def answers?(answers)
     !answers.select { |a_i,a| !!a['body'] }.empty? if answers
   end

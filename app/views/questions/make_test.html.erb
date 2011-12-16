@@ -4,14 +4,21 @@
 
 <div id = "form_left">
   <h2>Prepare a Test</h2>
+	
+	<!-- Use remote => true for sending ajax request -->
   <% form_tag() do %>
+
     <div class="field">
-      <p><b><%= label_tag :name %></b>&nbsp;&nbsp;<%= text_field_tag :name %>&nbsp;&nbsp;<span class = "error" id = "error1"></span></p>
+      <p><b><%= label_tag :name %></b>&nbsp;&nbsp;
+			
+			<%= text_field_tag :name %>&nbsp;&nbsp;
+			
+			<span class = "error" id = "error1"></span></p>
     </div>
 
     <div class="field">
-      <p><b><%= label_tag :instructions, 'Instructions' %></b></p>
-      <%= text_area_tag :instructions,nil, :rows => 3, :cols => 48 %>
+      <p><b><%= label_tag :instructions %></b></p>
+      <%= text_area_tag :instructions, nil, :rows => 3, :cols => 48 %>
     </div>
         
     <div class="field">
@@ -21,9 +28,11 @@
     
     <div id = "type_cat">
       <div class="field" style = "float:left">
-        <p><b><%= label_tag :ques_type %></b></p>
-        <% {:subjective =>"Subjective", :multiple_choice => "Multiple Choice", :multiple_choiceanswer => "Multiple Choice/Answer"}.each do |key, type| %>
-          <p><%= check_box_tag "type[#{key}]", type %><%= label_tag "type_#{key}", type %></p>
+        
+				<p><b><%= label_tag :ques_type %></b></p>
+        <!-- Use the constant -->
+				<% {:subjective =>"Subjective", :multiple_choice => "Multiple Choice", :multiple_choiceanswer => "Multiple Choice/Answer"}.each do |key, type| %>
+          <p><%= check_box_tag "type[#{key}]", type %> <%= label_tag "type_#{key}", type %></p>
         <% end %>
       </div>
       
@@ -32,7 +41,9 @@
         <%= select_tag :category_id, options_for_select(Category.all.collect {|c| [c.name, c.id]}) %>
       </div><br/>
     </div>
+
     <div id = "level_sets">
+
       <div class="field" id = "ques_level" style="float:left">
         <p><b><%= label_tag :level %></b>&nbsp;&nbsp;<span class = "error" id = "error3"></span></p>
         <table>
@@ -44,22 +55,30 @@
         <% end %>
         </table>
       </div>
+
       <div class="field" style="float:right">
-        <p><b><%= label_tag :sets, "No. of Sets" %></b>&nbsp;&nbsp;<%= text_field_tag :sets,nil, :size => 1 %></p>
+        <p><b><%= label_tag :sets, "No. of Sets" %></b>&nbsp;&nbsp;
+				 <%= text_field_tag :sets, nil, :size => 1 %></p>
         <span class = "error" id = "error2"></span>
       </div><br/>
     </div>
-    <div style="float:right"><%= submit_tag 'Generate', :onclick => "return fetch_questions()" %></div><br/>
+    
+		<div style="float:right">
+			<%= submit_tag 'Generate', :onclick => "return fetch_questions()" %>
+		</div><br/>
   <% end %>  
 </div>
+
 <div id = "form_right">
   <div id = "fetched_ques">
+
     <h2 align="center">Fetch Questions</h2>
     <p align="center" style="color:#FC4144">
-      Required Fields:: "Name" and "No. of Sets"
+	
     </p>
   </div>
-</div><br/>
+</div>
+<br/>
 
 <script>
   function fetch_questions() {
@@ -67,6 +86,8 @@
     var c = false;
     var d = false;
     var e = false;
+		
+		// Validation for question paper name field
     if($("#name").val() == "") {
       document.getElementById("error1").innerHTML = "can't be blank";
       var c = true;
@@ -75,6 +96,7 @@
       var naam = $("#name").val();
     }
     
+		// Set number should be integer
     if($("#sets").val() == "") {
       document.getElementById("error2").innerHTML = "can't be blank";
       d = true;
@@ -86,6 +108,7 @@
       var sets = $("#sets").val();
     }
     
+		// Question level should be integer
     var ques_level = $("input[id^='level_']");
     var level = [];
     for(var i = 0; i < ques_level.length; i++) {
@@ -103,11 +126,15 @@
     if(c || d || e) {
       return false
     }
+
     if($("#instructions").val() != "") {
       var instructions = $("#instructions").val();
     }
+
     var ques_tags = $(".as-selection-item");
+
     var tags = []
+
     for(var i = 0;i < ques_tags.length; i++) {
       tags.push($(ques_tags[i]).text().slice(1));
     }

@@ -4,7 +4,6 @@ class QuestionsController < ApplicationController
   before_filter :get_question_by_id, :only => [:show, :edit, :update, :destroy]
   
   def index
-    ### use Question.all
     @questions = Question.paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
   end
 
@@ -12,12 +11,12 @@ class QuestionsController < ApplicationController
     
   end
 
-  ### Put choices for ques_type in constant
-  
+
   def new
     @question = Question.new
     @type = @question.ques_type
   end
+
 
   def edit
     @type = @question.ques_type
@@ -68,28 +67,35 @@ class QuestionsController < ApplicationController
   end
 
 
+
   def destroy
     @question.destroy
     redirect_to(questions_url) 
   end
   
+
   def tags_index
     @questions = Question.tagged_with(params[:name]).paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
   end
   
+
   def level_index
     @questions = Question.where("level = ?",params[:id]).paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
   end
   
+
   def make_test
     
   end
   
+
   def show_fetch_ques
     @question = Question.find(params[:id])
     render :partial => "show_fetch_ques"
   end
   
+  
+  # Optomize
   def fetch_questions
     ques = []
     if params[:tags]
@@ -98,17 +104,20 @@ class QuestionsController < ApplicationController
         ques = ques.flatten.uniq
       end
     end
+    
     level = []
+  
     if params[:level]
       params[:level].each do |index, val|
         level.push(val[0])
       end
     end
+    
     @questions = Question.search(ques, params[:type], params[:category], level)
   end
   
+
   def change_answer_div
-    ## use where
     @question = Question.where(" id = (?)", params[:id]).first unless params[:id].blank?
     if params['type'] == "Multiple Choice"
       @ajax_data = "multiple_choice"
@@ -119,6 +128,7 @@ class QuestionsController < ApplicationController
     end
   end
   
+
   def ques_tags
     data = Question.question_tags(params[:q])
 		respond_to do |format|			
@@ -129,6 +139,7 @@ class QuestionsController < ApplicationController
 		end
   end
   
+
   def download
     name = params[:test_name]
     files = Dir.glob('temp_test/*')
@@ -144,9 +155,9 @@ class QuestionsController < ApplicationController
     end
   end
   
+
   private
   
-  ## Use where
   def get_question_by_id
     @question = Question.where("id = (?)",params[:id]).first
   end
