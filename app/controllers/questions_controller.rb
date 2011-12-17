@@ -140,8 +140,8 @@ class QuestionsController < ApplicationController
     end
   end
   
+  #search by text of question
   def show_search
-    p params
     unless(params[:text].empty?)
       @questions = Question.where("body like '%#{params[:text]}%'").paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
     else
