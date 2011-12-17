@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111209064557) do
+ActiveRecord::Schema.define(:version => 20111217065028) do
 
   create_table "admins", :force => true do |t|
     t.datetime "remember_created_at"
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(:version => 20111209064557) do
     t.string   "ques_type",   :default => "Subjective", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "provider"
   end
 
   create_table "taggings", :force => true do |t|

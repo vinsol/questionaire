@@ -32,6 +32,7 @@ module ApplicationHelper
     styles['PS_TITLE'].space_after = 200
     styles['PS_QUES'].left_indent = 50
     styles['PS_OPT'].left_indent = 300
+    styles['PS_OPT'].space_before = 30
     styles['BOLD'].bold = true
     styles['PS_ANS'].left_indent = 50
     styles['PS_END'].justification = ParagraphStyle::CENTER_JUSTIFY
@@ -75,25 +76,24 @@ module ApplicationHelper
           
           unless question.options.empty?
             options = question.options.shuffle.sort_by{rand}.shuffle
-            bullets = ["a.) ", "b.) ", "c.) ", "d.) "]
+            bullets = ["(a.) ", "(b.) ", "(c.) ", "(d.) "]
             answers_doc.paragraph(styles['PS_ANS']) do |a|
               a.apply(styles['BOLD']) << (index+1).to_s+". "
               document.paragraph(styles['PS_OPT']) do |o|
                 options.each_with_index do |opt, opt_i|
                   o.apply(styles['BOLD']) << bullets[opt_i]
-                  o << opt.body
-                  o.line_break
-                  question.answers.each { |ans| a << "("+bullets[opt_i]+ans.body+"   " if ans.body == opt.body }
+                  o << opt.body+"   "
+                  question.answers.each { |ans| a << bullets[opt_i]+ans.body+"   " if ans.body == opt.body }
                 end
               end
             end
           else
-            document.paragraph << ""
             answers_doc.paragraph(styles['PS_ANS']) do |a|
               a.apply(styles['BOLD']) << (index+1).to_s+". "
               a << question.answers.first.body
             end
           end
+          document.paragraph << ""
         end
       end
       document.paragraph(styles['PS_END']) do |e|

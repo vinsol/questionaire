@@ -1,10 +1,20 @@
 div#form_left {
   float: left;
+  font-size: 13px;
+}
+
+div#form_left .label_bold {
+  font-weight: bold;
 }
 
 div#form_right {
   float: right;
-  padding-right: 150px;
+  padding-right: 40px;
+  font-size: 13px;
+}
+
+div#form_right label {
+  font-weight: bold;
 }
 
 br {
@@ -21,4 +31,8 @@ div#ques_level {
 
 .hide {
   display : none;
+}
+
+div#provide {
+  margin-top: 100px;
 }
