@@ -1,7 +1,7 @@
 <div id = "form_left">
   
   <div class="field">
-    <span class = "label_bold"><%= f.label :body, 'Question?' %></span>&nbsp;&nbsp;<span class='error'><%= get_error(@question, :body) %></span><br/>
+    <span class = "label_bold">*<%= f.label :body, 'Question?' %></span>&nbsp;&nbsp;<span class='error'><%= get_error(@question, :body) %></span><br/>
     <%= f.text_area :body, :rows => 5, :cols => 70 %>
   </div>
 
@@ -15,7 +15,7 @@
   
   <div>
     <span id = "for_option" class = "hide label_bold" style = "padding-right: 150px;"> Options &nbsp;&nbsp; </span>
-    <span class = "label_bold">Answer</span>&nbsp;&nbsp;<span class="error"><%= flash[:answer_error] if flash[:answer_error] %></span>
+    <span class = "label_bold">*Answer</span>&nbsp;&nbsp;<span class="error"><%= flash[:answer_error] if flash[:answer_error] %></span>
   </div>
 
   <div id = "for_option_error" ><span class="error"><%= flash[:option_error] if flash[:option_error] %></span></div>

@@ -9,7 +9,7 @@
   <% form_tag(fetch_questions_path, :remote => true, :method => :get) do %>
 
     <div class="field">
-      <p><b><%= label_tag :name %></b>&nbsp;&nbsp;
+      <p><b>*<%= label_tag :name %></b>&nbsp;&nbsp;
 			
 			<%= text_field_tag :name %>&nbsp;&nbsp;
 			
@@ -57,7 +57,7 @@
       </div>
 
       <div class="field" style="float:right">
-        <p><b><%= label_tag :sets, "No. of Sets" %></b>&nbsp;&nbsp;
+        <p><b>*<%= label_tag :sets, "No. of Sets" %></b>&nbsp;&nbsp;
 				 <%= text_field_tag :sets, nil, :size => 1 %></p>
         <span class = "error" id = "error2"></span>
       </div><br/>
