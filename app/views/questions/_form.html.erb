@@ -6,7 +6,7 @@
 <%= stylesheet_link_tag 'ques_form' %>
 <%= javascript_include_tag '' %>
 <% end %>
-
+<%= @question.errors %>
 <%= form_for(@question) do |f| %>
 
     <%= render "question", :f => f %>

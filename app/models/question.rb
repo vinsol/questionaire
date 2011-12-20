@@ -19,6 +19,9 @@ class Question < ActiveRecord::Base
   accepts_nested_attributes_for :answers, :allow_destroy => true 
   accepts_nested_attributes_for :options, :allow_destroy => true, :reject_if => lambda { |c| c['body'].blank? }
   
+  before_create :atleast_two_options
+  before_create :valid_answer
+  
   attr_accessor :tag
   
   def self.question_tags(str)
@@ -32,6 +35,40 @@ class Question < ActiveRecord::Base
      data << json
     end
     return data
+  end
+  
+  def atleast_two_options
+    if ques_type != "Subjective"
+      if options.length < 2 || options.length > 4
+        errors.add('options', 'Atleast two options')
+        return false
+      end
+    end
+  end
+  
+  def valid_answer
+    if ques_type != "Subjective"
+      unless options.empty?
+        unless answers.empty?
+          ans_temp = []
+          answers.each do |ans|
+            options.each { |opt| ans_temp << opt if(ans.body == opt.body) }
+          end
+          unless answers.length == ans_temp.length
+            errors.add('answers', 'is invalid')
+            return false
+          end
+        else
+          errors.add('answers', "can't be blank")
+          return false
+        end
+      end
+    else
+      if answers.first.body.empty?
+        errors.add('answers', "can't be blank")
+        return false
+      end
+    end
   end
   
 	## Optimize	
