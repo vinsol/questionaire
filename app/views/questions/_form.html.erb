@@ -12,12 +12,21 @@
     <%= render "question", :f => f %>
 
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit 'Create Question', :onclick => 'map_tags()' %>
   </div>
 <% end %>
 
 
 <script>
+
+function map_tags() {
+  var ques_tags = $(".as-selection-item");
+  var tags = [];
+  for(var i = 0;i < ques_tags.length; i++) {
+    tags.push($(ques_tags[i]).text().slice(1));
+  }
+  $("#as-values-tags").val(tags)
+}
 
 $("#question_submit").bind('click', map_answers);
 $("#question_submit").bind('click', destroy_waste_options);

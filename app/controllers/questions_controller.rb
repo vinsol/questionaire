@@ -27,7 +27,7 @@ class QuestionsController < ApplicationController
     @question = Question.new(params[:question])
     @question.admin_id = session[:admin_id]
     @question.tag_list = params[:as_values_tags]
-
+    
     unless (@question.atleast_two_options?(params[:question][:options_attributes]))
       flash[:option_error] = 'Atleast two and atmost four options are valid'
     end
@@ -49,7 +49,7 @@ class QuestionsController < ApplicationController
     
     @question.admin_id = session[:admin_id]
     @question.tag_list = params[:as_values_tags]
-
+    
     unless (@question.atleast_two_options?(params[:question][:options_attributes]))
       flash[:option_error] = 'Atleast two and atmost four options are valid'
     end

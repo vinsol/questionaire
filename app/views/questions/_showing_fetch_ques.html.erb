@@ -2,7 +2,7 @@
 
   <div class = "show_question <%= cycle('list_line_odd', 'list_line_even') %>">
     <p class = "title_ques" style = "float:left"><b>Question: </b><%= question.body %></p>
-    <% if question.provider %>
+    <% if question.provider && !(question.provider =~ /^\s*$/) %>
       <p style = "float:right; margin-right: 10px"><b>Provider: </b><%= question.provider %></p>
     <% end %><br/>
     <p class = "extras">

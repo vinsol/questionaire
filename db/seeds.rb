@@ -9,3 +9,5 @@
 admin = Admin.create!([{:email => "shreya@vinsol.com"}, {:email => "priyank.gupta@vinsol.com"}])
 
 category = Category.create!([{:name => "Web"}, {:name => "IOS"}, {:name => "Android"}, {:name => "Aptitude"}])
+
+
