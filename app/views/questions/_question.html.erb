@@ -23,6 +23,7 @@
   <div class="field" id = "answer_type">
     
   </div>
+  
   <div class="field">
     <span class = "label_bold"><%= f.label :tag %></span>&nbsp;&nbsp;
     <%= f.text_field :tag, :value => @question.tag_list %><span class='error'><%= get_error(@question, :tag) %></span>

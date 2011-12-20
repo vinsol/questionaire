@@ -21,6 +21,10 @@ gem 'rtf'
 
 gem 'zipruby'
 
+gem 'rspec-rails', '~> 2.6' 
+
+gem 'shoulda-matchers'
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
