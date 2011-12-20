@@ -42,15 +42,16 @@ class QuestionsController < ApplicationController
     @question.admin_id = session[:admin_id]
     @question.tag_list = params[:as_values_tags]
     
-    unless (@question.atleast_two_options?(params[:question][:options_attributes]))
-      flash[:option_error] = 'Atleast two and atmost four options are valid'
-    end
+    # unless (@question.atleast_two_options?(params[:question][:options_attributes]))
+    #   flash[:option_error] = 'Atleast two and atmost four options are valid'
+    # end
+    # 
+    # unless (@question.valid_answer?(params[:question][:answers_attributes], params[:question][:options_attributes]))
+    #   flash[:answer_error] = ' not valid'
+    # end
     
-    unless (@question.valid_answer?(params[:question][:answers_attributes], params[:question][:options_attributes]))
-      flash[:answer_error] = ' not valid'
-    end
-    
-    if flash[:option_error].blank? && flash[:answer_error].blank? && @question.update_attributes(params[:question])
+    if @question.update_attributes(params[:question])
+    # if flash[:option_error].blank? && flash[:answer_error].blank? && @question.update_attributes(params[:question])
       redirect_to(@question, :notice => 'Question was successfully updated.') 
     else
       @type = params['question']['ques_type']
