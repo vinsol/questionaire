@@ -1,12 +1,8 @@
-<script>
-
-</script>
-
 <% content_for(:js_css) do %>
-<%= stylesheet_link_tag 'ques_form' %>
-<%= javascript_include_tag '' %>
+	<%= stylesheet_link_tag 'ques_form' %>
+	<%= javascript_include_tag '' %>
 <% end %>
-<%= @question.errors %>
+
 <%= form_for(@question) do |f| %>
 
     <%= render "question", :f => f %>

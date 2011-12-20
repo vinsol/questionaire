@@ -119,6 +119,7 @@ class QuestionsController < ApplicationController
 
   def download
     name = params[:test_name]
+    # Move in model
     files = Dir.glob('temp_test/*')
     unless FileTest.exists?("temp_test/"+name+'.zip')
       Zip::Archive.open('temp_test/'+name+'.zip', Zip::CREATE) do |ar|

@@ -1,7 +1,11 @@
 <p id="notice"><%= notice %></p>
 
 <div class = "show_question">
-	<p class = "title_ques" style = "float:left"><b>Question: </b><%= @question.body %></p>
+	<p class = "title_ques" style = "float:left">
+		<b>Question: </b>
+		<%= @question.body %>
+	</p>
+	<!-- Remove !(@question.provider =~ /^\s*$/) -->
   <% if @question.provider && !(@question.provider =~ /^\s*$/) %>
     <p style = "float:right; margin-right: 10px"><b>Provider: </b><%= @question.provider %></p>
   <% end %><br/>

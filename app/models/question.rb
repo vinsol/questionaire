@@ -38,14 +38,10 @@ class Question < ActiveRecord::Base
   end
   
   def atleast_two_options
-    if ques_type != "Subjective"
-      if options.length < 2 || options.length > 4
-        errors.add('options', 'Atleast two options')
-        return false
-      end
-    end
+    errors.add('options', 'Atleast two options') and return false if ques_type != "Subjective" && (2..4).include?(options.length)
   end
   
+  ## Optimize
   def valid_answer
     if ques_type != "Subjective"
       unless options.empty?

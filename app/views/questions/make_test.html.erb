@@ -5,7 +5,6 @@
 <div id = "form_left">
   <h2>Prepare a Test</h2>
 	
-	<!-- Use remote => true for sending ajax request -->
   <% form_tag(fetch_questions_path, :remote => true, :method => :get) do %>
 
     <div class="field">
@@ -30,10 +29,11 @@
       <div class="field" style = "float:left">
         
 				<p><b><%= label_tag :ques_type %></b></p>
-        <!-- Use the constant -->
+
 				<% Question::TYPE.each do |key, type| %>
           <p><%= check_box_tag "type[#{key}]", type %> <%= label_tag "type_#{key}", type %></p>
         <% end %>
+
       </div>
       
       <div class="field" id = "ques_category" style = "float:right">
@@ -64,7 +64,7 @@
     </div>
     
 		<div style="float:right">
-			<%= submit_tag 'Generate', :onclick => "return fetch_questions()" %>
+			<%= submit_tag 'Generate', :onclick => "return ques_validations()" %>
 		</div><br/>
   <% end %>  
 </div>
@@ -81,7 +81,7 @@
 <br/>
 
 <script>
-  function fetch_questions() {
+  function ques_validations() {
     var val = [];
     var c = false;
     var d = false;
