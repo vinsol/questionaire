@@ -13,6 +13,10 @@ div#form_right {
   font-size: 13px;
 }
 
+div#ques_category {
+  padding-top: 10px;
+}
+
 div#form_right label {
   font-weight: bold;
 }
@@ -26,7 +30,7 @@ div#form_left .field {
 }
 
 div#ques_level {
-  padding-top: 120px;
+  padding-top: 130px;
 }
 
 .hide {
@@ -34,5 +38,5 @@ div#ques_level {
 }
 
 div#provide {
-  margin-top: 100px;
+  margin-top: 110px;
 }

@@ -1,10 +1,15 @@
 
 <h2 style = "float:left">Listing questions</h2>
-<p style = "float:right">Search: <%= text_field_tag :search, nil, :size => 50 %></p>
+<p style = "float:right">
+	Search: <%= text_field_tag :search, nil, :size => 50 %>
+</p>
+
 <br />
+
 <div id = "showing_ques">
   <%= render "showing_fetch_ques" %>
 </div>
+
 <br/>
 
 <span style="clear:both"></span>
@@ -12,6 +17,7 @@
 <script>
 $(document).ready(function() {
   $("#search").keyup(function(e) {
+		// DOnt send ajax if keypressed in enter and esc/tab
     if(e.which == 27 || e.which == 13) {
       e.preventDefault();
     } else {

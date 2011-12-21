@@ -9,6 +9,7 @@ PriyankQuestionaire::Application.routes.draw do
       get 'show_fetch_ques/:id', :action => 'show_fetch_ques', :as => 'show_fetch_ques'
       match 'tags/:name', :action => 'tags_index', :as => 'tags_index'
       match 'level/:id', :action => 'level_index', :as => 'level_index'
+      match 'category/:id', :action => 'category_index', :as => 'category_index'
       match 'download/:test_name', :action => 'download', :as => 'download'
       get 'show_search'
     end

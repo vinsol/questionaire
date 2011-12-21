@@ -1,17 +1,18 @@
-<script>
-
-</script>
-
 <% content_for(:js_css) do %>
-<%= stylesheet_link_tag 'ques_form' %>
-<%= javascript_include_tag '' %>
+	<%= stylesheet_link_tag 'ques_form' %>
+	<%= javascript_include_tag '' %>
 <% end %>
+
 <%= form_for(@question) do |f| %>
 
-    <%= render "question", :f => f %>
+  <%= render "question", :f => f %>
 
   <div class="actions">
-    <%= f.submit 'Create Question', :onclick => 'map_tags()' %>
+    <% if @question.new_record? %>
+      <%= f.submit 'Create Question', :onclick => 'map_tags()' %>
+    <% else %>
+      <%= f.submit 'Update Question', :onclick => 'map_tags()' %>
+    <% end %>
   </div>
 <% end %>
 

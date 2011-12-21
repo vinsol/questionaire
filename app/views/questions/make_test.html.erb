@@ -5,7 +5,6 @@
 <div id = "form_left">
   <h2>Prepare a Test</h2>
 	
-	<!-- Use remote => true for sending ajax request -->
   <% form_tag(fetch_questions_path, :remote => true, :method => :get) do %>
 
     <div class="field">
@@ -17,12 +16,12 @@
     </div>
 
     <div class="field">
-      <p><b><%= label_tag :instructions %></b></p>
+      <p><b>*<%= label_tag :instructions %></b>&nbsp;&nbsp;<span class = "error" id = "error4"></span></p>
       <%= text_area_tag :instructions, nil, :rows => 3, :cols => 48 %>
     </div>
         
     <div class="field">
-      <p><b><%= label_tag :tag %></b></p>
+      <p><b><%= label_tag :tag, 'Tags to select Questions' %></b></p>
       <%= text_field_tag :tag %>
     </div>
     
@@ -30,10 +29,11 @@
       <div class="field" style = "float:left">
         
 				<p><b><%= label_tag :ques_type %></b></p>
-        <!-- Use the constant -->
+
 				<% Question::TYPE.each do |key, type| %>
           <p><%= check_box_tag "type[#{key}]", type %> <%= label_tag "type_#{key}", type %></p>
         <% end %>
+
       </div>
       
       <div class="field" id = "ques_category" style = "float:right">
@@ -45,7 +45,7 @@
     <div id = "level_sets">
 
       <div class="field" id = "ques_level" style="float:left">
-        <p><b><%= label_tag :level %></b>&nbsp;&nbsp;<span class = "error" id = "error3"></span></p>
+        <p><b><%= label_tag :level, 'No. of Questions/Level' %></b>&nbsp;&nbsp;<span class = "error" id = "error3"></span></p>
         <table>
         <% Question::LEVEL.each do |level| %>
           <tr>
@@ -64,7 +64,7 @@
     </div>
     
 		<div style="float:right">
-			<%= submit_tag 'Generate', :onclick => "return fetch_questions()" %>
+			<%= submit_tag 'Generate', :onclick => "return ques_validations()" %>
 		</div><br/>
   <% end %>  
 </div>
@@ -81,19 +81,25 @@
 <br/>
 
 <script>
-  function fetch_questions() {
+  function ques_validations() {
     var val = [];
     var c = false;
     var d = false;
     var e = false;
-		
+		var f = false;
 		// Validation for question paper name field
     if($("#name").val() == "") {
       document.getElementById("error1").innerHTML = "can't be blank";
       var c = true;
     } else {
       document.getElementById("error1").innerHTML = "";
-      var naam = $("#name").val();
+    }
+    // Validatio for question paper name field
+    if($("#instructions").val() == "") {
+      document.getElementById("error4").innerHTML = "can't be blank";
+      var f = true;
+    } else {
+      document.getElementById("error4").innerHTML = "";
     }
     
 		// Set number should be integer
@@ -105,7 +111,6 @@
       d = true;
     } else {
       document.getElementById("error2").innerHTML = "";
-      var sets = $("#sets").val();
     }
     
 		// Question level should be integer
@@ -122,7 +127,7 @@
       }
     }
     
-    if(c || d || e) {
+    if(c || d || e || f) {
       return false
     }
 

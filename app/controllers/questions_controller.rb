@@ -43,13 +43,14 @@ class QuestionsController < ApplicationController
     @question.tag_list = params[:as_values_tags]
     
     unless (@question.atleast_two_options?(params[:question][:options_attributes]))
-      flash[:option_error] = 'Atleast two and atmost four options are valid'
+     flash[:option_error] = 'Atleast two and atmost four options are valid'
     end
-    
+
     unless (@question.valid_answer?(params[:question][:answers_attributes], params[:question][:options_attributes]))
-      flash[:answer_error] = ' not valid'
+     flash[:answer_error] = ' not valid'
     end
     
+#    if @question.update_attributes(params[:question])
     if flash[:option_error].blank? && flash[:answer_error].blank? && @question.update_attributes(params[:question])
       redirect_to(@question, :notice => 'Question was successfully updated.') 
     else
@@ -75,6 +76,9 @@ class QuestionsController < ApplicationController
     @questions = Question.where("level = ?",params[:id]).paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
   end
   
+  def category_index
+    @questions = Question.where("category_id = ?",params[:id]).paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+  end
 
   def make_test
     
@@ -119,13 +123,9 @@ class QuestionsController < ApplicationController
 
   def download
     name = params[:test_name]
-    files = Dir.glob('temp_test/*')
+    # Move in model
     unless FileTest.exists?("temp_test/"+name+'.zip')
-      Zip::Archive.open('temp_test/'+name+'.zip', Zip::CREATE) do |ar|
-        for file in files
-          ar.add_file(file)
-        end
-      end
+      Question.download(name)
       send_file 'temp_test/'.+name+'.zip'
     else
       send_file 'temp_test/'.+name+'.zip'

@@ -1,5 +1,8 @@
 <div class = "show_question" style="font-size:13px;background-color:#2B3B50;font-color:#000000;color:#ffffff;width:700px; padding:2px 10px">
-  <p class = "title_ques"><b>Question: </b><%= @question.body %></p>
+  <p class = "title_ques" style = "float:left"><b>Question: </b><%= @question.body %></p>
+  <% if @question.provider %>
+    <p style = "float:right; margin-right: 10px"><b>Provider: </b><%= @question.provider %></p>
+  <% end %><br />
   <% if @question.ques_type == "Subjective" %>
     <p><b>Answer: </b><%= @question.answers.first.body %></p>
   <% else %>
@@ -8,7 +11,7 @@
       <% @question.options.each do |option| %>
         <li><%= option.body %>
         <% @question.answers.each do |answer| %>
-          <% if option.body == answer.body %>
+					<% if option.body == answer.body %>
             <script>$("li").last().css('font-size','14px')</script>
             <%= image_tag("popup_check4.png", :size => "30x15") %>
             <% break %>
@@ -21,7 +24,8 @@
   <p class = "extras">
     &lt;<b>Type: </b><%= @question.ques_type %>&gt;&nbsp;&nbsp;&nbsp;
     &lt;<b>Level: </b><%= Question::LEVEL[@question.level][0] %>&gt;&nbsp;&nbsp;&nbsp;
-    &lt;<b>Category: </b><%= Category.find(@question.category_id).name %>&gt;&nbsp;&nbsp;&nbsp;
+		<!-- Optimize -->
+    &lt;<b>Category: </b><%= @question.category.name %>&gt;&nbsp;&nbsp;&nbsp;
     <% if !@question.tag_list.empty? %>
       &lt;<b>Tags: </b><%= @question.tag_list %>&gt;
     <% end %>

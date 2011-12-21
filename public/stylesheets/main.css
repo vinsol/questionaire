@@ -187,21 +187,16 @@ div.ques_login {
   display: inline;
 }
 
-div#tag_name {
+div#tag_name, div#level_name, div#cat_name {
   float:left;
   padding-left: 50px;
 }
 
-div#tag_count, div#level_count {
+div#tag_count, div#level_count, div#cat_count {
   float: right;
   padding-right: 65px;
   color: #000F2E;
   font-size: 14px;
-}
-
-div#level_name {
-  float:left;
-  padding-left: 50px;
 }
 
 div#add_admin {
@@ -248,13 +243,13 @@ br {
   margin-top: 0px;
 }
 
-div#level_name a, div#tag_name a {
+div#level_name a, div#tag_name a, div#cat_name a {
   color: #2F67D8;
   text-decoration : none;
   font-size : 15px;
 }
 
-div#level_name a:hover, div#tag_name a:hover {
+div#level_name a:hover, div#tag_name a:hover, div#cat_name a:hover {
   color : #000F2E;
   font-size: 17px;
 }

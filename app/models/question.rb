@@ -22,8 +22,16 @@ class Question < ActiveRecord::Base
   before_create :atleast_two_options
   before_create :valid_answer
   
+  before_save :valid_provider
+  
   attr_accessor :tag
   
+  def valid_provider
+    if self.provider.empty? || self.provider =~ /^\s+$/
+      self.provider = nil
+    end
+  end
+    
   def self.question_tags(str)
 		taggings = tag_counts_on(:tags).collect{|t| [t.id, t.name]}
 		question_tags = taggings.select{|tag| tag[1].downcase.match("#{ str }".downcase)}.uniq
@@ -38,14 +46,10 @@ class Question < ActiveRecord::Base
   end
   
   def atleast_two_options
-    if ques_type != "Subjective"
-      if options.length < 2 || options.length > 4
-        errors.add('options', 'Atleast two options')
-        return false
-      end
-    end
+    errors.add('options', 'Atleast two options') and return false if ques_type != "Subjective" && !(2..4).include?(options.length)
   end
   
+  ## Optimize
   def valid_answer
     if ques_type != "Subjective"
       unless options.empty?
@@ -54,20 +58,13 @@ class Question < ActiveRecord::Base
           answers.each do |ans|
             options.each { |opt| ans_temp << opt if(ans.body == opt.body) }
           end
-          unless answers.length == ans_temp.length
-            errors.add('answers', 'is invalid')
-            return false
-          end
+          errors.add('answers', 'is invalid') and return false unless answers.length == ans_temp.length
         else
-          errors.add('answers', "can't be blank")
-          return false
+          errors.add('answers', "can't be blank") and return false
         end
       end
     else
-      if answers.first.body.empty?
-        errors.add('answers', "can't be blank")
-        return false
-      end
+      errors.add('answers', "can't be blank") and return false if answers.first.body.empty?
     end
   end
   
@@ -139,8 +136,17 @@ class Question < ActiveRecord::Base
     find_by_sql(sql)
   end
   
-    
+  def self.download(name)
+    files = Dir.glob('temp_test/*')
+    Zip::Archive.open('temp_test/'+name+'.zip', Zip::CREATE) do |ar|
+      for file in files
+        ar.add_file(file)
+      end
+    end
+  end
+  
   private
+  
   def options?(options)
     !options.select { |q_i,q| !!q['body'] }.empty? if options
   end

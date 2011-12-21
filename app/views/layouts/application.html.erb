@@ -59,9 +59,22 @@
 						  <div class="leftsub">
 							  <h4 style="margin:5px 0 5px 0;">Level</h4>
 							  <p style="margin:10px 0 10px 0;">
-							    <% ["Beginner", "Intermediate", "Master"].each_with_index do |level, index| %>
-							      <div id = "level_name"><%= link_to level, level_index_questions_path(index) %></div>
-							      <div id = "level_count"><%= Question.count(:group => :level)[index] %></div><br/>
+							    <% Question::LEVEL.each_with_index do |level, index| %>
+							      <div id = "level_name"><%= link_to level[0], level_index_questions_path(level[1]) %></div>
+							      <div id = "level_count">
+							        <%= Question.count(:group => :level)[level[1]] ? Question.count(:group => :level)[level[1]] : 0 %>
+						        </div><br/>
+							    <% end %>
+							  </p>
+						  </div>
+						  <div class="leftsub">
+							  <h4 style="margin:5px 0 5px 0;">Category</h4>
+							  <p style="margin:10px 0 10px 0;">
+							    <% Category.all.each do |cat| %>
+							      <div id = "cat_name"><%= link_to cat.name, category_index_questions_path(cat.id) %></div>
+							      <div id = "cat_count">
+							        <%= Question.count(:group => :category_id)[cat.id.to_i] ? Question.count(:group => :category_id)[cat.id.to_i] : 0 %>
+						        </div><br/>
 							    <% end %>
 							  </p>
 						  </div>
