@@ -1,0 +1,25 @@
+
+Question
+[32m  should create a new instance given valid attributes[0m
+[32m  should have a body[0m
+[32m  should have type[0m
+[32m  should have category id[0m
+[32m  should have level[0m
+[32m  should accept nested attributes for answers[0m
+[32m  should accept nested attributes for options[0m
+[32m  should have many answers[0m
+[32m  should have many options[0m
+[32m  should belong to category[0m
+[32m  should belong to admin[0m
+[32m  should save nil for empty provider[0m
+[32m  should not save nil for valid provider[0m
+[32m  should have atleast two and atmost four options before creation[0m
+[32m  should have atleast one answer before creation[0m
+[32m  should have valid answer before creation [0m
+[32m  answers are valid or not, respective to options[0m
+[32m  atleast two options or not[0m
+[32m  question_tags[0m
+[32m  get questions by tags[0m
+
+Finished in 12.02 seconds
+[32m20 examples, 0 failures[0m

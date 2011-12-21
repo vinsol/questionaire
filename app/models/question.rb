@@ -38,8 +38,8 @@ class Question < ActiveRecord::Base
     data = Array.new
     question_tags.each do |tag|
      json = Hash.new
-     json['name']  = tag[1] #name
-     json['value'] = tag[1] #id
+     json['name']  = tag[1]
+     json['value'] = tag[1]
      data << json
     end
     return data
@@ -75,14 +75,14 @@ class Question < ActiveRecord::Base
         ans_temp, answer_temp,c = [], [], 0
         answer.each do |ans_i, ans|
           answer_temp << ans if ans[:body]
-          option.each { |opt_i, opt| ans_temp << opt if( !opt['body'].blank? && ans['body'] == opt['body'] ) }
+          option.each { |opt_i, opt| ans_temp << opt if( !opt[:body].blank? && ans[:body] == opt[:body] ) }
         end
         return answer_temp.length == ans_temp.length
       else
         return false
       end
     else
-      return !answer['1']['body'].blank?
+      return !answer['1'][:body].blank?
     end
   end
   
@@ -90,7 +90,7 @@ class Question < ActiveRecord::Base
   def atleast_two_options?(option)
     if options?(option)
       c = 0
-      option.each { |q_i, q| c += 1 unless q['body'].blank? }
+      option.each { |q_i, q| c += 1 unless q[:body].blank? }
       return true if c >= 2 && c <= 4
     else
       return true
@@ -148,11 +148,11 @@ class Question < ActiveRecord::Base
   private
   
   def options?(options)
-    !options.select { |q_i,q| !!q['body'] }.empty? if options
+    !options.select { |q_i,q| !!q[:body] }.empty? if options
   end
   
   def answers?(answers)
-    !answers.select { |a_i,a| !!a['body'] }.empty? if answers
+    !answers.select { |a_i,a| !!a[:body] }.empty? if answers
   end
   
 end
