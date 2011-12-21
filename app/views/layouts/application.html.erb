@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>PriyankQuestionaire</title>
+  <title>PriyankQuestionnaire</title>
   <%= stylesheet_link_tag 'main', 'autoSuggest','facebox' %>
   <%= yield(:js_css) %>
   <%= javascript_include_tag :defaults, 'jquery.autoSuggest.minified','facebox', 'tab_color' %>
@@ -9,7 +9,7 @@
 </head>
 <body>
  <div id="mainHead">
-  <h1 style="float:left">Vinsol's Questionaire</h1>
+  <h1 style="float:left">Vinsol's Questionnaire</h1>
   <% if session[:admin_id] %>
     <p style="float:right;color:#ffffff;padding-right:35px">Hi!&nbsp;<%= Admin.where("id = ?",session[:admin_id]).first.name.split(" ").select {|n| n[0] = n[0].upcase; n}.join(" ") %></p>
   <% end %><br/>
@@ -80,8 +80,10 @@
 						  </div>
 						<% else %>
 						  <div class="leftsub">
-							  <h4 style="margin:5px 0 5px 0;">Level</h4>
-							  <p style="margin:10px 0 10px 0;">Morbi posuere urna vitae nunc. Curabitur ultrices, lorem ac aliquam blandit, lectus eros hendrerit eros, at alefiedn libero ipsum hendrerit uma.</p>
+						    <%= image_tag("questionaire.jpg", :height => "230", :width => "100%") %>
+							  <h4 style="margin:5px 0 5px 0;">About</h4>
+							  <p style="margin:10px 0 10px 0;">Now setting a question paper is just a click away. This app stores questions no matter subjective or multiple choice or no matter what is its danger level. Just login and get going.</p>
+							  <p class = "error"><b>Note:</b> Login will be based on Vinsol's account </p>
 						  </div>
 						<% end %>
 					</div><br style="clear:both" />
