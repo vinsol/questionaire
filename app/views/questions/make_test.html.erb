@@ -5,12 +5,12 @@
 <div id = "form_left">
   <h2>Prepare a Test</h2>
 	
-  <% form_tag(fetch_questions_path, :remote => true, :method => :get) do %>
+  <%= form_tag(fetch_questions_path, :remote => true, :method => :get) do %>
 
     <div class="field">
       <p><b>*<%= label_tag :name %></b>&nbsp;&nbsp;
 			
-			<%= text_field_tag :name %>&nbsp;&nbsp;
+			<%= text_field_tag :name %>
 			
 			<span class = "error" id = "error1"></span></p>
     </div>

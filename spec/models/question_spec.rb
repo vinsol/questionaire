@@ -241,9 +241,74 @@ describe Question do
     q.tag_list = "css"
     q.save
     
-    Question.get_ques_by_tags("js").length.should == 2
-    Question.get_ques_by_tags("css").length.should == 2
-    Question.get_ques_by_tags("js,css").length.should == 3
+    Question.get_ques_by_tags("js").should == Question.tagged_with("js")
+    Question.get_ques_by_tags("css").should == Question.tagged_with("css")
+    Question.get_ques_by_tags("js,css").should == (Question.tagged_with("js") << Question.tagged_with("css")).flatten.uniq
+  end
+    
+  it "should make a zip file for resulting set" do
+    Question.download("sample_test")
+    FileTest.exists?("temp_test/sample_test.zip").should == true
+    File.delete("temp_test/sample_test.zip")
+  end
+  
+  it "should allow destroy answers" do
+    valid_attr = {
+      :body => "Question 5?",
+      :level => 1,
+      :category_id => 1,
+      :admin_id => 2,
+      :provider => "provider 3",
+      :answers_attributes => {"1" => {:body => "opt 1"}}
+    }
+    question = Question.create(valid_attr)
+    question.answers.should have(1).items
+    answer = question.answers.first
+    Answer.where("id = ?", answer.id).should have(1).items
+    question.destroy
+    Answer.where("id = ?", answer.id).should have(0).items
+  end
+  
+  it "should allow destroy options" do
+    valid_attr = {
+      :body => "Question 2?",
+      :ques_type => "Multiple Choice",
+      :level => 1,
+      :category_id => 1,
+      :admin_id => 2,
+      :provider => "provider 1",
+      :options_attributes => {"1" => { :body => "opt 1"}, "2" => { :body => "opt 2"}},
+      :answers_attributes => {"1" => {:body => "opt 1"}}
+    }
+    question = Question.create(valid_attr)
+    question.options.should have(2).items
+    options = question.options
+    Option.where("id in (?)", options).should have(2).items
+    question.destroy
+    Option.where("id in (?)", options).should have(0).items
+  end
+  
+  it "should reject option if it is empty" do
+    valid_attr = {
+      :body => "Question 2?",
+      :ques_type => "Multiple Choice",
+      :level => 1,
+      :category_id => 1,
+      :admin_id => 2,
+      :provider => "provider 1",
+      :options_attributes => {"1" => { :body => "opt 1"}, "2" => { :body => "opt 2"}, "3" => {:body => "opt 3"}, "4" => {:body => "opt 4"}},
+      :answers_attributes => {"1" => {:body => "opt 1"}}
+    }
+    question = Question.new(valid_attr)
+    question.options.should have(4).items
+    
+    valid_attr[:options_attributes] = {"1" => { :body => "opt 1"}, "2" => { :body => "opt 2"}, "3" => {:body => "opt 3"}, "4" => {:body => ""}}
+    question = Question.new(valid_attr)
+    question.options.should have(3).items
+    
+    valid_attr[:options_attributes] = {"1" => { :body => "opt 1"}, "2" => { :body => "opt 2"}, "3" => {:body => ""}, "4" => {:body => ""}}
+    question = Question.new(valid_attr)
+    question.options.should have(2).items
   end
   
 end
