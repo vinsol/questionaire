@@ -1,0 +1,108 @@
+
+Answer
+[32m  should belong to question[0m
+
+Question
+[32m  should create a new instance given valid attributes[0m
+[32m  should have a body[0m
+[32m  should have type[0m
+[32m  should have category id[0m
+[32m  should have level[0m
+[32m  should accept nested attributes for answers[0m
+[32m  should accept nested attributes for options[0m
+[32m  should have many answers[0m
+[32m  should have many options[0m
+[32m  should belong to category[0m
+[32m  should belong to admin[0m
+[32m  should save nil for empty provider[0m
+[32m  should not save nil for valid provider[0m
+[32m  should have atleast two and atmost four options before creation[0m
+[32m  should have atleast one answer before creation[0m
+[32m  should have valid answer before creation [0m
+[32m  answers are valid or not, respective to options[0m
+[32m  atleast two options or not[0m
+[32m  question_tags[0m
+[32m  get questions by tags[0m
+[32m  should make a zip file for resulting set[0m
+[32m  should allow destroy answers[0m
+[32m  should allow destroy options[0m
+[32m  should reject option if it is empty[0m
+
+Category
+[32m  should belong to question[0m
+
+Option
+[32m  should belong to question[0m
+
+Admin
+[32m  should validate uniqueness of email[0m
+[32m  should validate format of email[0m
+[32m  should have many questions[0m
+
+AdminsController
+  GET new
+[32m    assigns a new admin as @admin[0m
+  CREATE
+[32m    should successfully create a record[0m
+[32m    should not create a record[0m
+  SHOW
+[32m    should find a record and render show template[0m
+
+QuestionsController
+  GET new
+[32m    assigns a new question as @question[0m
+  GET index
+[32m    assigns all questions as @questions[0m
+  GET Show
+[32m    assigns the requested question as @question[0m
+  GET edit
+[32m    assigns the requested question as @question[0m
+  POST Create
+    with valid params
+[32m      creates a new Question[0m
+[32m      assigns a newly created question as @question[0m
+[32m      redirects to the created article[0m
+[32m      creates the nested attributes with it[0m
+    with invalid params
+[32m      assigns a newly created but unsaved question as @question[0m
+[32m      re-renders the 'new' template[0m
+  PUT update
+    with valid params
+[32m      assigns expected question to @question, updates the requested question and redirects to the question[0m
+[32m      updates the nested attributes with it[0m
+    with invalid params
+[32m      assigns the question as @question, dosen't updates the question and re-renders edit[0m
+  DELETE destroy
+[32m    destroys the requested article[0m
+[32m    redirects to the articles list[0m
+  GET tags_index
+[32m    assigns questions with a particular tag to @questions and render tags_index[0m
+  GET level_index
+[32m    assigns questions with a particular tag to @questions and render level_index[0m
+  GET category_index
+[32m    assigns questions with a particular tag to @questions and render level_index[0m
+  GET make_test
+[32m    should render make_test[0m
+  GET show_fetch_ques
+[32m    should assign questions to @questions[0m
+[32m    should render partial show_fetch_ques[0m
+  xhr GET fetch_questions
+[32m    should assign fetched questions by their respective category, tags, level and type to @questions[0m
+  xhr GET change_answer_div
+    when the question is not new
+[32m      should assign question to @question and respective type to @ajax_data[0m
+[32m      should not assign question to @question[0m
+[32m      should render template change_answer_div and partial as the value of @ajax_data[0m
+    when the question is new
+[32m      should not assign question to @question[0m
+[32m      should render template change_answer_div and partial as the value of @ajax_data[0m
+  xhr GET show_search
+[32m    should render template show_search and partial showing_fetch_ques[0m
+    has any text
+[32m      should assign questions with body matching to the text to @questions[0m
+[32m      should not assign questions without body matching to the text to @questions[0m
+    do not have any text
+[32m      should assign all questions to @questions[0m
+
+Finished in 14.88 seconds
+[32m65 examples, 0 failures[0m

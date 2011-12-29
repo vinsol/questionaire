@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   
-  #before_filter :admin_signed_in
+  before_filter :admin_signed_in
   before_filter :get_question_by_id, :only => [:show, :edit, :update, :destroy]
   
   def index
