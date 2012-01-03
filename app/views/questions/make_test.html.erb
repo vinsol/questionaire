@@ -38,14 +38,15 @@
       
       <div class="field" id = "ques_category" style = "float:right">
         <p><b><%= label_tag :category_id %></b></p>
-        <%= select_tag :category_id, options_for_select(Category.all.collect {|c| [c.name, c.id]}) %>
+        <%= select :category_id, nil, options_for_select(Category.all.collect {|c| [c.name, c.id]}), :prompt => "Select a category--" %><br />
+        <span class = "error" id = "error5"></span>
       </div><br/>
     </div>
 
     <div id = "level_sets">
 
       <div class="field" id = "ques_level" style="float:left">
-        <p><b><%= label_tag :level, 'No. of Questions/Level' %></b>&nbsp;&nbsp;<span class = "error" id = "error3"></span></p>
+        <p><b><%= label_tag :level, 'No. of Questions/Level' %></b>&nbsp;&nbsp;<br /><span class = "error" id = "error3"></span></p>
         <table>
         <% Question::LEVEL.each do |level| %>
           <tr>
@@ -87,6 +88,7 @@
     var d = false;
     var e = false;
 		var f = false;
+		var g = false;
 		// Validation for question paper name field
     if($("#name").val() == "") {
       document.getElementById("error1").innerHTML = "can't be blank";
@@ -113,6 +115,13 @@
       document.getElementById("error2").innerHTML = "";
     }
     
+    if ($("#category_id_").val() == "") {
+      document.getElementById("error5").innerHTML = "Please select a category";
+      g = true;
+    } else {
+      document.getElementById("error5").innerHTML = "";
+    }
+    
 		// Question level should be integer
     var ques_level = $("input[id^='level_']");
     var level = [];
@@ -127,7 +136,7 @@
       }
     }
     
-    if(c || d || e || f) {
+    if(c || d || e || f || g) {
       return false
     }
 

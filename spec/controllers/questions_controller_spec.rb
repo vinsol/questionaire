@@ -18,6 +18,7 @@ describe QuestionsController do
     @question1.stub!(:answers).and_return([@answer])
     @questions.stub!(:total_pages).and_return(1)
     Admin.stub!(:where).and_return([@admin]).stub!(:first).and_return(@admin).stub!(:name).and_return("priyank")
+    controller.stub!(:admin_signed_in).and_return(@admin)
   end
   
   describe "GET new" do

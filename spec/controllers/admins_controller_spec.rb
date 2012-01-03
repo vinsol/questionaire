@@ -15,7 +15,7 @@ describe AdminsController do
 #    @admin = mock_model(Admin, :id => 1, :username => 'admin', :email => "admin@example.com", 
 #    :password => "password", :password_confirmation => "password")
     
-#    controller.stub!(:admin_signed_in).and_return(@admin)
+    controller.stub!(:admin_signed_in).and_return(@admin)
   end
   
   describe "GET new" do
