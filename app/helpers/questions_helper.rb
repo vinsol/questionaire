@@ -16,13 +16,13 @@ module QuestionsHelper
     unless questions.empty?
       questions = questions.shuffle.shuffle
       questions.each do |question|
-        if question.level == 0 && beg_temp < beg
+        if question.level.to_i == 0 && beg_temp < beg
           questions_temp.push(question)
           beg_temp += 1
-        elsif question.level == 1 && int_temp < int
+        elsif question.level.to_i == 1 && int_temp < int
           questions_temp.push(question)
           int_temp += 1
-        elsif question.level == 1 && mast_temp < mast
+        elsif question.level.to_i == 2 && mast_temp < mast
           questions_temp.push(question)
           mast_temp += 1
         end
