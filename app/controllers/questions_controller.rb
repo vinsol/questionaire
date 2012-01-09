@@ -125,16 +125,16 @@ class QuestionsController < ApplicationController
     # Move in model
     unless FileTest.exists?("#{RAILS_ROOT}/public/temp_test/"+name+'.zip')
       Question.download(name)
-      logger.info "*" * 80
-      logger.info "#{RAILS_ROOT}/public/temp_test/" + name + '.zip'
-      logger.info File.exists?("#{RAILS_ROOT}/public/temp_test/" + name + '.zip')
-      logger.info "*" * 80
+#      logger.info "*" * 80
+#      logger.info "#{RAILS_ROOT}/public/temp_test/" + name + '.zip'
+#      logger.info File.exists?("#{RAILS_ROOT}/public/temp_test/" + name + '.zip')
+#      logger.info "*" * 80
       send_file "#{RAILS_ROOT}/public/temp_test/" + name + '.zip', :type => "application/zip"
     else
-      logger.info "#" * 80
-      logger.info "#{RAILS_ROOT}/public/temp_test/" + name + '.zip'
-      logger.info File.exists?("#{RAILS_ROOT}/public/temp_test/" + name + '.zip')
-      logger.info "#" * 80
+#      logger.info "#" * 80
+#      logger.info "#{RAILS_ROOT}/public/temp_test/" + name + '.zip'
+#      logger.info File.exists?("#{RAILS_ROOT}/public/temp_test/" + name + '.zip')
+#      logger.info "#" * 80
 
       send_file "#{RAILS_ROOT}/public/temp_test/" + name+ '.zip', :type => "application/zip"
     end
