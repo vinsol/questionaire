@@ -126,7 +126,7 @@ class QuestionsController < ApplicationController
     unless FileTest.exists?("#{RAILS_ROOT}/public/temp_test/"+name+'.zip')
       Question.download(name)
       logger.info "*" * 80
-      looger.info "#{RAILS_ROOT}/public/temp_test/" + name + '.zip'
+      logger.info "#{RAILS_ROOT}/public/temp_test/" + name + '.zip'
       logger.info File.exits?("#{RAILS_ROOT}/public/temp_test/" + name + '.zip')
       logger.info "*" * 80
       send_file "#{RAILS_ROOT}/public/temp_test/" + name + '.zip', :type => "application/zip"
