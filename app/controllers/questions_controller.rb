@@ -123,11 +123,11 @@ class QuestionsController < ApplicationController
   def download
     name = params[:test_name]
     # Move in model
-    unless FileTest.exists?("temp_test/"+name+'.zip')
+    unless FileTest.exists?("public/temp_test/"+name+'.zip')
       Question.download(name)
-      send_file 'temp_test/'.+name+'.zip'
+      send_file "public/temp_test/"+name+'.zip'
     else
-      send_file 'temp_test/'.+name+'.zip'
+      send_file 'public/temp_test/'+name+'.zip'
     end
   end
   

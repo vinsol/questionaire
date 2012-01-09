@@ -137,8 +137,8 @@ class Question < ActiveRecord::Base
   end
   
   def self.download(name)
-    files = Dir.glob('temp_test/*')
-    Zip::Archive.open('temp_test/'+name+'.zip', Zip::CREATE) do |ar|
+    files = Dir.glob('public/temp_test/*')
+    Zip::Archive.open('public/temp_test/'+name+'.zip', Zip::CREATE) do |ar|
       for file in files
         ar.add_file(file)
       end

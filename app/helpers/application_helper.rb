@@ -37,7 +37,7 @@ module ApplicationHelper
     styles['PS_ANS'].left_indent = 50
     styles['PS_END'].justification = ParagraphStyle::CENTER_JUSTIFY
     
-    files = Dir.glob("temp_test/*")
+    files = Dir.glob("public/temp_test/*")
     for file in files
       File.delete("#{file}")
     end
@@ -99,8 +99,8 @@ module ApplicationHelper
       document.paragraph(styles['PS_END']) do |e|
         e.apply(styles['BOLD']) << "--------------- GOOD LUCK ---------------"
       end
-      File.open( 'temp_test/set'+i.to_s+'.rtf', 'w+') {|file| file.write(document.to_rtf)}
-      File.open( 'temp_test/set'+i.to_s+'_answers.rtf', 'w+') {|file| file.write(answers_doc.to_rtf)}
+      File.open( 'public/temp_test/set'+i.to_s+'.rtf', 'w+') {|file| file.write(document.to_rtf)}
+      File.open( 'public/temp_test/set'+i.to_s+'_answers.rtf', 'w+') {|file| file.write(answers_doc.to_rtf)}
     end
   end
   
