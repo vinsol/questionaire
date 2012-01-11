@@ -3,7 +3,7 @@ class Question < ActiveRecord::Base
   LEVEL = [["Beginner", 0], ["Intermediate", 1], ["Master", 2]]
   TYPE = {:subjective =>"Subjective", :multiple_choice => "Multiple Choice", :multiple_choiceanswer => "Multiple Choice/Answer"}
   
-  belongs_to :category
+  belongs_to :category, :counter_cache => true
   has_many :options, :dependent => :destroy
   has_many :answers, :dependent => :destroy
   belongs_to :admin
@@ -27,7 +27,7 @@ class Question < ActiveRecord::Base
   attr_accessor :tag
   
   def valid_provider
-    if self.provider.empty? || self.provider =~ /^\s+$/
+    if provider.empty? || provider =~ /^\s+$/
       self.provider = nil
     end
   end
@@ -46,7 +46,10 @@ class Question < ActiveRecord::Base
   end
   
   def atleast_two_options
-    errors.add('options', 'Atleast two options') and return false if ques_type != "Subjective" && !(2..4).include?(options.length)
+    if ques_type != "Subjective" && !(2..4).include?(options.length)
+      errors.add('options', 'Atleast two options')
+      return false 
+    end
   end
   
   ## Optimize

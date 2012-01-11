@@ -4,7 +4,11 @@ class QuestionsController < ApplicationController
   before_filter :get_question_by_id, :only => [:show, :edit, :update, :destroy]
   
   def index
-    @questions = Question.paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+    unless(params[:text].nil? || params[:text].empty? )
+      @questions = Question.where("body like '%#{params[:text]}%'").paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+    else
+      @questions = Question.paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+    end
   end
 
   def show
@@ -132,13 +136,13 @@ class QuestionsController < ApplicationController
   end
   
   #search by text of question
-  def show_search
-    unless(params[:text].empty?)
-      @questions = Question.where("body like '%#{params[:text]}%'").paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
-    else
-      @questions = Question.paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
-    end
-  end
+#  def show_search
+#    unless(params[:text].empty?)
+#      @questions = Question.where("body like '%#{params[:text]}%'").paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+#    else
+#      @questions = Question.paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+#    end
+#  end
 
   private
   

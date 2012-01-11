@@ -16,9 +16,9 @@
 	<div class="mainMenu" id = "mainMenu">
 		<ul class="firstlist" >
 		  <% if session["devise.googleapps_data"] %>
-			  <li id = "firstlist_1" ><%= link_to "Home", questions_path %></li>
-			  <li id = "firstlist_2" ><%= link_to "Post Question", new_question_path %></li>
-			  <li id = "firstlist_3" ><%= link_to "Make Test", make_test_questions_path %></li>
+			  <li id = "firstlist_1" ><%= link_to "Home", questions_path, :class => class_name("questions", "index") %></li>
+			  <li id = "firstlist_2" ><%= link_to "Post Question", new_question_path, :class => class_name("questions", "new") || class_name("questions", "edit") %></li>
+			  <li id = "firstlist_3" ><%= link_to "Make Test", make_test_questions_path, :class => class_name("questions", "make_test") %></li>
 			  <!--<li id = "firstlist_4" ><%#= link_to "Previous Tests", questions_path %></li>-->
 			<% else %>
 			  <li id = "firstlist_5" ><%= link_to "Login", questions_path %></li>
@@ -26,8 +26,8 @@
 		</ul>
 		<ul class="seclist">
 		  <% if session["devise.googleapps_data"] %>
-		    <li id = "seclist_1"><%= link_to "Logout", destroy_admin_session_path %></li>
-			  <li id = "seclist_2"><%= link_to "Add Admin", new_admin_path %></li>
+		    <li id = "seclist_1"><%= link_to "Logout", destroy_admin_session_path, :class => class_name("devise/sessions", "destroy") %></li>
+			  <li id = "seclist_2"><%= link_to "Add Admin", new_admin_path, :class => class_name("admins", "new") %></li>
 			  <!--<li id = "seclist_3"><%#= link_to "Account Settings", questions_path %></li>-->
 			<% end %>
 		</ul>
@@ -70,10 +70,11 @@
 						  <div class="leftsub">
 							  <h4 style="margin:5px 0 5px 0;">Category</h4>
 							  <p style="margin:10px 0 10px 0;">
+							    
 							    <% Category.all.each do |cat| %>
 							      <div id = "cat_name"><%= link_to cat.name, category_index_questions_path(cat.id) %></div>
 							      <div id = "cat_count">
-							        <%= Question.count(:group => :category_id)[cat.id.to_i] ? Question.count(:group => :category_id)[cat.id.to_i] : 0 %>
+							        <%= cat.questions.size %>
 						        </div><br/>
 							    <% end %>
 							  </p>

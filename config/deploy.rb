@@ -20,7 +20,15 @@ role :db,  "173.45.225.52", :primary => true # This is where Rails migrations wi
 # if you're still using the script/reapear helper you will need
 # these http://github.com/rails/irs_process_scripts
 
+#after "deploy", "deploy:bundle_gems"
+#after "deploy:bundle_gems", "deploy:restart"
+
 namespace :deploy do
+
+#  task :bundle_gems do
+#    run "cd #{deploy_to}/current && /usr/local/bin/bundle install vendor/gems"
+#  end
+  
   [:start, :stop].each do |t|
     desc "#{t} task is a no-op with mod_rails"
     task t, :roles => :app do ; end

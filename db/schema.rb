@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111217065028) do
+ActiveRecord::Schema.define(:version => 20120111121557) do
 
   create_table "admins", :force => true do |t|
     t.datetime "remember_created_at"
@@ -37,9 +37,10 @@ ActiveRecord::Schema.define(:version => 20111217065028) do
   end
 
   create_table "categories", :force => true do |t|
-    t.string   "name",       :null => false
+    t.string   "name",                           :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "questions_count", :default => 0
   end
 
   create_table "options", :force => true do |t|

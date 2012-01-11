@@ -5,6 +5,10 @@ module ApplicationHelper
     obj.errors[elem].join(', ')
   end
   
+  def class_name controller, action
+		"tab_color" if params[:controller] == controller && params[:action] == action
+	end
+  
   def make_doc(name, instructions, questions, sets)
     styles = {}
     styles['CS_TITLE'] = CharacterStyle.new
