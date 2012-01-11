@@ -13,27 +13,27 @@ gem 'omniauth', '0.2.6'
 
 gem 'acts-as-taggable-on', '~>2.1.0'
 
-gem 'jquery-rails'
+gem 'jquery-rails', '1.0.19'
 
 gem 'will_paginate', '>= 3.0.pre'
 
-gem 'rtf'
+gem 'rtf', '0.3.3'
 
-gem 'zipruby'
+gem 'zipruby', '0.3.6'
 
 gem 'rspec-rails', '~> 2.6' 
 
-gem 'shoulda-matchers'
+gem 'shoulda-matchers', '1.0.0'
 
 # Use unicorn as the web server
 # gem 'unicorn'
 
 # Deploy with Capistrano
-gem 'capistrano'
+gem 'capistrano', '2.9.0'
 
 # To use debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
-# gem 'ruby-debug'
-# gem 'ruby-debug19', :require => 'ruby-debug'
+#gem 'ruby-debug'
+gem 'ruby-debug19', :require => 'ruby-debug'
 
 # Bundle the extra gems:
 # gem 'bj'

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120111121557) do
+ActiveRecord::Schema.define(:version => 20120111143438) do
 
   create_table "admins", :force => true do |t|
     t.datetime "remember_created_at"
@@ -60,6 +60,8 @@ ActiveRecord::Schema.define(:version => 20120111121557) do
     t.datetime "updated_at"
     t.string   "provider"
   end
+
+  add_index "questions", ["body"], :name => "fulltext_body"
 
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"
