@@ -277,3 +277,10 @@ div#write h2 {
 textarea {
   resize: none;
 }
+
+table#show_admins, table#show_admins td, table#show_admins tr, table#show_admins th {
+  border: 1px outset #2F67D8;
+}
+table#show_admins td {
+  padding: 4px 6px 4px 6px;
+}

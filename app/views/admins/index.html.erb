@@ -1,0 +1,21 @@
+<h2>Listing Admins</h2>
+<table id = "show_admins">
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+  </tr>
+  <% @admins.each do |admin| %>
+    <tr>
+      <td>
+        <% if admin.name %>
+          <%= admin.name.split(" ").select {|n| n[0] = n[0].upcase; n}.join(" ") %>
+        <% else %>
+          <%= "-" %>
+        <% end %>
+      </td>
+      <td>
+        <%= admin.email %>
+      </td>
+    </tr>
+  <% end %>
+</table>
