@@ -28,6 +28,9 @@ class QuestionsController < ApplicationController
 
 
   def create
+
+    params[:question][:options_attributes] = Question.map_answer(params[:question][:options_attributes])
+
     @question = Question.new(params[:question])
     @question.admin_id = session[:admin_id]
     @question.tag_list = params[:as_values_tags]
@@ -45,16 +48,17 @@ class QuestionsController < ApplicationController
     
     @question.admin_id = session[:admin_id]
     @question.tag_list = params[:as_values_tags]
-    
-    unless (@question.atleast_two_options?(params[:question][:options_attributes]))
+        
+    params[:question][:options_attributes] = Question.map_answer(params[:question])
+
+    unless (@question.atleast_two_options?(params[:question]))
      flash[:option_error] = 'Atleast two and atmost four options are valid'
     end
 
-    unless (@question.valid_answer?(params[:question][:answers_attributes], params[:question][:options_attributes]))
+    unless (@question.valid_answer?(params[:question]))
      flash[:answer_error] = ' not valid'
     end
-    
-#    if @question.update_attributes(params[:question])
+
     if flash[:option_error].blank? && flash[:answer_error].blank? && @question.update_attributes(params[:question])
       redirect_to(@question, :notice => 'Question was successfully updated.') 
     else
@@ -94,7 +98,6 @@ class QuestionsController < ApplicationController
   end
   
   
-  # Optomize
   def fetch_questions
     ques = Question.get_ques_by_tags(params[:as_values_tags])
     @questions = Question.search(ques, params[:type], params[:category_id], params[:level])

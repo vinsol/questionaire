@@ -28,38 +28,14 @@ function map_tags() {
   $("#as-values-tags").val(tags)
 }
 
-$("#question_submit").bind('click', map_answers);
 $("#question_submit").bind('click', destroy_waste_options);
-$("#question_submit").bind('click', destroy_waste_answers);
-
-function map_answers() {
-  var opts = $("input[id^='question_options_'][type!='hidden']");
-  if(opts.length > 0) {
-    var ans = $("input[id^='question_answers_'][type!='hidden']");
-    for(var i = 0; i<ans.length; i++) {
-      var id = "question_options_attributes_"+ans[i].value+"_body";
-      ans[i].value = document.getElementById(id).value;
-    }
-  }
-}
 
 function destroy_waste_options() {
-  var opts = $("input[id^='question_options_'][type!='hidden']");
-  for(var i = 0; i < opts.length; i++) {
-    var hidden_id = opts[i].id.replace("body", "id");
-    if(document.getElementById(hidden_id) && opts[i].value == "") {
-      var destroy_id = hidden_id.replace("id", "_destroy");
-      document.getElementById(destroy_id).value = "1";
-    }
-  }
-}
-
-function destroy_waste_answers() {
-  var ans = $("input[id^='question_answers_'][type!='hidden']");
-  for(var i = 0; i < ans.length; i++) {
-    var hidden_id = ans[i].id.replace("body", "id");
-    if(document.getElementById(hidden_id) && !ans[i].checked) {
-      var destroy_id = hidden_id.replace("id", "_destroy");
+  var hidden_ids = $("input[id^='question_options_'][id$='_id'][type='hidden']");
+  for(var i = 0; i < hidden_ids.length; i++) {
+    var body = hidden_ids[i].id.replace("id", "body");
+    if($('#'+body).val() == "") {
+      var destroy_id = body.replace("body", "_destroy");
       document.getElementById(destroy_id).value = "1";
     }
   }

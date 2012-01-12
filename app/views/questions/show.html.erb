@@ -5,13 +5,12 @@
 		<b>Question: </b>
 		<%= @question.body %>
 	</p>
-	<!-- Remove !(@question.provider =~ /^\s*$/) -->
   <% if @question.provider %>
     <p style = "float:right; margin-right: 10px"><b>Provider: </b><%= @question.provider %></p>
   <% end %><br/>
 	<% if @question.ques_type == "Subjective" %>
 		<p> <b> Answer: </b>
-			<%= @question.answers.first.body %>
+			<%= @question.options.first.body %>
 		</p>
 
 	<% else %>
@@ -20,15 +19,11 @@
 			
 			<% @question.options.each do |option| %>
 				<li><%= option.body %>
-					<%#= image_tag("correct.jpg", :size => "25x15") if @question.answers.find { |a| a.body == option.body}.empty? %>
-					
-				<% @question.answers.each do |answer| %>
-					<% if option.body == answer.body %>
+					<% if option.answer == true %>
 						<script>$("li").last().css('font-size','14px')</script>
 						<%= image_tag("correct.jpg", :size => "25x15") %>
-						<% break %>
 				  <% end %>
-			  <% end %></li>
+			  </li>
 			<% end %>
 		</ol>
 		<p style="color:red"><b>*Note: </b>Ticked options are answers.</p>

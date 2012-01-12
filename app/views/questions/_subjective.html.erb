@@ -1,21 +1,15 @@
 
 <% unless params[:id].blank? %>
-  <%= text_area_tag "question[answers_attributes][1][body]", @question.answers.first.body, :rows => 5, :cols => 70 %>
-  <% unless @question.options.empty? %>
-    <% @question.options.each_with_index do |option, index| %>
-      <%= hidden_field_tag "question[options_attributes][#{index+1}][id]", option.id %>
-      <%= hidden_field_tag "question[options_attributes][#{index+1}][_destroy]", "1" %>
-    <% end %>
-  <% end %>
-  <% @question.answers.each_with_index do |answer, index| %>
-    <% if index == 0 %>
-      <%= hidden_field_tag 'question[answers_attributes][1][id]', answer.id %>
-      <%= hidden_field_tag 'question[answers_attributes][1][_destroy]', false %>
-    <% else %>
-      <%= hidden_field_tag "question[answers_attributes][#{index+1}][id]", answer.id %>
-      <%= hidden_field_tag "question[answers_attributes][#{index+1}][_destroy]", "1" %>
+  <%= text_area_tag "question[options_attributes][1][body]", @question.options.first.body, :rows => 5, :cols => 70 %>
+  <%= hidden_field_tag "question[options_attributes][1][answer]", true %>
+  <%= hidden_field_tag 'question[options_attributes][1][id]', @question.options.first.id %>
+  <% if @question.options.length >= 2 %>
+    <% (1...@question.options.length).each do |i| %>
+      <%= hidden_field_tag "question[options_attributes][#{i+1}][id]", @question.options[i].id %>
+      <%= hidden_field_tag "question[options_attributes][#{i+1}][_destroy]", "1" %>
     <% end %>
   <% end %>
 <% else %>
-  <%= text_area_tag "question[answers_attributes][1][body]", nil, :rows => 5, :cols => 70 %>
+  <%= text_area_tag "question[options_attributes][1][body]", nil, :rows => 5, :cols => 70 %>
+  <%= hidden_field_tag "question[options_attributes][1][answer]", true %>
 <% end %>

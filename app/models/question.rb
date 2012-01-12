@@ -5,7 +5,6 @@ class Question < ActiveRecord::Base
   
   belongs_to :category, :counter_cache => true
   has_many :options, :dependent => :destroy
-  has_many :answers, :dependent => :destroy
   belongs_to :admin
   
   acts_as_taggable
@@ -16,7 +15,6 @@ class Question < ActiveRecord::Base
   validates :category_id, :presence => true
   validates :level, :presence => true
   
-  accepts_nested_attributes_for :answers, :allow_destroy => true 
   accepts_nested_attributes_for :options, :allow_destroy => true, :reject_if => lambda { |c| c['body'].blank? }
   
   before_create :atleast_two_options
@@ -31,7 +29,22 @@ class Question < ActiveRecord::Base
       self.provider = nil
     end
   end
-    
+   
+  def self.map_answer(question)
+    ques_options = question[:options_attributes]
+    if question[:ques_type] == "Multiple Choice"
+      ans = ques_options.delete(:answer)
+      ques_options.each do |opt_i, opt|
+        ques_options[opt_i][:answer] = (opt_i == ans)
+      end
+    elsif question[:ques_type] == "Multiple Choice/Answer"
+      ques_options.each do |opt_i, opt|
+        ques_options[opt_i][:answer] = !ques_options[opt_i][:answer].nil?
+      end
+    end
+    ques_options
+  end
+   
   def self.question_tags(str)
 		taggings = tag_counts_on(:tags).collect{|t| [t.id, t.name]}
 		question_tags = taggings.select{|tag| tag[1].downcase.match("#{ str }".downcase)}.uniq
@@ -53,51 +66,53 @@ class Question < ActiveRecord::Base
   end
   
   ## Optimize
-  def valid_answer
-    if ques_type != "Subjective"
-      unless options.empty?
-        unless answers.empty?
-          ans_temp = []
-          answers.each do |ans|
-            options.each { |opt| ans_temp << opt if(ans.body == opt.body) }
-          end
-          errors.add('answers', 'is invalid') and return false unless answers.length == ans_temp.length
-        else
-          errors.add('answers', "can't be blank") and return false
-        end
-      end
-    else
-      errors.add('answers', "can't be blank") and return false if answers.first.body.empty?
-    end
-  end
-  
-	## Optimize	
-  def valid_answer?(answer, option)
-    if options?(option)
-      if answers?(answer)
-        ans_temp, answer_temp,c = [], [], 0
-        answer.each do |ans_i, ans|
-          answer_temp << ans if ans[:body]
-          option.each { |opt_i, opt| ans_temp << opt if( !opt[:body].blank? && ans[:body] == opt[:body] ) }
-        end
-        return answer_temp.length == ans_temp.length
-      else
-        return false
-      end
-    else
-      return !answer['1'][:body].blank?
-    end
-  end
-  
-  ## Optimize
-  def atleast_two_options?(option)
-    if options?(option)
+  def atleast_two_options?(question)
+    if question[:ques_type] != "Subjective"
+      option = question[:options_attributes]
       c = 0
       option.each { |q_i, q| c += 1 unless q[:body].blank? }
       return true if c >= 2 && c <= 4
     else
       return true
     end 
+  end
+  
+  ## Optimize
+  def valid_answer
+    p "_"*20
+    p self
+    p self.options
+    if ques_type != "Subjective"
+      ans_temp = 0
+      options.each { |opt| ans_temp += 1 if opt.answer == true }
+      if (ques_type == "Multiple Choice" && ans_temp != 1) || (ques_type == "Multiple Choice/Answer" && ans_temp == 0)
+        errors.add('answers', 'is invalid') 
+        return false
+      end
+    else
+      errors.add('answers', "can't be blank") and return false if options.empty?
+    end
+  end
+  
+	## Optimize	
+  def valid_answer?(question)
+    option = question[:options_attributes]
+    if question[:ques_type] != "Subjective"
+      
+      if answer?(option)
+        ans_temp = 0
+        option.each do |opt_i, opt|
+          if opt[:answer] && opt[:body].blank?
+            return false
+          end
+        end
+      else
+        p "_" * 80
+        return false
+      end
+    else
+      return !option['1'][:body].blank?
+    end
   end
   
   def self.get_ques_by_tags(tags)
@@ -150,12 +165,8 @@ class Question < ActiveRecord::Base
   
   private
   
-  def options?(options)
-    !options.select { |q_i,q| !!q[:body] }.empty? if options
-  end
-  
-  def answers?(answers)
-    !answers.select { |a_i,a| !!a[:body] }.empty? if answers
+  def answer?(option)
+    !option.select { |opt_i, opt| opt[:answer] }.empty?
   end
   
 end

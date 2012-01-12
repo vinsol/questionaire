@@ -4,19 +4,17 @@
     <p style = "float:right; margin-right: 10px"><b>Provider: </b><%= @question.provider %></p>
   <% end %><br />
   <% if @question.ques_type == "Subjective" %>
-    <p><b>Answer: </b><%= @question.answers.first.body %></p>
+    <p><b>Answer: </b><%= @question.options.first.body %></p>
   <% else %>
     <p style="margin-bottom:2px"><b>Options: </b></p>
     <ol class = "show_options" type = "a">
       <% @question.options.each do |option| %>
         <li><%= option.body %>
-        <% @question.answers.each do |answer| %>
-					<% if option.body == answer.body %>
+					<% if option.answer %>
             <script>$("li").last().css('font-size','14px')</script>
             <%= image_tag("popup_check4.png", :size => "30x15") %>
-            <% break %>
           <% end %>
-        <% end %></li>
+        </li>
       <% end %>
     </ol>
     <p style="color:red"><b>*Note: </b>Ticked options are answers.</p>
@@ -24,7 +22,6 @@
   <p class = "extras">
     &lt;<b>Type: </b><%= @question.ques_type %>&gt;&nbsp;&nbsp;&nbsp;
     &lt;<b>Level: </b><%= Question::LEVEL[@question.level][0] %>&gt;&nbsp;&nbsp;&nbsp;
-		<!-- Optimize -->
     &lt;<b>Category: </b><%= @question.category.name %>&gt;&nbsp;&nbsp;&nbsp;
     <% if !@question.tag_list.empty? %>
       &lt;<b>Tags: </b><%= @question.tag_list %>&gt;

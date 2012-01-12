@@ -1,6 +1,7 @@
 include RTF
 
 module ApplicationHelper
+
   def get_error(obj, elem)
     obj.errors[elem].join(', ')
   end
@@ -78,7 +79,7 @@ module ApplicationHelper
             q << question.body
           end
           
-          unless question.options.empty?
+          unless question.ques_type == "Subjective"
             options = question.options.shuffle.sort_by{rand}.shuffle
             bullets = ["(a.) ", "(b.) ", "(c.) ", "(d.) "]
             answers_doc.paragraph(styles['PS_ANS']) do |a|
@@ -87,22 +88,26 @@ module ApplicationHelper
                 options.each_with_index do |opt, opt_i|
                   o.apply(styles['BOLD']) << bullets[opt_i]
                   o << opt.body+"   "
-                  question.answers.each { |ans| a << bullets[opt_i]+ans.body+"   " if ans.body == opt.body }
+                  if opt.answer
+                    a << bullets[opt_i]+opt.body+"   "
+                  end
                 end
               end
             end
           else
             answers_doc.paragraph(styles['PS_ANS']) do |a|
               a.apply(styles['BOLD']) << (index+1).to_s+". "
-              a << question.answers.first.body
+              a << question.options.first.body
             end
           end
           document.paragraph << ""
         end
       end
+      
       document.paragraph(styles['PS_END']) do |e|
         e.apply(styles['BOLD']) << "--------------- GOOD LUCK ---------------"
       end
+      
       File.open( 'public/temp_test/set'+i.to_s+'.rtf', 'w+') {|file| file.write(document.to_rtf)}
       File.open( 'public/temp_test/set'+i.to_s+'_answers.rtf', 'w+') {|file| file.write(answers_doc.to_rtf)}
     end
