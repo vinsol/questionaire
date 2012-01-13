@@ -56,15 +56,17 @@ class Question < ActiveRecord::Base
      json['value'] = tag[1]
      data << json
     end
-    return data
+    data
   end
   
+  ## Take 2 and 4 in constants
   def atleast_two_options
     if ques_type != "Subjective" && !(Question::OPTIONS_RANGE[:min]..Question::OPTIONS_RANGE[:max]).include?(options.length)
       errors.add('options', 'Atleast two options')
       return false 
     end
   end
+  
   
   ## Optimize
   def atleast_two_options?(question)
@@ -78,10 +80,12 @@ class Question < ActiveRecord::Base
     end 
   end
   
+  
   ## Optimize
   def valid_answer
     if ques_type != "Subjective"
       ans_temp = 0
+      # Why are u checking == true
       options.each { |opt| ans_temp += 1 if opt.answer == true }
       if (ques_type == "Multiple Choice" && ans_temp != 1) || (ques_type == "Multiple Choice/Answer" && ans_temp == 0)
         errors.add('answers', 'is invalid') 
