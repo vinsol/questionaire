@@ -1,0 +1,3 @@
+class Subjective < Question
+
+end
