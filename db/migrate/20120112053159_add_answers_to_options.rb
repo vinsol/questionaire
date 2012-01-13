@@ -22,11 +22,6 @@ class AddAnswersToOptions < ActiveRecord::Migration
   def self.down
     remove_column :options, :answer
     
-    create_table :answers do |t|
-      t.references :question, :null => false
-      t.text :body
-    end
-    
     Option.all.each do |opt|
       if opt.answer
         Answer.create!(:question_id => opt.question_id, :body => opt.body)
