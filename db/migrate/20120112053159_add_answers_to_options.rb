@@ -6,12 +6,13 @@ class AddAnswersToOptions < ActiveRecord::Migration
     Answer.reset_column_information
     
     Answer.all.each do |ans|
-      opt = Option.where("question_id = ? and body = ?", ans.question_id, ans.body)
-      opt.update_attributes!(:answer => true) if opt
+#      opt = Option.where("question_id = ? and body = ?", ans.question_id, ans.body)
+      opt.update_all(:answer => true, ["question_id = ? and body = ?", ans.question_id, ans.body])
 #      execute "UPDATE options SET answer = true where question_id = #{ans.question_id} and body = \"#{ans.body}\""
     end
     
-    answers = Answer.find(:all, :joins => "join questions on questions.id = answers.question_id and questions.ques_type = 'Subjective'", :include => :question)
+    answers = Answer.joins(:question).where("ques_type = 'Subjective'")
+#    answers = Answer.find(:all, :joins => "join questions on questions.id = answers.question_id and questions.ques_type = 'Subjective'", :include => :question)
     answers.each do |ans|
       Option.create!(:question_id => ans.question_id, :body => ans.body, :answer => true)
     end
