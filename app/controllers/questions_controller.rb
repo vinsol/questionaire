@@ -29,8 +29,8 @@ class QuestionsController < ApplicationController
 
   def create
 
-    params[:question][:options_attributes] = Question.map_answer(params[:question][:options_attributes])
-
+    params[:question][:options_attributes] = Question.map_answer(params[:question])
+    
     @question = Question.new(params[:question])
     @question.admin_id = session[:admin_id]
     @question.tag_list = params[:as_values_tags]
@@ -129,7 +129,7 @@ class QuestionsController < ApplicationController
 
   def download
     name = params[:test_name]
-    # Move in model
+
     unless FileTest.exists?("#{RAILS_ROOT}/public/temp_test/"+name+'.zip')
       Question.download(name)
       send_file "#{RAILS_ROOT}/public/temp_test/" + name + '.zip', :type => "application/zip"
@@ -137,15 +137,6 @@ class QuestionsController < ApplicationController
       send_file "#{RAILS_ROOT}/public/temp_test/" + name+ '.zip', :type => "application/zip"
     end
   end
-  
-  #search by text of question
-#  def show_search
-#    unless(params[:text].empty?)
-#      @questions = Question.where("body like '%#{params[:text]}%'").paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
-#    else
-#      @questions = Question.paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
-#    end
-#  end
 
   private
   

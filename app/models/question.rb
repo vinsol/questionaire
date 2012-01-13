@@ -1,6 +1,7 @@
 class Question < ActiveRecord::Base
 
   LEVEL = [["Beginner", 0], ["Intermediate", 1], ["Master", 2]]
+  OPTIONS_RANGE = {:min => 2, :max => 4 }
   TYPE = {:subjective =>"Subjective", :multiple_choice => "Multiple Choice", :multiple_choiceanswer => "Multiple Choice/Answer"}
   
   belongs_to :category, :counter_cache => true
@@ -59,7 +60,7 @@ class Question < ActiveRecord::Base
   end
   
   def atleast_two_options
-    if ques_type != "Subjective" && !(2..4).include?(options.length)
+    if ques_type != "Subjective" && !(Question::OPTIONS_RANGE[:min]..Question::OPTIONS_RANGE[:max]).include?(options.length)
       errors.add('options', 'Atleast two options')
       return false 
     end
@@ -71,7 +72,7 @@ class Question < ActiveRecord::Base
       option = question[:options_attributes]
       c = 0
       option.each { |q_i, q| c += 1 unless q[:body].blank? }
-      return true if c >= 2 && c <= 4
+      return true if (Question::OPTIONS_RANGE[:min]..Question::OPTIONS_RANGE[:max]).include?(c)
     else
       return true
     end 
@@ -79,9 +80,6 @@ class Question < ActiveRecord::Base
   
   ## Optimize
   def valid_answer
-    p "_"*20
-    p self
-    p self.options
     if ques_type != "Subjective"
       ans_temp = 0
       options.each { |opt| ans_temp += 1 if opt.answer == true }
@@ -107,7 +105,6 @@ class Question < ActiveRecord::Base
           end
         end
       else
-        p "_" * 80
         return false
       end
     else
