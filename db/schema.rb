@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120112053159) do
+ActiveRecord::Schema.define(:version => 20120112140337) do
 
   create_table "admins", :force => true do |t|
     t.datetime "remember_created_at"
@@ -28,13 +28,6 @@ ActiveRecord::Schema.define(:version => 20120112053159) do
   end
 
   add_index "admins", ["authentication_token"], :name => "index_admins_on_authentication_token", :unique => true
-
-  create_table "answers", :force => true do |t|
-    t.integer  "question_id", :null => false
-    t.string   "body",        :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "categories", :force => true do |t|
     t.string   "name",                           :null => false

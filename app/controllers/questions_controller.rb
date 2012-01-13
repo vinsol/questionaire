@@ -4,6 +4,7 @@ class QuestionsController < ApplicationController
   before_filter :get_question_by_id, :only => [:show, :edit, :update, :destroy]
   
   def index
+    ## use .blank?
     unless(params[:text].nil? || params[:text].empty? )
       @questions = Question.where("body like '%#{params[:text]}%'").paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
     else
@@ -28,10 +29,11 @@ class QuestionsController < ApplicationController
 
 
   def create
-
+    ## Cannot assign in params
     params[:question][:options_attributes] = Question.map_answer(params[:question])
     
     @question = Question.new(params[:question])
+    ## Send hidden field from form
     @question.admin_id = session[:admin_id]
     @question.tag_list = params[:as_values_tags]
     
@@ -47,6 +49,8 @@ class QuestionsController < ApplicationController
   def update
     
     @question.admin_id = session[:admin_id]
+    
+    ## Send hidden field from form
     @question.tag_list = params[:as_values_tags]
         
     params[:question][:options_attributes] = Question.map_answer(params[:question])
