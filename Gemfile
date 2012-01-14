@@ -25,6 +25,7 @@ gem 'rspec-rails', '~> 2.6'
 
 gem 'shoulda-matchers', '1.0.0'
 
+gem 'nested_form'
 # Use unicorn as the web server
 # gem 'unicorn'
 

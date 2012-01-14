@@ -3,14 +3,14 @@
   <div class="field">
     <span class = "label_bold">*
 		<%= f.label :body, 'Question?' %></span>&nbsp;&nbsp;<span class='error'> <%= get_error(@question, :body) %></span><br/>
-    <%= f.text_area :body, :rows => 5, :cols => 70 %>
+    <%= f.text_area :body, :rows => 5, :cols => 70, :id => "question_body" %>
   </div>
 
   <div class="field">
-    <span class = "label_bold"><%= f.label :ques_type, "Type" %></span><br/>
-    <% Question::TYPE.each do |key, type| %>
-      <%= f.radio_button :ques_type, type, :checked => @type == type, :onclick => "change_answer_div(this.value)" %>
-      <%= f.label "ques_type_" + key.to_s, type %>&nbsp;
+    <span class = "label_bold"><%= f.label :type, "Type" %></span><br/>
+    <% Question::TYPE.each do |type| %>
+      <%= f.radio_button :type, type, :checked => @type == type, :onclick => "change_answer_div(this.value)", :class => "question_type" %>
+      <%= f.label :type, type.titleize %>&nbsp;
     <% end %>
   </div>
   
@@ -20,30 +20,30 @@
   </div>
 
   <div id = "for_option_error" ><span class="error"><%= flash[:option_error] if flash[:option_error] %></span><span class='error'><%= get_error(@question, :options) %></span></div>
-
+  
   <div class="field" id = "answer_type">
     
   </div>
   
   <div class="field">
     <span class = "label_bold"><%= f.label :tag %></span>&nbsp;&nbsp;
-    <%= f.text_field :tag, :value => @question.tag_list %><span class='error'><%= get_error(@question, :tag) %></span>
+    <%= f.text_field :tag, :value => @question.tag_list, :id => "question_tag" %><span class='error'><%= get_error(@question, :tag) %></span>
   </div>
 </div>
 
 <div id = "form_right">
   <div class="field" id = "ques_category">
-    *<%= f.label :category_id %><span class='error'> <%= get_error(@question, :category_id) %></span> <br/>
-    <%= f.select :category_id, Category.all.collect {|c| [c.name, c.id]}, :prompt => 'Select--' %>
+    *<%= label_tag "question_category_id", "Category" %><span class='error'> <%= get_error(@question, :category_id) %></span> <br/>
+    <%= f.select :category_id, Category.all.collect {|c| [c.name, c.id]}, {:prompt => 'Select--'}, {:id => "question_category_id"} %>
   </div>
 
   <div class="field" id = "ques_level">
     *<%= f.label :level %><span class='error'> <%= get_error(@question, :level) %></span> <br/>
-    <%= f.select :level, Question::LEVEL, :prompt => 'Select--' %>
+    <%= f.select :level, Question::LEVEL, {:prompt => 'Select--'}, {:id => "question_level"} %>
   </div>
   
   <div class = "field" id = "provide">
     <%= f.label :provider, "Provided by:" %><br />
-    <%= f.text_field :provider, :size => 25 %>
+    <%= f.text_field :provider, :size => 25, :id => "question_provider" %>
   </div>
 </div><br/>

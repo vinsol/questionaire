@@ -2,7 +2,7 @@ class Question < ActiveRecord::Base
 
   LEVEL = [["Beginner", 0], ["Intermediate", 1], ["Master", 2]]
   OPTIONS_RANGE = {:min => 2, :max => 4 }
-  TYPE = {:subjective =>"Subjective", :multiple_choice => "Multiple Choice", :multiple_choiceanswer => "Multiple Choice/Answer"}
+  TYPE = ["Subjective", "MultipleChoice", "MultipleChoiceAnswer"]
   
   belongs_to :category, :counter_cache => true
   has_many :options, :dependent => :destroy
@@ -12,14 +12,14 @@ class Question < ActiveRecord::Base
   acts_as_taggable_on :tags
   
   validates :body, :presence => true
-  validates :ques_type, :presence => true
+  validates :type, :presence => true
   validates :category_id, :presence => true
   validates :level, :presence => true
   
   accepts_nested_attributes_for :options, :allow_destroy => true, :reject_if => lambda { |c| c['body'].blank? }
   
-  before_create :atleast_two_options
-  before_create :valid_answer
+#  before_create :atleast_two_options
+#  before_create :valid_answer
   
   before_save :valid_provider
   
@@ -33,12 +33,12 @@ class Question < ActiveRecord::Base
    
   def self.map_answer(question)
     ques_options = question[:options_attributes]
-    if question[:ques_type] == "Multiple Choice"
+    if question[:type] == "MultipleChoice"
       ans = ques_options.delete(:answer)
       ques_options.each do |opt_i, opt|
         ques_options[opt_i][:answer] = (opt_i == ans)
       end
-    elsif question[:ques_type] == "Multiple Choice/Answer"
+    elsif question[:type] == "MultipleChoiceAnswer"
       ques_options.each do |opt_i, opt|
         ques_options[opt_i][:answer] = !ques_options[opt_i][:answer].nil?
       end
@@ -60,17 +60,17 @@ class Question < ActiveRecord::Base
   end
   
   ## Take 2 and 4 in constants
-  def atleast_two_options
-    if ques_type != "Subjective" && !(Question::OPTIONS_RANGE[:min]..Question::OPTIONS_RANGE[:max]).include?(options.length)
-      errors.add('options', 'Atleast two options')
-      return false 
-    end
-  end
+#  def atleast_two_options
+#    if type != "Subjective" && !(Question::OPTIONS_RANGE[:min]..Question::OPTIONS_RANGE[:max]).include?(options.length)
+#      errors.add('options', 'Atleast two options')
+#      return false 
+#    end
+#  end
   
   
   ## Optimize
   def atleast_two_options?(question)
-    if question[:ques_type] != "Subjective"
+    if question[:type] != "Subjective"
       option = question[:options_attributes]
       c = 0
       option.each { |q_i, q| c += 1 unless q[:body].blank? }
@@ -82,24 +82,24 @@ class Question < ActiveRecord::Base
   
   
   ## Optimize
-  def valid_answer
-    if ques_type != "Subjective"
-      ans_temp = 0
-      # Why are u checking == true
-      options.each { |opt| ans_temp += 1 if opt.answer == true }
-      if (ques_type == "Multiple Choice" && ans_temp != 1) || (ques_type == "Multiple Choice/Answer" && ans_temp == 0)
-        errors.add('answers', 'is invalid') 
-        return false
-      end
-    else
-      errors.add('answers', "can't be blank") and return false if options.empty?
-    end
-  end
+#  def valid_answer
+#    if type != "Subjective"
+#      ans_temp = 0
+#      # Why are u checking == true
+#      options.each { |opt| ans_temp += 1 if opt.answer == true }
+#      if (type == "MultipleChoice" && ans_temp != 1) || (type == "MultipleChoiceAnswer" && ans_temp == 0)
+#        errors.add('answers', 'is invalid') 
+#        return false
+#      end
+#    else
+#      errors.add('answers', "can't be blank") and return false if options.empty?
+#    end
+#  end
   
 	## Optimize	
   def valid_answer?(question)
     option = question[:options_attributes]
-    if question[:ques_type] != "Subjective"
+    if question[:type] != "Subjective"
       
       if answer?(option)
         ans_temp = 0
@@ -134,7 +134,7 @@ class Question < ActiveRecord::Base
       type = []
       type_hash.each { |index, val| type.push(val) }
       unless type.empty?
-        sql[0] += "AND ques_type IN (?) "
+        sql[0] += "AND type IN (?) "
         sql.push(type)
       end
     end

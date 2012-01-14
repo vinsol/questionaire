@@ -1,15 +1,14 @@
-
 <% unless params[:id].blank? %>
-  <%= text_area_tag "question[options_attributes][1][body]", @question.options.first.body, :rows => 5, :cols => 70 %>
-  <%= hidden_field_tag "question[options_attributes][1][answer]", true %>
-  <%= hidden_field_tag 'question[options_attributes][1][id]', @question.options.first.id %>
+  <%= text_area_tag "subjective[options_attributes][1][body]", @question.options.first.body, :rows => 5, :cols => 70 %>
+  <%= hidden_field_tag "subjective[options_attributes][1][answer]", true %>
+  <%= hidden_field_tag 'subjective[options_attributes][1][id]', @question.options.first.id %>
   <% if @question.options.length >= 2 %>
     <% (1...@question.options.length).each do |i| %>
-      <%= hidden_field_tag "question[options_attributes][#{i+1}][id]", @question.options[i].id %>
-      <%= hidden_field_tag "question[options_attributes][#{i+1}][_destroy]", "1" %>
+      <%= hidden_field_tag "subjective[options_attributes][#{i+1}][id]", @question.options[i].id %>
+      <%= hidden_field_tag "subjective[options_attributes][#{i+1}][_destroy]", "1" %>
     <% end %>
   <% end %>
 <% else %>
-  <%= text_area_tag "question[options_attributes][1][body]", nil, :rows => 5, :cols => 70 %>
-  <%= hidden_field_tag "question[options_attributes][1][answer]", true %>
+  <%= text_area_tag "subjective[options_attributes][1][body]",nil, :rows => 5, :cols => 70 %>
+  <%= hidden_field_tag "subjective[options_attributes][1][answer]", true %>
 <% end %>

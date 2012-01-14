@@ -4,14 +4,17 @@
 <% end %>
 
 <%= form_for(@question) do |f| %>
-
+  
   <%= render "question", :f => f %>
-
+  
+  <%= hidden_field_tag "type" %>
+  <%= hidden_field_tag "admin_id", session[:admin_id] %>
+  
   <div class="actions">
     <% if @question.new_record? %>
-      <%= f.submit 'Create Question', :onclick => 'map_tags()' %>
+      <%= f.submit 'Create Question', :onclick => 'map_tags_and_type()' %>
     <% else %>
-      <%= f.submit 'Update Question', :onclick => 'map_tags()' %>
+      <%= f.submit 'Update Question', :onclick => 'map_tags_and_type()' %>
     <% end %>
   </div>
 <% end %>
@@ -19,13 +22,20 @@
 
 <script>
 
-function map_tags() {
+function map_tags_and_type() {
   var ques_tags = $(".as-selection-item");
   var tags = [];
   for(var i = 0;i < ques_tags.length; i++) {
     tags.push($(ques_tags[i]).text().slice(1));
   }
-  $("#as-values-tags").val(tags)
+  $("#as-values-tags").val(tags);
+  
+  var types = $("input[name$='[type]']");
+  for(var i = 0; i <= types.length; i++) {
+    if($(types[i]).attr('checked') == 'checked') {
+      $('#type').val($(types[i]).val());
+    }
+  }
 }
 
 $("#question_submit").bind('click', destroy_waste_options);

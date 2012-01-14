@@ -15,6 +15,23 @@ PriyankQuestionaire::Application.routes.draw do
     end
   end
   
+  resources :subjective, :except => [:index, :create], :controller => :questions
+  resources :multiple_choice, :except => [:index, :create], :controller => :questions
+  resources :multiple_choice_answer, :except => [:index, :create], :controller => :questions
+
+  controller :questions do
+      get 'subjectives', :action => "index"
+      post 'subjectives', :action => "create"
+      get 'multiple_choices', :action => "index"
+      post 'multiple_choices', :action => "create"
+      get 'multiple_choice_answers', :action => "index"
+      post 'multiple_choice_answers', :action => "create"
+  end
+  
+#  resources :question, :as => :subjective
+#  resources :multiple_choice
+#  resources :multiple_choice_answer
+  
   devise_for :admins, :controllers => { :omniauth_callbacks => "admins/omniauth_callbacks"}
   
   resources :admins

@@ -5,7 +5,7 @@ class QuestionsController < ApplicationController
   
   def index
     ## use .blank?
-    unless(params[:text].nil? || params[:text].empty? )
+    unless(params[:text].blank? )
       @questions = Question.where("body like '%#{params[:text]}%'").paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
     else
       @questions = Question.paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
@@ -18,29 +18,30 @@ class QuestionsController < ApplicationController
 
 
   def new
-    @question = Question.new
-    @type = @question.ques_type
+    @question = Subjective.new
+    @type = @question.type
   end
 
 
   def edit
-    @type = @question.ques_type
+    @type = @question.type
   end
 
 
   def create
     ## Cannot assign in params
-    params[:question][:options_attributes] = Question.map_answer(params[:question])
-    
-    @question = Question.new(params[:question])
+#    params[:question][:options_attributes] = Question.map_answer(params[:question])
+    @question = params[:type].constantize.new(params[:type].underscore.to_sym)
     ## Send hidden field from form
-    @question.admin_id = session[:admin_id]
+#    @question.admin_id = session[:admin_id]
     @question.tag_list = params[:as_values_tags]
-    
+
+    p @question
+
     if @question.save
       redirect_to(@question, :notice => 'Question was successfully created.')
     else
-      @type = params[:question][:ques_type] 
+      @type = params[:type] 
       render :action => "new"
     end
   end
@@ -48,13 +49,18 @@ class QuestionsController < ApplicationController
     
   def update
     
-    @question.admin_id = session[:admin_id]
+#    @question.admin_id = session[:admin_id]
     
     ## Send hidden field from form
     @question.tag_list = params[:as_values_tags]
         
     params[:question][:options_attributes] = Question.map_answer(params[:question])
-
+    
+    p "+"* 80
+    p @question
+    p params
+    p "+"* 80
+    
     unless (@question.atleast_two_options?(params[:question]))
      flash[:option_error] = 'Atleast two and atmost four options are valid'
     end
@@ -66,7 +72,7 @@ class QuestionsController < ApplicationController
     if flash[:option_error].blank? && flash[:answer_error].blank? && @question.update_attributes(params[:question])
       redirect_to(@question, :notice => 'Question was successfully updated.') 
     else
-      @type = params['question']['ques_type']
+      @type = params['question']['type']
       render :action => "edit" 
     end
   end
@@ -109,14 +115,19 @@ class QuestionsController < ApplicationController
   
 
   def change_answer_div
-    @question = Question.where(" id = (?)", params[:id]).first unless params[:id].blank?
-    if params['type'] == "Multiple Choice"
-      @ajax_data = "multiple_choice"
-    elsif params['type'] == "Multiple Choice/Answer"
-      @ajax_data = "multiple_choice_answer"
-    elsif params['type'] == "Subjective"
-      @ajax_data = "subjective"
+    unless params[:id].blank?
+      @question = Question.where(" id = (?)", params[:id]).first
+    else
+      @question = params[:type].constantize.new
     end
+    p @question
+#    if params['type'] == "MultipleChoice"
+#      @ajax_data = "multiple_choice"
+#    elsif params['type'] == "MultipleChoiceAnswer"
+#      @ajax_data = "multiple_choice_answer"
+#    elsif params['type'] == "Subjective"
+#      @ajax_data = "subjective"
+#    end
   end
   
 
