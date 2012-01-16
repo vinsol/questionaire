@@ -2,18 +2,20 @@
 <% unless params[:id].blank? %>
   <% (1..4).each do |index| %>
     <% if @question.options[index-1] %>
-      <%= text_field_tag "question[options_attributes][#{index}][body]", @question.options[index-1].body %>&nbsp;&nbsp;&nbsp;&nbsp;
-      <%= radio_button_tag "question[options_attributes][answer]", value = index, @question.options[index-1].answer %>
-      <%= hidden_field_tag "question[options_attributes][#{index}][id]", @question.options[index-1].id %>
-      <%= hidden_field_tag "question[options_attributes][#{index}][_destroy]", false %><br/>
+      <%= text_field_tag "multiple_choice[options_attributes][#{index}][body]", @question.options[index-1].body %>&nbsp;&nbsp;&nbsp;&nbsp;
+      <%= radio_button_tag "answer", value = index, @question.options[index-1].answer %>
+      <%= hidden_field_tag "multiple_choice[options_attributes][#{index}][id]", @question.options[index-1].id %>
+      <%= hidden_field_tag "multiple_choice[options_attributes][#{index}][_destroy]", false %><br/>
     <% else %>
-      <%= text_field_tag "question[options_attributes][#{index}][body]" %>&nbsp;&nbsp;&nbsp;&nbsp;
-      <%= radio_button_tag "question[options_attributes][answer]", value = index %><br/>
+      <%= text_field_tag "multiple_choice[options_attributes][#{index}][body]" %>&nbsp;&nbsp;&nbsp;&nbsp;
+      <%= radio_button_tag "answer", value = index %><br/>
     <% end %>
+    <%= hidden_field_tag "multiple_choice[options_attributes][#{index}][answer]", false %>
   <% end %>
 <% else %>
   <% (1..4).each do |index| %>
-    <%= text_field_tag "question[options_attributes][#{index}][body]" %>&nbsp;&nbsp;&nbsp;&nbsp;<%= radio_button_tag 'question[options_attributes][answer]', value = index, (index == 1) %><br/>
+    <%= text_field_tag "multiple_choice[options_attributes][#{index}][body]" %>&nbsp;&nbsp;&nbsp;&nbsp;<%= radio_button_tag "answer", value = index, (index == 1) %><br/>
+    <%= hidden_field_tag "multiple_choice[options_attributes][#{index}][answer]", false %>
   <% end %>
 <% end %>
 

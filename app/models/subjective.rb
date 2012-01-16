@@ -3,6 +3,9 @@ class Subjective < Question
   
 #  accepts_nested_attributes_for :option, :allow_destroy => true
   
+  acts_as_taggable
+  acts_as_taggable_on :tags
+  
   before_create :valid_answer
   
   def valid_answer

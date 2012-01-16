@@ -12,6 +12,9 @@ $('#question_body').attr('name', name.replace(name.substr(0,name.indexOf("[")), 
 name = $('#question_provider').attr('name')
 $('#question_provider').attr('name', name.replace(name.substr(0,name.indexOf("[")), "<%= params[:type].underscore %>"))
 
+name = $('#question_admin_id').attr('name')
+$('#question_admin_id').attr('name', name.replace(name.substr(0,name.indexOf("[")), "<%= params[:type].underscore %>"))
+
 var types = $('.question_type')
 for(var i = 0; i <= types.length; i++) {
   name = $(types[i]).attr('name');

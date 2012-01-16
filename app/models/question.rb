@@ -18,34 +18,18 @@ class Question < ActiveRecord::Base
   
   accepts_nested_attributes_for :options, :allow_destroy => true, :reject_if => lambda { |c| c['body'].blank? }
   
-#  before_create :atleast_two_options
-#  before_create :valid_answer
-  
   before_save :valid_provider
+  
+  attr_accessible :type, :body, :options_attributes, :tag, :category_id, :level, :provider, :admin_id
   
   attr_accessor :tag
   
   def valid_provider
-    if provider.empty? || provider =~ /^\s+$/
+    if provider.blank?
       self.provider = nil
     end
   end
-   
-  def self.map_answer(question)
-    ques_options = question[:options_attributes]
-    if question[:type] == "MultipleChoice"
-      ans = ques_options.delete(:answer)
-      ques_options.each do |opt_i, opt|
-        ques_options[opt_i][:answer] = (opt_i == ans)
-      end
-    elsif question[:type] == "MultipleChoiceAnswer"
-      ques_options.each do |opt_i, opt|
-        ques_options[opt_i][:answer] = !ques_options[opt_i][:answer].nil?
-      end
-    end
-    ques_options
-  end
-   
+  
   def self.question_tags(str)
 		taggings = tag_counts_on(:tags).collect{|t| [t.id, t.name]}
 		question_tags = taggings.select{|tag| tag[1].downcase.match("#{ str }".downcase)}.uniq
@@ -59,15 +43,6 @@ class Question < ActiveRecord::Base
     data
   end
   
-  ## Take 2 and 4 in constants
-#  def atleast_two_options
-#    if type != "Subjective" && !(Question::OPTIONS_RANGE[:min]..Question::OPTIONS_RANGE[:max]).include?(options.length)
-#      errors.add('options', 'Atleast two options')
-#      return false 
-#    end
-#  end
-  
-  
   ## Optimize
   def atleast_two_options?(question)
     if question[:type] != "Subjective"
@@ -80,31 +55,14 @@ class Question < ActiveRecord::Base
     end 
   end
   
-  
-  ## Optimize
-#  def valid_answer
-#    if type != "Subjective"
-#      ans_temp = 0
-#      # Why are u checking == true
-#      options.each { |opt| ans_temp += 1 if opt.answer == true }
-#      if (type == "MultipleChoice" && ans_temp != 1) || (type == "MultipleChoiceAnswer" && ans_temp == 0)
-#        errors.add('answers', 'is invalid') 
-#        return false
-#      end
-#    else
-#      errors.add('answers', "can't be blank") and return false if options.empty?
-#    end
-#  end
-  
 	## Optimize	
   def valid_answer?(question)
     option = question[:options_attributes]
     if question[:type] != "Subjective"
-      
       if answer?(option)
         ans_temp = 0
         option.each do |opt_i, opt|
-          if opt[:answer] && opt[:body].blank?
+          if opt[:answer] == "true" && opt[:body].blank?
             return false
           end
         end

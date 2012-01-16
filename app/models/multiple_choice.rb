@@ -1,5 +1,8 @@
 class MultipleChoice < Question
   
+  acts_as_taggable
+  acts_as_taggable_on :tags
+  
   before_create :atleast_two_options
   before_create :valid_answer
   

@@ -8,13 +8,13 @@
   <%= render "question", :f => f %>
   
   <%= hidden_field_tag "type" %>
-  <%= hidden_field_tag "admin_id", session[:admin_id] %>
+  <%= hidden_field_tag "#{@question.class.to_s.underscore}[admin_id]", session[:admin_id], :id => "question_admin_id" %>
   
   <div class="actions">
     <% if @question.new_record? %>
-      <%= f.submit 'Create Question', :onclick => 'map_tags_and_type()' %>
+      <%= f.submit 'Create Question', :onclick => 'map_tags_and_type()', :id => "question_submit" %>
     <% else %>
-      <%= f.submit 'Update Question', :onclick => 'map_tags_and_type()' %>
+      <%= f.submit 'Update Question', :onclick => 'map_tags_and_type()', :id => "question_submit" %>
     <% end %>
   </div>
 <% end %>
@@ -38,15 +38,43 @@ function map_tags_and_type() {
   }
 }
 
+$("#question_submit").bind('click', map_answers);
 $("#question_submit").bind('click', destroy_waste_options);
 
+function map_answers() {
+  if($('#type').val() == "MultipleChoice") {
+    var ans = $("input[name='answer']");
+    for(var i = 0; i<= ans.length; i++) {
+      if($(ans[i]).is(':checked')) {
+        var val = $(ans[i]).attr('value');
+        $('#multiple_choice_options_attributes_'+val+'_answer').attr('value', true);
+        break;
+      }
+    }
+  } else if($('#type').val() == "MultipleChoiceAnswer") {
+    var ans = $("input[id^='answer_']");
+    for(var i = 0; i<= ans.length; i++) {
+      var val = $(ans[i]).attr('value');
+      if($(ans[i]).is(':checked')) {
+        $('#multiple_choice_answer_options_attributes_'+val+'_answer').attr('value', true);
+      }
+    }
+  }
+}
+
 function destroy_waste_options() {
-  var hidden_ids = $("input[id^='question_options_'][id$='_id'][type='hidden']");
-  for(var i = 0; i < hidden_ids.length; i++) {
-    var body = hidden_ids[i].id.replace("id", "body");
-    if($('#'+body).val() == "") {
-      var destroy_id = body.replace("body", "_destroy");
-      document.getElementById(destroy_id).value = "1";
+  if($('#type').val() != "Subjective") {
+    if($('#type').val() == "MultipleChoice") {
+      var hidden_ids = $("input[id^='multiple_choice_options_'][id$='_id'][type='hidden']");
+    } else if($('#type').val() == "MultipleChoiceAnswer") {
+      var hidden_ids = $("input[id^='multiple_choice_answer_options_'][id$='_id'][type='hidden']");
+    }
+    for(var i = 0; i < hidden_ids.length; i++) {
+      var body = hidden_ids[i].id.replace("id", "body");
+      if($('#'+body).val() == "") {
+        var destroy_id = body.replace("body", "_destroy");
+        document.getElementById(destroy_id).value = "1";
+      }
     }
   }
 }

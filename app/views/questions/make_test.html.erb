@@ -28,10 +28,10 @@
     <div id = "type_cat">
       <div class="field" style = "float:left">
         
-				<p><b><%= label_tag :ques_type %></b></p>
+				<p><b><%= label_tag :type %></b></p>
 
-				<% Question::TYPE.each do |key, type| %>
-          <p><%= check_box_tag "type[#{key}]", type %> <%= label_tag "type_#{key}", type %></p>
+				<% Question::TYPE.each do |type| %>
+          <p><%= check_box_tag 'type['+type.underscore+']', type %> <%= label_tag 'type_'+type.underscore, type.titleize %></p>
         <% end %>
 
       </div>

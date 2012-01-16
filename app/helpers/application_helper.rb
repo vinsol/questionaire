@@ -79,7 +79,7 @@ module ApplicationHelper
             q << question.body
           end
           
-          unless question.ques_type == "Subjective"
+          unless question.type == "Subjective"
             options = question.options.shuffle.sort_by{rand}.shuffle
             bullets = ["(a.) ", "(b.) ", "(c.) ", "(d.) "]
             answers_doc.paragraph(styles['PS_ANS']) do |a|

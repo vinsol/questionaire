@@ -29,14 +29,8 @@ class QuestionsController < ApplicationController
 
 
   def create
-    ## Cannot assign in params
-#    params[:question][:options_attributes] = Question.map_answer(params[:question])
-    @question = params[:type].constantize.new(params[:type].underscore.to_sym)
-    ## Send hidden field from form
-#    @question.admin_id = session[:admin_id]
+    @question = params[:type].constantize.new(params[params[:type].underscore.to_s])
     @question.tag_list = params[:as_values_tags]
-
-    p @question
 
     if @question.save
       redirect_to(@question, :notice => 'Question was successfully created.')
@@ -49,30 +43,20 @@ class QuestionsController < ApplicationController
     
   def update
     
-#    @question.admin_id = session[:admin_id]
-    
-    ## Send hidden field from form
     @question.tag_list = params[:as_values_tags]
-        
-    params[:question][:options_attributes] = Question.map_answer(params[:question])
-    
-    p "+"* 80
-    p @question
-    p params
-    p "+"* 80
-    
-    unless (@question.atleast_two_options?(params[:question]))
+
+    unless (@question.atleast_two_options?(params[params[:type].underscore.to_sym]))
      flash[:option_error] = 'Atleast two and atmost four options are valid'
     end
 
-    unless (@question.valid_answer?(params[:question]))
+    unless (@question.valid_answer?(params[params[:type].underscore.to_sym]))
      flash[:answer_error] = ' not valid'
     end
 
-    if flash[:option_error].blank? && flash[:answer_error].blank? && @question.update_attributes(params[:question])
+    if flash[:option_error].blank? && flash[:answer_error].blank? && @question.update_attributes(params[params[:type].underscore.to_sym])
       redirect_to(@question, :notice => 'Question was successfully updated.') 
     else
-      @type = params['question']['type']
+      @type = params[:type]
       render :action => "edit" 
     end
   end
