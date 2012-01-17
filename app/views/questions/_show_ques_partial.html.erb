@@ -24,7 +24,7 @@
 <% end %>
 <p class = "extras">
   &lt;<b>Type: </b><%= @question.type.titleize %>&gt;&nbsp;&nbsp;&nbsp;
-  &lt;<b>Level: </b><%= Question::LEVEL[@question.level][0] %>&gt;&nbsp;&nbsp;&nbsp;
+  &lt;<b>Level: </b><%= LEVEL[@question.level][0] %>&gt;&nbsp;&nbsp;&nbsp;
   &lt;<b>Category: </b><%= @question.category.name %>&gt;&nbsp;&nbsp;&nbsp;
   <% if !@question.tag_list.empty? %>
     &lt;<b>Tags: </b>

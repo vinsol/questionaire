@@ -60,7 +60,7 @@
 						  <div class="leftsub">
 							  <h4 style="margin:5px 0 5px 0;">Level</h4>
 							  <p style="margin:10px 0 10px 0;">
-							    <% Question::LEVEL.each_with_index do |level, index| %>
+							    <% LEVEL.each_with_index do |level, index| %>
 							      <div id = "level_name"><%= link_to level[0], level_index_questions_path(level[1]) %></div>
 							      <div id = "level_count">
 							        <%= Question.count(:group => :level)[level[1]] ? Question.count(:group => :level)[level[1]] : 0 %>

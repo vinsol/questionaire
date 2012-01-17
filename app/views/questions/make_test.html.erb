@@ -30,7 +30,7 @@
         
 				<p><b><%= label_tag :type %></b></p>
 
-				<% Question::TYPE.each do |type| %>
+				<% TYPE.each do |type| %>
           <p><%= check_box_tag 'type['+type.underscore+']', type %> <%= label_tag 'type_'+type.underscore, type.titleize %></p>
         <% end %>
 
@@ -48,7 +48,7 @@
       <div class="field" id = "ques_level" style="float:left">
         <p><b><%= label_tag :level, 'No. of Questions/Level' %></b>&nbsp;&nbsp;<br /><span class = "error" id = "error3"></span></p>
         <table>
-        <% Question::LEVEL.each do |level| %>
+        <% LEVEL.each do |level| %>
           <tr>
             <td><p><%= label_tag "level_#{level[1]}", level[0] %></p></td>
             <td><%= text_field_tag "level[#{level[1]}]",nil , :size => '2' %></td>

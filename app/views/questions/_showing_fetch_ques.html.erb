@@ -8,7 +8,7 @@
       <p class = "extras">
         &lt;<b>Type: </b><%= question.type.titleize %>&gt;&nbsp;&nbsp;&nbsp;
         <% unless params[:action] == "level_index" %>
-			    &lt;<b>Level: </b><%= Question::LEVEL[question.level][0] %>&gt;&nbsp;&nbsp;&nbsp;
+			    &lt;<b>Level: </b><%= LEVEL[question.level][0] %>&gt;&nbsp;&nbsp;&nbsp;
 			  <% end %>
 			  <% unless params[:action] == "category_index" %>
           &lt;<b>Category: </b><%= question.category.name %>&gt;&nbsp;&nbsp;&nbsp;

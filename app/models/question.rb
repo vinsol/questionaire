@@ -1,8 +1,8 @@
 class Question < ActiveRecord::Base
 
-  LEVEL = [["Beginner", 0], ["Intermediate", 1], ["Master", 2]]
-  OPTIONS_RANGE = {:min => 2, :max => 4 }
-  TYPE = ["Subjective", "MultipleChoice", "MultipleChoiceAnswer"]
+#  LEVEL = [["Beginner", 0], ["Intermediate", 1], ["Master", 2]]
+#  OPTIONS_RANGE = {:min => 2, :max => 4 }
+#  TYPE = ["Subjective", "MultipleChoice", "MultipleChoiceAnswer"]
   
   belongs_to :category, :counter_cache => true
   has_many :options, :dependent => :destroy
@@ -56,7 +56,7 @@ class Question < ActiveRecord::Base
   
   def atleast_two_options
     opts_temp = @options.select {|opt| !opt.body.blank?}
-    if !options?(@options) || !(Question::OPTIONS_RANGE[:min]..Question::OPTIONS_RANGE[:max]).include?(opts_temp.length)
+    if !options?(@options) || !(OPTIONS_RANGE[:min]..OPTIONS_RANGE[:max]).include?(opts_temp.length)
       errors.add('options', 'Atleast two options')
       return false 
     end

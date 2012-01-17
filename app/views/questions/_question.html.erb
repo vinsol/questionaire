@@ -8,7 +8,7 @@
 
   <div class="field">
     <span class = "label_bold"><%= f.label :type, "Type" %></span><br/>
-    <% Question::TYPE.each do |type| %>
+    <% TYPE.each do |type| %>
       <%= f.radio_button :type, type, :checked => @type == type, :onclick => "change_answer_div(this.value)", :class => "question_type" %>
       <%= f.label :type, type.titleize %>&nbsp;
     <% end %>
@@ -39,7 +39,7 @@
 
   <div class="field" id = "ques_level">
     *<%= f.label :level %><span class='error'> <%= get_error(@question, :level) %></span> <br/>
-    <%= f.select :level, Question::LEVEL, {:prompt => 'Select--'}, {:id => "question_level"} %>
+    <%= f.select :level, LEVEL, {:prompt => 'Select--'}, {:id => "question_level"} %>
   </div>
   
   <div class = "field" id = "provide">
