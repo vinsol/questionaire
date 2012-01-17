@@ -5,9 +5,9 @@ class QuestionsController < ApplicationController
   
   def index
     unless(params[:text].blank? )
-      @questions = Question.where("body like '%#{params[:text]}%'").paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+      @questions = Question.where("body like '%#{params[:text]}%'").paginate :include => :category,:page => params[:page], :order => 'updated_at DESC', :per_page => 5
     else
-      @questions = Question.paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+      @questions = Question.paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
     end
   end
 
@@ -59,12 +59,12 @@ class QuestionsController < ApplicationController
   
 
   def tags_index
-    @questions = Question.tagged_with(params[:name]).paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+    @questions = Question.tagged_with(params[:name]).paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
   end
   
 
   def level_index
-    @questions = Question.where("level = ?",params[:id]).paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+    @questions = Question.where("level = ?",params[:id]).paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
   end
   
   def category_index
