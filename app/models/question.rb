@@ -97,6 +97,7 @@ class Question < ActiveRecord::Base
     find_by_sql(sql)
   end
   
+  ## make temp_test a constant
   def self.download(name)
     files = Dir.glob("#{RAILS_ROOT}/public/temp_test/*")
     Zip::Archive.open("#{RAILS_ROOT}/public/temp_test/"+name+'.zip', Zip::CREATE) do |ar|
@@ -108,10 +109,12 @@ class Question < ActiveRecord::Base
   
   private
   
+  ## Please DO NOT REPEAT - comparison with true
   def answers?(opts)
     opts.any? {|opt| opt.answer == true}
   end
   
+  ## Please DO NOT REPEAT - comparison with true
   def options?(opts)
     opts.empty? ? false : !opts.all? {|opt| opt.body.blank? == true}
   end

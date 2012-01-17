@@ -4,7 +4,8 @@ class QuestionsController < ApplicationController
   before_filter :get_question_by_id, :only => [:show, :edit, :update, :destroy]
   
   def index
-    unless(params[:text].blank? )
+    unless(params[:text].blank?)
+      ## put params[text] ouside qoutes, use the '?' notation for security purpose
       @questions = Question.where("body like '%#{params[:text]}%'").paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
     else
       @questions = Question.paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
@@ -64,11 +65,11 @@ class QuestionsController < ApplicationController
   
 
   def level_index
-    @questions = Question.where("level = ?",params[:id]).paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+    @questions = Question.where("level = ?", params[:id]).paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
   end
   
   def category_index
-    @questions = Question.where("category_id = ?",params[:id]).paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+    @questions = Question.where("category_id = ?", params[:id]).paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
   end
 
   def make_test
