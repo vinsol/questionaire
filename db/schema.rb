@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120113095627) do
+ActiveRecord::Schema.define(:version => 20120117071024) do
 
   create_table "admins", :force => true do |t|
     t.datetime "remember_created_at"
@@ -44,6 +44,8 @@ ActiveRecord::Schema.define(:version => 20120113095627) do
     t.boolean  "answer",      :default => false
   end
 
+  add_index "options", ["question_id"], :name => "index_options_on_question_id"
+
   create_table "questions", :force => true do |t|
     t.text     "body",                                  :null => false
     t.integer  "level",                                 :null => false
@@ -55,7 +57,9 @@ ActiveRecord::Schema.define(:version => 20120113095627) do
     t.string   "provider"
   end
 
+  add_index "questions", ["admin_id"], :name => "index_questions_on_admin_id"
   add_index "questions", ["body"], :name => "fulltext_body"
+  add_index "questions", ["category_id"], :name => "index_questions_on_category_id"
 
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"

@@ -36,6 +36,7 @@ gem 'capistrano', '2.9.0'
 #gem 'ruby-debug'
 gem 'ruby-debug19', :require => 'ruby-debug'
 
+gem "bullet", :group => "development"
 # Bundle the extra gems:
 # gem 'bj'
 # gem 'nokogiri'

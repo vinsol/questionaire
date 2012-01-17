@@ -16,9 +16,11 @@ class Question < ActiveRecord::Base
   validates :category_id, :presence => true
   validates :level, :presence => true
   
-  accepts_nested_attributes_for :options, :allow_destroy => true, :reject_if => lambda { |c| c['body'].blank? }
+  accepts_nested_attributes_for :options, :allow_destroy => true, :reject_if => lambda {|c| c['body'].blank? && c['answer'] == 'false'}
   
   before_save :valid_provider
+  before_save :atleast_two_options, :if => Proc.new { |ques| ques.type != "Subjective" }
+  before_save :valid_answer
   
   attr_accessible :type, :body, :options_attributes, :tag, :category_id, :level, :provider, :admin_id
   
@@ -43,34 +45,20 @@ class Question < ActiveRecord::Base
     data
   end
   
-  ## Optimize
-  def atleast_two_options?(question)
-    if question[:type] != "Subjective"
-      option = question[:options_attributes]
-      c = 0
-      option.each { |q_i, q| c += 1 unless q[:body].blank? }
-      return true if (Question::OPTIONS_RANGE[:min]..Question::OPTIONS_RANGE[:max]).include?(c)
+  def valid_answer
+    if type != "Subjective"
+      errors.add('answers', "can't be blank") and return false unless answers?(@options)
+      @options.each { |opt| errors.add('answers', 'is invalid') and return false if opt.answer && opt.body.blank? }
     else
-      return true
-    end 
+      errors.add('answers', "can't be blank") and return false if @options.first.body.blank?
+    end
   end
   
-	## Optimize	
-  def valid_answer?(question)
-    option = question[:options_attributes]
-    if question[:type] != "Subjective"
-      if answer?(option)
-        ans_temp = 0
-        option.each do |opt_i, opt|
-          if opt[:answer] == "true" && opt[:body].blank?
-            return false
-          end
-        end
-      else
-        return false
-      end
-    else
-      return !option['1'][:body].blank?
+  def atleast_two_options
+    opts_temp = @options.select {|opt| !opt.body.blank?}
+    if !options?(@options) || !(Question::OPTIONS_RANGE[:min]..Question::OPTIONS_RANGE[:max]).include?(opts_temp.length)
+      errors.add('options', 'Atleast two options')
+      return false 
     end
   end
   
@@ -124,8 +112,11 @@ class Question < ActiveRecord::Base
   
   private
   
-  def answer?(option)
-    !option.select { |opt_i, opt| opt[:answer] }.empty?
+  def answers?(opts)
+    opts.any? {|opt| opt.answer == true}
   end
   
+  def options?(opts)
+    opts.empty? ? false : !opts.all? {|opt| opt.body.blank? == true}
+  end
 end

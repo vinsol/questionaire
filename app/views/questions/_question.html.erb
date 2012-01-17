@@ -16,10 +16,10 @@
   
   <div>
     <span id = "for_option" class = "hide label_bold" style = "padding-right: 150px;"> Options &nbsp;&nbsp; </span>
-    <span class = "label_bold">*Answer</span>&nbsp;&nbsp;<span class="error"><%= flash[:answer_error] if flash[:answer_error] %></span><span class='error'><%= get_error(@question, :answers) %></span>
+    <span class = "label_bold">*Answer</span>&nbsp;&nbsp;<span class='error'><%= get_error(@question, :answers) %></span>
   </div>
 
-  <div id = "for_option_error" ><span class="error"><%= flash[:option_error] if flash[:option_error] %></span><span class='error'><%= get_error(@question, :options) %></span></div>
+  <div id = "for_option_error" ><span class='error'><%= get_error(@question, :options) %></span></div>
   
   <div class="field" id = "answer_type">
     

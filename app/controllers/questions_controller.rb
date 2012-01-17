@@ -4,7 +4,6 @@ class QuestionsController < ApplicationController
   before_filter :get_question_by_id, :only => [:show, :edit, :update, :destroy]
   
   def index
-    ## use .blank?
     unless(params[:text].blank? )
       @questions = Question.where("body like '%#{params[:text]}%'").paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
     else
@@ -42,18 +41,9 @@ class QuestionsController < ApplicationController
     
     
   def update
-    
     @question.tag_list = params[:as_values_tags]
-
-    unless (@question.atleast_two_options?(params[params[:type].underscore.to_sym]))
-     flash[:option_error] = 'Atleast two and atmost four options are valid'
-    end
-
-    unless (@question.valid_answer?(params[params[:type].underscore.to_sym]))
-     flash[:answer_error] = ' not valid'
-    end
-
-    if flash[:option_error].blank? && flash[:answer_error].blank? && @question.update_attributes(params[params[:type].underscore.to_sym])
+    
+    if @question.update_attributes(params[params[:type].underscore.to_sym])
       redirect_to(@question, :notice => 'Question was successfully updated.') 
     else
       @type = params[:type]
@@ -104,14 +94,6 @@ class QuestionsController < ApplicationController
     else
       @question = params[:type].constantize.new
     end
-    p @question
-#    if params['type'] == "MultipleChoice"
-#      @ajax_data = "multiple_choice"
-#    elsif params['type'] == "MultipleChoiceAnswer"
-#      @ajax_data = "multiple_choice_answer"
-#    elsif params['type'] == "Subjective"
-#      @ajax_data = "subjective"
-#    end
   end
   
 
