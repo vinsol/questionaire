@@ -1,9 +1,5 @@
 class Question < ActiveRecord::Base
 
-#  LEVEL = [["Beginner", 0], ["Intermediate", 1], ["Master", 2]]
-#  OPTIONS_RANGE = {:min => 2, :max => 4 }
-#  TYPE = ["Subjective", "MultipleChoice", "MultipleChoiceAnswer"]
-  
   belongs_to :category, :counter_cache => true
   has_many :options, :dependent => :destroy
   belongs_to :admin

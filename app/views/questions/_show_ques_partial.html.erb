@@ -1,6 +1,6 @@
-<p class = "title_ques" style = "float:left"><b>Question: </b><%= @question.body %></p>
+<p class = "title_ques" style = "float:left;  margin-bottom:10px"><b>Question: </b><%= @question.body %></p>
 <% if @question.provider %>
-  <p style = "float:right; margin-right: 10px"><b>Provider: </b><%= @question.provider %></p>
+  <p style = "float:right; margin:0 10px 0 0"><b>Provider: </b><%= @question.provider %></p>
 <% end %><br />
 <% if @question.type == "Subjective" %>
   <p><b>Answer: </b><%= @question.options.first.body %></p>
