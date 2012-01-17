@@ -28,10 +28,6 @@ PriyankQuestionaire::Application.routes.draw do
       post 'multiple_choice_answers', :action => "create"
   end
   
-#  resources :question, :as => :subjective
-#  resources :multiple_choice
-#  resources :multiple_choice_answer
-  
   devise_for :admins, :controllers => { :omniauth_callbacks => "admins/omniauth_callbacks"}
   
   resources :admins

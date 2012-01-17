@@ -1,25 +1,2 @@
 <h2>Tag:: <%= params[:name].upcase %></h2>
-
-<% @questions.each do |question| %>
-  <div class = "show_question <%= cycle('list_line_odd', 'list_line_even') %>">
-    <p class = "title_ques" style = "float:left"><b>Question: </b><%= question.body %></p>
-    <% if question.provider %>
-      <p style = "float:right; margin-right: 10px"><b>Provider: </b><%= question.provider %></p>
-    <% end %><br/>
-    <p class = "extras">
-      &lt;<b>Type: </b><%= question.type.titleize %>&gt;&nbsp;&nbsp;&nbsp;
-      &lt;<b>Level: </b><%= Question::LEVEL[question.level][0] %>&gt;&nbsp;&nbsp;&nbsp;
-      &lt;<b>Category: </b><%= question.category.name %>&gt;&nbsp;&nbsp;&nbsp;
-      <% if !question.tag_list.empty? %>
-        &lt;<b>Tags: </b><%= question.tag_list %>&gt;
-      <% end %>
-    </p>
-    <div class = "ques_links">
-      <%= link_to 'Show', question %> |
-      <%= link_to 'Edit', edit_question_path(question) %> |
-      <%= link_to 'Destroy', question, :confirm => 'Are you sure?', :method => :delete %>
-    </div><br />
-  </div>
-<% end %>
-<br/>
-<%= will_paginate @questions %><span style="clear:both"></span>
+<%= render "showing_fetch_ques" %>

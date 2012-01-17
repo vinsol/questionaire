@@ -1,30 +1,5 @@
 <div class = "show_question" style="font-size:13px;background-color:#2B3B50;font-color:#000000;color:#ffffff;width:700px; padding:2px 10px">
-  <p class = "title_ques" style = "float:left"><b>Question: </b><%= @question.body %></p>
-  <% if @question.provider %>
-    <p style = "float:right; margin-right: 10px"><b>Provider: </b><%= @question.provider %></p>
-  <% end %><br />
-  <% if @question.type == "Subjective" %>
-    <p><b>Answer: </b><%= @question.options.first.body %></p>
-  <% else %>
-    <p style="margin-bottom:2px"><b>Options: </b></p>
-    <ol class = "show_options" type = "a">
-      <% @question.options.each do |option| %>
-        <li><%= option.body %>
-					<% if option.answer %>
-            <script>$("li").last().css('font-size','14px')</script>
-            <%= image_tag("popup_check4.png", :size => "30x15") %>
-          <% end %>
-        </li>
-      <% end %>
-    </ol>
-    <p style="color:red"><b>*Note: </b>Ticked options are answers.</p>
-  <% end %>
-  <p class = "extras">
-    &lt;<b>Type: </b><%= @question.type.titleize %>&gt;&nbsp;&nbsp;&nbsp;
-    &lt;<b>Level: </b><%= Question::LEVEL[@question.level][0] %>&gt;&nbsp;&nbsp;&nbsp;
-    &lt;<b>Category: </b><%= @question.category.name %>&gt;&nbsp;&nbsp;&nbsp;
-    <% if !@question.tag_list.empty? %>
-      &lt;<b>Tags: </b><%= @question.tag_list %>&gt;
-    <% end %>
-  </p><br/>
+
+<%= render "show_ques_partial" %>
+
 </div>

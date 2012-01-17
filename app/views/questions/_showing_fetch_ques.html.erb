@@ -1,34 +1,31 @@
 <% unless @questions.empty? %>
   <% @questions.each do |question| %>
-
     <div class = "show_question <%= cycle('list_line_odd', 'list_line_even') %>">
       <p class = "title_ques" style = "float:left"><b>Question: </b><%= question.body %></p>
       <% if question.provider %>
         <p style = "float:right; margin-right: 10px"><b>Provider: </b><%= question.provider %></p>
       <% end %><br/>
       <p class = "extras">
-
         &lt;<b>Type: </b><%= question.type.titleize %>&gt;&nbsp;&nbsp;&nbsp;
-        
-			  &lt;<b>Level: </b><%= Question::LEVEL[question.level][0] %>&gt;&nbsp;&nbsp;&nbsp;
-
-        &lt;<b>Category: </b><%= question.category.name %>&gt;&nbsp;&nbsp;&nbsp;
-        
+        <% unless params[:action] == "level_index" %>
+			    &lt;<b>Level: </b><%= Question::LEVEL[question.level][0] %>&gt;&nbsp;&nbsp;&nbsp;
+			  <% end %>
+			  <% unless params[:action] == "category_index" %>
+          &lt;<b>Category: </b><%= question.category.name %>&gt;&nbsp;&nbsp;&nbsp;
+        <% end %>
 			  <% if !question.tag_list.empty? %>
           &lt;<b>Tags: </b><%= question.tag_list %>&gt;
         <% end %>
       </p>
-
       <div class = "ques_links">
         <%= link_to 'Show', question %> |
         <%= link_to 'Edit', edit_question_path(question) %> |
         <%= link_to 'Destroy', question, :confirm => 'Are you sure?', :method => :delete %>
       </div><br />
     </div>
-
   <% end %>
 <% else %>
   <p align = "center" class = "error">No Question found for this search</p>
 <% end %>
-
-<%= will_paginate @questions %>
+<br />
+<%= will_paginate @questions %><span style="clear:both"></span>
