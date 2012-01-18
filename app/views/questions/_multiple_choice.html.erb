@@ -1,6 +1,7 @@
 
 <% unless params[:id].blank? %>
-  <% (1..4).each do |index| %>
+	<!-- Use constants for 1 and 4 -->
+  <% (OPTIONS_RANGE[:min]..OPTIONS_RANGE[:max]).each do |index| %>
     <% if @question.options[index-1] %>
       <%= text_field_tag "multiple_choice[options_attributes][#{index}][body]", @question.options[index-1].body %>&nbsp;&nbsp;&nbsp;&nbsp;
       <%= radio_button_tag "answer", value = index, @question.options[index-1].answer %>
@@ -13,7 +14,8 @@
     <%= hidden_field_tag "multiple_choice[options_attributes][#{index}][answer]", false %>
   <% end %>
 <% else %>
-  <% (1..4).each do |index| %>
+	<!-- Use constants for 1 and 4 -->
+  <% (OPTIONS_RANGE[:min]..OPTIONS_RANGE[:max]).each do |index| %>
     <%= text_field_tag "multiple_choice[options_attributes][#{index}][body]" %>&nbsp;&nbsp;&nbsp;&nbsp;<%= radio_button_tag "answer", value = index, (index == 1) %><br/>
     <%= hidden_field_tag "multiple_choice[options_attributes][#{index}][answer]", false %>
   <% end %>

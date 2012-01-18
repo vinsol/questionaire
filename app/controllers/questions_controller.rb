@@ -4,9 +4,10 @@ class QuestionsController < ApplicationController
   before_filter :get_question_by_id, :only => [:show, :edit, :update, :destroy]
   
   def index
-    unless(params[:text].blank? )
+    unless(params[:text].blank?)
       #### search on question body using ajax ####
-      @questions = Question.where("body like '%#{params[:text]}%'").paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+      ## put params[text] ouside qoutes, use the '?' notation for security purpose
+      @questions = Question.where("body like ?", '%'+params[:text]+'%').paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
     else
       @questions = Question.paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
     end
@@ -65,11 +66,11 @@ class QuestionsController < ApplicationController
   
 
   def level_index
-    @questions = Question.where("level = ?",params[:id]).paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+    @questions = Question.where("level = ?", params[:id]).paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
   end
   
   def category_index
-    @questions = Question.where("category_id = ?",params[:id]).paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+    @questions = Question.where("category_id = ?", params[:id]).paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
   end
 
   def make_test
@@ -111,12 +112,12 @@ class QuestionsController < ApplicationController
 
   def download
     name = params[:test_name]
-
-    unless FileTest.exists?("#{RAILS_ROOT}/public/temp_test/"+name+'.zip')
+    
+    unless FileTest.exists?(Rails.root.to_s + ZIP_FILE_PATH + name +'.zip')
       Question.download(name)
-      send_file "#{RAILS_ROOT}/public/temp_test/" + name + '.zip', :type => "application/zip"
+      send_file Rails.root.to_s + ZIP_FILE_PATH + name + '.zip', :type => "application/zip"
     else
-      send_file "#{RAILS_ROOT}/public/temp_test/" + name+ '.zip', :type => "application/zip"
+      send_file Rails.root.to_s + ZIP_FILE_PATH + name+ '.zip', :type => "application/zip"
     end
   end
 

@@ -12,6 +12,7 @@ class Question < ActiveRecord::Base
   validates :category_id, :presence => true
   validates :level, :presence => true
   
+  #### Priyank -- c['answer'] is been compared to string 'false' that's why the comparison is used as == 'false'
   accepts_nested_attributes_for :options, :allow_destroy => true, :reject_if => lambda {|c| c['body'].blank? && c['answer'] == 'false'}
   
   before_save :valid_provider
@@ -52,7 +53,7 @@ class Question < ActiveRecord::Base
   
   def atleast_two_options
     opts_temp = @options.select {|opt| !opt.body.blank?}
-    if !options?(@options) || !(OPTIONS_RANGE[:min]..OPTIONS_RANGE[:max]).include?(opts_temp.length)
+    if !options?(@options) || !(VALID_OPTIONS_RANGE[:min]..VALID_OPTIONS_RANGE[:max]).include?(opts_temp.length)
       errors.add('options', 'Atleast two options')
       return false 
     end
@@ -97,9 +98,10 @@ class Question < ActiveRecord::Base
     find_by_sql(sql)
   end
   
+  ## make temp_test a constant
   def self.download(name)
-    files = Dir.glob("#{RAILS_ROOT}/public/temp_test/*")
-    Zip::Archive.open("#{RAILS_ROOT}/public/temp_test/"+name+'.zip', Zip::CREATE) do |ar|
+    files = Dir.glob(Rails.root.to_s + ZIP_FILE_PATH + "*")
+    Zip::Archive.open(Rails.root.to_s + ZIP_FILE_PATH + name + '.zip', Zip::CREATE) do |ar|
       for file in files
         ar.add_file(file)
       end
@@ -108,11 +110,13 @@ class Question < ActiveRecord::Base
   
   private
   
+  ## Please DO NOT REPEAT - comparison with true
   def answers?(opts)
-    opts.any? {|opt| opt.answer == true}
+    opts.any? {|opt| opt.answer}
   end
   
+  ## Please DO NOT REPEAT - comparison with true
   def options?(opts)
-    opts.empty? ? false : !opts.all? {|opt| opt.body.blank? == true}
+    opts.empty? ? false : !opts.all? {|opt| opt.body.blank?}
   end
 end

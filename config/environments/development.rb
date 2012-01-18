@@ -8,7 +8,9 @@ PriyankQuestionaire::Application.configure do
 
   # Log error messages when you accidentally call methods on nil.
   config.whiny_nils = true
-
+  
+#  config.action_dispatch.x_sendfile_header = 'X-Sendfile'
+  
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
   config.action_view.debug_rjs             = true
@@ -24,13 +26,13 @@ PriyankQuestionaire::Application.configure do
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
   
-  config.after_initialize do
-    Bullet.enable = true
-    Bullet.alert = true
-    Bullet.bullet_logger = true
-    Bullet.console = true
-    Bullet.rails_logger = true
-    Bullet.disable_browser_cache = true
-  end
+#  config.after_initialize do
+#    Bullet.enable = true
+#    Bullet.alert = true
+#    Bullet.bullet_logger = true
+#    Bullet.console = true
+#    Bullet.rails_logger = true
+#    Bullet.disable_browser_cache = true
+#  end
 end
 
