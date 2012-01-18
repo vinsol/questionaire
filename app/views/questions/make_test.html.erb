@@ -111,6 +111,9 @@
     } else if(!($("#sets").val().match(/^\d+$/))) {
       document.getElementById("error2").innerHTML = "number expected";
       d = true;
+    } else if($("#sets").val() < 1) {
+      document.getElementById("error2").innerHTML = "number > 0 expected";
+      d = true;
     } else {
       document.getElementById("error2").innerHTML = "";
     }
