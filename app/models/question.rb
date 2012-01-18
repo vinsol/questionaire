@@ -12,6 +12,7 @@ class Question < ActiveRecord::Base
   validates :category_id, :presence => true
   validates :level, :presence => true
   
+  ## used false again?
   accepts_nested_attributes_for :options, :allow_destroy => true, :reject_if => lambda {|c| c['body'].blank? && c['answer'] == 'false'}
   
   before_save :valid_provider
