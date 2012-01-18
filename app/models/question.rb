@@ -47,7 +47,7 @@ class Question < ActiveRecord::Base
       errors.add('answers', "can't be blank") and return false unless answers?(@options)
       @options.each { |opt| errors.add('answers', 'is invalid') and return false if opt.answer && opt.body.blank? }
     else
-      errors.add('answers', "can't be blank") and return false if @options.first.body.blank?
+      errors.add('answers', "can't be blank") and return false if @options[0].body.blank?
     end
   end
   
