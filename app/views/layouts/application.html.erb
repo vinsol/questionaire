@@ -49,20 +49,22 @@
 					<div class="rightContent">
 					  <% if session["devise.googleapps_data"] %>
 						  <div class="leftsub">
-							  <h4 style="margin:5px 0 5px 0;">Tags</h4>
-							  <p style="margin:10px 0 10px 0;">
-							    <% Question.tag_counts.each do |tag| %>
-							      <div id = "tag_name"><%= link_to tag.name, tags_index_questions_path(tag.name) %></div>
-							      <div id = "tag_count"><%= tag.count %></div><br/>
-							    <% end %>
-							  </p>
+						    <h4 style="margin:5px 0 0;">Tags</h4>
+						    <div id = "tag_view" >
+						    <p style="margin:10px 0 10px 0" >
+						      <% Question.tag_counts.each do |tag| %>
+						        <div class = "tag_name"><%= link_to tag.name, tags_index_questions_path(tag.name) %></div>
+						        <div class = "tag_count"><%= tag.count %></div><br/>
+						      <% end %>
+						    </p>
+						    </div>
 						  </div>
 						  <div class="leftsub">
 							  <h4 style="margin:5px 0 5px 0;">Level</h4>
 							  <p style="margin:10px 0 10px 0;">
 							    <% LEVEL.each_with_index do |level, index| %>
-							      <div id = "level_name"><%= link_to level[0], level_index_questions_path(level[1]) %></div>
-							      <div id = "level_count">
+							      <div class = "level_name"><%= link_to level[0], level_index_questions_path(level[1]) %></div>
+							      <div class = "level_count">
 							        <%= Question.count(:group => :level)[level[1]] ? Question.count(:group => :level)[level[1]] : 0 %>
 						        </div><br/>
 							    <% end %>
@@ -73,8 +75,8 @@
 							  <p style="margin:10px 0 10px 0;">
 							    
 							    <% Category.all.each do |cat| %>
-							      <div id = "cat_name"><%= link_to cat.name, category_index_questions_path(cat.id) %></div>
-							      <div id = "cat_count">
+							      <div class = "cat_name"><%= link_to cat.name, category_index_questions_path(cat.id) %></div>
+							      <div class = "cat_count">
 							        <%= cat.questions.size %>
 						        </div><br/>
 							    <% end %>

@@ -5,6 +5,7 @@ class QuestionsController < ApplicationController
   
   def index
     unless(params[:text].blank? )
+      #### search on question body using ajax ####
       @questions = Question.where("body like '%#{params[:text]}%'").paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
     else
       @questions = Question.paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5

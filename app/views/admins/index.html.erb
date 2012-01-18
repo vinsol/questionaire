@@ -5,7 +5,7 @@
     <th>Email</th>
   </tr>
   <% @admins.each do |admin| %>
-    <tr>
+    <tr <% if admin.id == session[:admin_id] %> style = "color:red" <% end %> >
       <td>
         <% if admin.name %>
           <%= admin.name.split(" ").select {|n| n[0] = n[0].upcase; n}.join(" ") %>
