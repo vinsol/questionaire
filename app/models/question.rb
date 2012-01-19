@@ -18,10 +18,20 @@ class Question < ActiveRecord::Base
   before_save :valid_provider
   before_save :atleast_two_options, :if => Proc.new { |ques| ques.type != "Subjective" }
   before_save :valid_answer
+  before_update :update_questions_count, :if => Proc.new { |ques| ques.category_id_changed? }
   
   attr_accessible :type, :body, :options_attributes, :tag, :category_id, :level, :provider, :admin_id
   
   attr_accessor :tag
+  
+  def update_questions_count
+    old_cat = Category.where('id = ?', category_id_was).first
+    new_cat = Category.where('id = ?', category_id).first
+    Category.transaction do
+      old_cat.update_attributes(:questions_count => old_cat.questions_count - 1)
+      new_cat.update_attributes(:questions_count => new_cat.questions_count + 1)
+    end
+  end
   
   def valid_provider
     if provider.blank?
