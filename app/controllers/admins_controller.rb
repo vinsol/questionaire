@@ -14,9 +14,6 @@ class AdminsController < ApplicationController
     @admin = Admin.new(:email => params[:admin][:email])
     if @admin.save
       # move in after_save/create
-      Notifier.deliver_contact(params[:admin][:email], "Added at vinsol's questionaire", "Your email id has been added at vinsol's questionnaire as admin.")
-      
-      return if request.xhr?
       redirect_to admin_path(@admin)
     else
       render :action => 'new'
