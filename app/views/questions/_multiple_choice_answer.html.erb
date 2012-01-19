@@ -1,20 +1,33 @@
 
 <% unless params[:id].blank? %>
+
   <% (OPTIONS_RANGE[:min]..OPTIONS_RANGE[:max]).each do |index| %>
+  
     <% if @question.options[index-1] %>
-      <%= text_field_tag "multiple_choice_answer[options_attributes][#{index}][body]", @question.options[index-1].body %>&nbsp;&nbsp;&nbsp;&nbsp;
+    
+      <%= text_field_tag "question[options_attributes][#{index}][body]", @question.options[index-1].body %>&nbsp;&nbsp;&nbsp;&nbsp;
       <%= check_box_tag "answer_#{index}", value = index, @question.options[index-1].answer %><br/>
-      <%= hidden_field_tag "multiple_choice_answer[options_attributes][#{index}][id]", @question.options[index-1].id %>
-      <%= hidden_field_tag "multiple_choice_answer[options_attributes][#{index}][_destroy]", false %>
+      <%= hidden_field_tag "question[options_attributes][#{index}][id]", @question.options[index-1].id %>
+      <%= hidden_field_tag "question[options_attributes][#{index}][_destroy]", false %>
+      
     <% else %>
-      <%= text_field_tag "multiple_choice_answer[options_attributes][#{index}][body]" %>&nbsp;&nbsp;&nbsp;&nbsp;
+    
+      <%= text_field_tag "question[options_attributes][#{index}][body]" %>&nbsp;&nbsp;&nbsp;&nbsp;
       <%= check_box_tag "answer_#{index}", value = index %><br/>
+      
     <% end %>
-    <%= hidden_field_tag "multiple_choice_answer[options_attributes][#{index}][answer]", false %>
+    
+    <%= hidden_field_tag "question[options_attributes][#{index}][answer]", false %>
+    
   <% end %>
+  
 <% else %>
+
   <% (OPTIONS_RANGE[:min]..OPTIONS_RANGE[:max]).each do |index| %>
-    <%= text_field_tag "multiple_choice_answer[options_attributes][#{index}][body]" %>&nbsp;&nbsp;&nbsp;&nbsp;<%= check_box_tag "answer_#{index}", value = index %><br/>
-    <%= hidden_field_tag "multiple_choice_answer[options_attributes][#{index}][answer]", false %>
+  
+    <%= text_field_tag "question[options_attributes][#{index}][body]" %>&nbsp;&nbsp;&nbsp;&nbsp;<%= check_box_tag "answer_#{index}", value = index %><br/>
+    <%= hidden_field_tag "question[options_attributes][#{index}][answer]", false %>
+    
   <% end %>
+  
 <% end %>

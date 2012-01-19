@@ -3,6 +3,7 @@
 <% end %>
 
 <div id = "form_left">
+
   <h2>Prepare a Test</h2>
 	
   <%= form_tag(fetch_questions_path, :remote => true, :method => :get) do %>
@@ -26,51 +27,65 @@
     </div>
     
     <div id = "type_cat">
+
       <div class="field" style = "float:left">
-        
 				<p><b><%= label_tag :type %></b></p>
 
 				<% TYPE.each do |type| %>
           <p><%= check_box_tag 'type['+type.underscore+']', type %> <%= label_tag 'type_'+type.underscore, type.titleize %></p>
         <% end %>
-
       </div>
       
       <div class="field" id = "ques_category" style = "float:right">
         <p><b><%= label_tag :category_id %></b></p>
+      
         <%= select :category_id, nil, options_for_select(Category.all.collect {|c| [c.name, c.id]}), :prompt => "Select a category--" %><br />
+      
         <span class = "error" id = "error5"></span>
       </div><br/>
+      
     </div>
 
     <div id = "level_sets">
 
       <div class="field" id = "ques_level" style="float:left">
         <p><b><%= label_tag :level, 'No. of Questions/Level' %></b>&nbsp;&nbsp;<br /><span class = "error" id = "error3"></span></p>
+
         <table>
+
         <% LEVEL.each do |level| %>
           <tr>
             <td><p><%= label_tag "level_#{level[1]}", level[0] %></p></td>
             <td><%= text_field_tag "level[#{level[1]}]",nil , :size => '2' %></td>
           </tr>
         <% end %>
+
         </table>
+
       </div>
 
       <div class="field" style="float:right">
         <p><b>*<%= label_tag :sets, "No. of Sets" %></b>&nbsp;&nbsp;
+
 				 <%= text_field_tag :sets, nil, :size => 1 %></p>
+
         <span class = "error" id = "error2"></span>
       </div><br/>
+
     </div>
     
 		<div style="float:right">
+
 			<%= submit_tag 'Generate', :onclick => "return ques_validations()" %>
+
 		</div><br/>
+
   <% end %>  
+
 </div>
 
 <div id = "form_right">
+
   <div id = "fetched_ques">
 
     <h2 align="center">Fetch Questions</h2>
@@ -78,7 +93,9 @@
 	
     </p>
   </div>
+
 </div>
+
 <br/>
 
 <script>

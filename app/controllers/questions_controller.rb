@@ -19,7 +19,7 @@ class QuestionsController < ApplicationController
 
 
   def new
-    @question = Subjective.new
+    @question = Question.new
     @type = @question.type
   end
 
@@ -30,13 +30,13 @@ class QuestionsController < ApplicationController
 
 
   def create
-    @question = params[:type].constantize.new(params[params[:type].underscore.to_s])
+    @question = Question.new(params[:question])
     @question.tag_list = params[:as_values_tags]
 
     if @question.save
       redirect_to(@question, :notice => 'Question was successfully created.')
     else
-      @type = params[:type] 
+      @type = params[:question][:type] 
       render :action => "new"
     end
   end
@@ -45,10 +45,10 @@ class QuestionsController < ApplicationController
   def update
     @question.tag_list = params[:as_values_tags]
     
-    if @question.update_attributes(params[params[:type].underscore.to_sym])
+    if @question.update_attributes(params[:question])
       redirect_to(@question, :notice => 'Question was successfully updated.') 
     else
-      @type = params[:type]
+      @type = params[:question][:type]
       render :action => "edit" 
     end
   end
@@ -94,7 +94,7 @@ class QuestionsController < ApplicationController
     unless params[:id].blank?
       @question = Question.where(" id = (?)", params[:id]).first
     else
-      @question = params[:type].constantize.new
+      @question = Question.new
     end
   end
   

@@ -1,38 +1,62 @@
 <p class = "title_ques" style = "float:left;  margin-bottom:10px"><b>Question: </b><%= @question.body %></p>
+
 <% if @question.provider %>
+
   <p style = "float:right; margin:0 10px 0 0"><b>Provider: </b><%= @question.provider %></p>
+  
 <% end %><br />
+
 <% if @question.type == "Subjective" %>
+
   <p><b>Answer: </b><%= @question.options.first.body %></p>
+  
 <% else %>
+
   <p style="margin-bottom:2px"><b>Options: </b></p>
+  
   <ol class = "show_options" type = "a">
+  
     <% @question.options.each do |option| %>
+  
       <li><%= option.body %>
+	
 				<% if option.answer %>
           <script>$("li").last().css('font-size','14px')</script>
+  
           <% if params[:controller] == "questions" && params[:action] == "show" %>
             <%= image_tag("correct.jpg", :size => "25x15") %>
           <% else %>
             <%= image_tag("popup_check4.png", :size => "30x15") %>
           <% end %>
+  
         <% end %>
+  
       </li>
+  
     <% end %>
+  
   </ol>
+  
   <p style="color:red"><b>*Note: </b>Ticked options are answers.</p>
+  
 <% end %>
+
 <p class = "extras">
+
   &lt;<b>Type: </b><%= @question.type.titleize %>&gt;&nbsp;&nbsp;&nbsp;
   &lt;<b>Level: </b><%= LEVEL[@question.level][0] %>&gt;&nbsp;&nbsp;&nbsp;
   &lt;<b>Category: </b><%= @question.category.name %>&gt;&nbsp;&nbsp;&nbsp;
+  
   <% if !@question.tag_list.empty? %>
     &lt;<b>Tags: </b>
+    
     <% if params[:controller] == "questions" && params[:action] == "show" %>
       <%= @question.tag_list.collect { |tag| link_to tag, tags_index_questions_path(tag) }.join(", ").html_safe %>
     <% else %>
       <%= @question.tag_list %>
     <% end %>
+
     &gt;
   <% end %>
+  
 </p><br/>
