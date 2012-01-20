@@ -286,6 +286,12 @@ table#show_admins td {
 }
 
 #tag_view {
-  max-height: 182px;
-  overflow: auto;
+  max-height: 163px;
+  overflow: hidden;
+}
+
+#view_all_tags a {
+  color: #2F67D8;
+  font-size: 15px;
+  padding-right: 65px;
 }
