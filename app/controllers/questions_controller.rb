@@ -13,6 +13,7 @@ class QuestionsController < ApplicationController
     end
   end
 
+
   def show
     
   end
@@ -89,7 +90,7 @@ class QuestionsController < ApplicationController
     @questions = Question.search(ques, params[:type], params[:category_id], params[:level])
   end
   
-
+  # include options
   def change_answer_div
     unless params[:id].blank?
       @question = Question.where(:id => params[:id]).first
