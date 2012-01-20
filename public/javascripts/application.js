@@ -65,6 +65,8 @@ function ques_validations() {
   var e = false;
 	var f = false;
 	var g = false;
+	
+	// Optimize is possible
 	// Validation for question paper name field
   if($("#name").val() == "") {
     document.getElementById("error1").innerHTML = "can't be blank";
@@ -72,7 +74,7 @@ function ques_validations() {
   } else {
     document.getElementById("error1").innerHTML = "";
   }
-  // Validatio for question paper name field
+  // Validation for question paper name field
   if($("#instructions").val() == "") {
     document.getElementById("error4").innerHTML = "can't be blank";
     var f = true;

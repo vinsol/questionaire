@@ -12,7 +12,7 @@
       
     <% else %>
     
-      <%= text_field_tag "question[options_attributes][#{index}][body]" %>&nbsp;&nbsp;&nbsp;&nbsp;
+      <%= text_field_tag "question[options_attributes][#{index}][body]" %> &nbsp;&nbsp;&nbsp;&nbsp;
       <%= radio_button_tag "answer", value = index %><br/>
       
     <% end %>
@@ -25,7 +25,8 @@
 
   <% (OPTIONS_RANGE[:min]..OPTIONS_RANGE[:max]).each do |index| %>
   
-    <%= text_field_tag "question[options_attributes][#{index}][body]" %>&nbsp;&nbsp;&nbsp;&nbsp;<%= radio_button_tag "answer", value = index, (index == 1) %><br/>
+    <%= text_field_tag "question[options_attributes][#{index}][body]" %> &nbsp;&nbsp;&nbsp;&nbsp;
+		<%= radio_button_tag "answer", value = index, (index == 1) %><br/>
     <%= hidden_field_tag "question[options_attributes][#{index}][answer]", false %>
     
   <% end %>

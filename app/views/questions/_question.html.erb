@@ -2,27 +2,35 @@
   
   <div class="field">
     <span class = "label_bold">
-		*<%= f.label :body, 'Question?' %></span>&nbsp;&nbsp;<span class='error'> <%= get_error(@question, :body) %></span><br/>
+		*<%= f.label :body, 'Question?' %></span>&nbsp;&nbsp;
+		<span class='error'> <%= get_error(@question, :body) %></span><br/>
     <%= f.text_area :body, :rows => 5, :cols => 70 %>
   </div>
 
   <div class="field">
-    <span class = "label_bold"><%= f.label :type, "Type" %></span><br/>
+    <span class = "label_bold">
+			<%= f.label :type, "Type" %>
+		</span><br/>
     
     <% TYPE.each do |type| %>
       <%= f.radio_button :type, type, :checked => @type == type, :onclick => "change_answer_div(this.value)" %>
-      <%= f.label :type, type.titleize %>&nbsp;
+      <%= f.label :type, type.titleize %> &nbsp;
     <% end %>
   </div>
   
   <div>
     <span id = "for_option" class = "hide label_bold" style = "padding-right: 150px;"> Options &nbsp;&nbsp; </span>
-    <span class = "label_bold">*Answer</span>&nbsp;&nbsp;<span class='error'><%= get_error(@question, :answers) %></span>
+    <span class = "label_bold">*Answer</span>&nbsp;&nbsp;
+		<span class='error'><%= get_error(@question, :answers) %></span>
   </div>
 
-  <div id = "for_option_error" ><span class='error'><%= get_error(@question, :options) %></span></div>
+  <div id = "for_option_error">
+		<span class='error'><%= get_error(@question, :options) %></span>
+	</div>
   
-  <div class="field" id = "answer_type"></div>
+  <div class="field" id = "answer_type">
+  	
+  </div>
   
   <div class="field">
     <span class = "label_bold"><%= f.label :tag %></span>&nbsp;&nbsp;

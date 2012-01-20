@@ -109,7 +109,6 @@ class Question < ActiveRecord::Base
     find_by_sql(sql)
   end
   
-  ## make temp_test a constant
   def self.download(name)
     files = Dir.glob(Rails.root.to_s + ZIP_FILE_PATH + "*")
     Zip::Archive.open(Rails.root.to_s + ZIP_FILE_PATH + name + '.zip', Zip::CREATE) do |ar|
