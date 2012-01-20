@@ -2,7 +2,7 @@
 <h2 style = "float:left">Listing questions</h2>
 
 <p style = "float:right">
-	Search: <%= params[:text].nil? ? text_field_tag(:search, nil, :size => 50) : text_field_tag(:search, params[:text], :size => 50) %>
+	Search: <%= text_field_tag(:search, params[:text], :size => 50) %>
 </p>
 
 <br />
