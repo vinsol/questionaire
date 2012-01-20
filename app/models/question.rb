@@ -1,6 +1,7 @@
 class Question < ActiveRecord::Base
 
   belongs_to :category, :counter_cache => true
+
   has_many :options, :dependent => :destroy
   belongs_to :admin
   
@@ -16,6 +17,7 @@ class Question < ActiveRecord::Base
   accepts_nested_attributes_for :options, :allow_destroy => true, :reject_if => lambda {|c| c['body'].blank? && c['answer'] == 'false'}
   
   before_save :valid_provider
+  # Use constant for Subjective
   before_save :atleast_two_options, :if => Proc.new { |ques| ques.type != "Subjective" }
   before_save :valid_answer
   after_update :update_questions_count, :if => Proc.new { |ques| ques.category_id_changed? }
@@ -48,6 +50,7 @@ class Question < ActiveRecord::Base
     data
   end
   
+  ## Use constant
   def valid_answer
     if type != "Subjective"
       errors.add('answers', "can't be blank") and return false unless answers?(@options)
@@ -57,6 +60,7 @@ class Question < ActiveRecord::Base
     end
   end
   
+  
   def atleast_two_options
     opts_temp = @options.select {|opt| !opt.body.blank?}
     if !options?(@options) || !(VALID_OPTIONS_RANGE[:min]..VALID_OPTIONS_RANGE[:max]).include?(opts_temp.length)
@@ -64,6 +68,7 @@ class Question < ActiveRecord::Base
       return false 
     end
   end
+  
   
   def self.get_ques_by_tags(tags)
     unless tags.empty?

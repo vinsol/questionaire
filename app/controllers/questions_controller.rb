@@ -32,7 +32,7 @@ class QuestionsController < ApplicationController
   def create
     @question = Question.new(params[:question])
     @question.tag_list = params[:as_values_tags]
-
+    
     if @question.save
       redirect_to(@question, :notice => 'Question was successfully created.')
     else
@@ -92,7 +92,7 @@ class QuestionsController < ApplicationController
 
   def change_answer_div
     unless params[:id].blank?
-      @question = Question.where(" id = (?)", params[:id]).first
+      @question = Question.where(:id => params[:id]).first
     else
       @question = Question.new
     end
@@ -124,7 +124,7 @@ class QuestionsController < ApplicationController
   private
   
   def get_question_by_id
-    @question = Question.where("id = (?)",params[:id]).first
+    @question = Question.where(:id => params[:id]).first
   end
   
 end

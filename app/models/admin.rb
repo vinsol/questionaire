@@ -11,12 +11,12 @@ class Admin < ActiveRecord::Base
   has_many :questions
   
   after_create :send_notification
-  
+
+  ## Use rails 3 format
   def send_notification
     Notifier.deliver_contact(email, "Added at vinsol's questionaire", "Your email id has been added at vinsol's questionnaire as admin.")
   end
   
-  ### check the method
   def self.find_for_googleapps_oauth(access_token, signed_in_resource=nil)
     data = access_token['user_info']
     if admin = Admin.where('email = ?', data['email']).first
