@@ -1,12 +1,12 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
-$(document).ready( function() {
+function view_all_tags(link) {
+  $('#tag_view').css('overflow','auto');
+  $('#tag_view').css('max-height', '182px');
+  $('#view_all_tags').css('display','none');
+}
 
-  function view_all_tags(link) {
-    $('#tag_view').css('overflow','auto');
-    $('#tag_view').css('max-height', '182px');
-    $('#view_all_tags').css('display','none');
-  }
+$(document).ready( function() {
 
   function map_tags_and_type() {
     var ques_tags = $(".as-selection-item");
