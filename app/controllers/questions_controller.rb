@@ -6,7 +6,6 @@ class QuestionsController < ApplicationController
   def index
     unless(params[:text].blank?)
       #### search on question body using ajax ####
-      ## put params[text] ouside qoutes, use the '?' notation for security purpose
       @questions = Question.where("body like ?", '%'+params[:text]+'%').paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
     else
       @questions = Question.paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
@@ -93,7 +92,7 @@ class QuestionsController < ApplicationController
   # include options
   def change_answer_div
     unless params[:id].blank?
-      @question = Question.where(:id => params[:id]).first
+      @question = Question.where(:id => params[:id]).includes(:options).first
     else
       @question = Question.new
     end

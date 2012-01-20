@@ -4,7 +4,7 @@
   <%= hidden_field_tag "question[options_attributes][1][answer]", true %>
   <%= hidden_field_tag 'question[options_attributes][1][id]', @question.options.first.id %>
   
-	<% q_length = @question.options.length %>
+	<% q_length = @question.options.size %>
   <% if q_length >= 2 %>
   
     <% (1...q_length).each do |i| %>

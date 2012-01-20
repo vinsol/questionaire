@@ -286,12 +286,37 @@ table#show_admins td {
 }
 
 #tag_view {
-  max-height: 163px;
+  max-height: 175px;
   overflow: hidden;
+}
+
+#view_all_tags {
+  display:none;
 }
 
 #view_all_tags a {
   color: #2F67D8;
   font-size: 15px;
   padding-right: 65px;
+}
+
+.float_left {
+  float:left;
+}
+
+.float_right {
+  float:right;
+}
+
+#for_option {
+  padding-right: 150px;
+}
+
+#show_ques_partial {
+  font-size:13px;
+  background-color:#2B3B50;
+  font-color:#000000;
+  color:#ffffff;
+  width:700px;
+  padding:2px 10px
 }

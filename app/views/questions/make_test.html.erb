@@ -26,7 +26,7 @@
     
     <div id = "type_cat">
 
-      <div class="field" style = "float:left">
+      <div class="field float_left">
 				<p><b><%= label_tag :type %></b></p>
 
 				<% TYPE.each do |type| %>
@@ -34,7 +34,7 @@
         <% end %>
       </div>
       
-      <div class="field" id = "ques_category" style = "float:right">
+      <div class="field float_right" id = "ques_category">
         <p><b><%= label_tag :category_id %></b></p>
       
         <%= select :category_id, nil, options_for_select(Category.all.collect {|c| [c.name, c.id]}), :prompt => "Select a category--" %><br />
@@ -46,7 +46,7 @@
 
     <div id = "level_sets">
 
-      <div class="field" id = "ques_level" style="float:left">
+      <div class="field float_left" id = "ques_level">
         <p><b><%= label_tag :level, 'No. of Questions/Level' %></b>&nbsp;&nbsp;<br /><span class = "error" id = "error3"></span></p>
 
         <table>
@@ -62,7 +62,7 @@
 
       </div>
 
-      <div class="field" style="float:right">
+      <div class="field float_right">
         <p><b>*<%= label_tag :sets, "No. of Sets" %></b>&nbsp;&nbsp;
 
 				 <%= text_field_tag :sets, nil, :size => 1 %></p>
@@ -72,7 +72,7 @@
 
     </div>
     
-		<div style="float:right">
+		<div class = "float_right">
 
 			<%= submit_tag 'Generate', :onclick => "return ques_validations()" %>
 
@@ -85,11 +85,7 @@
 <div id = "form_right">
 
   <div id = "fetched_ques">
-
     <h2 align="center">Fetch Questions</h2>
-    <p align="center" style="color:#FC4144">
-	
-    </p>
   </div>
 
 </div>

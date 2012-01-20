@@ -103,3 +103,13 @@
 </div>
 </body>
 </html>
+
+<script>
+  $(document).ready( function() {
+    var elem = document.getElementById('tag_view');
+    if(elem.offsetHeight < elem.scrollHeight) {
+      $('#view_all_tags').css('display', 'block');
+      $('#tag_view').css('max-height', '163px');
+    }
+  });
+</script>
