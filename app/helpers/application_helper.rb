@@ -2,6 +2,10 @@ include RTF
 
 module ApplicationHelper
   
+  def mark_required(object, attribute)  
+    "*" if object.class.validators_on(attribute).map(&:class).include? ActiveModel::Validations::PresenceValidator  
+  end
+  
   def get_error(obj, elem)
     obj.errors[elem].join(', ')
   end

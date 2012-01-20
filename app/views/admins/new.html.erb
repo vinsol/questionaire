@@ -3,7 +3,7 @@
 <%= form_for(@admin) do |f| %>
   <div id = "add_admin">
     <div class="field">
-      <%= f.label :email %>&nbsp;&nbsp;
+      *<%= f.label :email %>&nbsp;&nbsp;
       <%= f.text_field :email %><span class='error'><%= get_error(@admin, :email) %></span>
     </div>
     <div class="actions" id = "add_admin_button">

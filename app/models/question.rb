@@ -20,11 +20,17 @@ class Question < ActiveRecord::Base
   # Use constant for Subjective
   before_save :atleast_two_options, :if => Proc.new { |ques| ques.type != "Subjective" }
   before_save :valid_answer
+  before_save :unique_options_body, :if => Proc.new { |ques| ques.type != "Subjective" }
   after_update :update_questions_count, :if => Proc.new { |ques| ques.category_id_changed? }
   
   attr_accessible :type, :body, :options_attributes, :tag, :category_id, :level, :provider, :admin_id
   
   attr_accessor :tag
+  
+  def unique_options_body
+    valid_temp_opts = @options.collect {|opt| opt.body.strip unless opt.body.blank? }.compact
+    errors.add('options', 'duplicate options not allowed') and return false if valid_temp_opts.uniq!
+  end
   
   def update_questions_count
     Category.reset_counters(category_id_was, :questions)

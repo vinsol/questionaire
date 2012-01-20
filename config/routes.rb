@@ -15,9 +15,9 @@ PriyankQuestionaire::Application.routes.draw do
     end
   end
   
-  resources :subjective, :except => [:index, :create, :new, :edit], :controller => :questions
-  resources :multiple_choice, :except => [:index, :create, :new, :edit], :controller => :questions
-  resources :multiple_choice_answer, :except => [:index, :create, :new, :edit], :controller => :questions
+  resources :subjective, :except => [:index, :create, :new, :edit, :destroy], :controller => :questions
+  resources :multiple_choice, :except => [:index, :create, :new, :edit, :destroy], :controller => :questions
+  resources :multiple_choice_answer, :except => [:index, :create, :new, :edit, :destroy], :controller => :questions
   
   devise_for :admins, :controllers => { :omniauth_callbacks => "admins/omniauth_callbacks"}
   

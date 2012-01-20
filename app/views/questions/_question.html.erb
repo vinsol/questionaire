@@ -2,14 +2,14 @@
   
   <div class="field">
     <span class = "label_bold">
-		*<%= f.label :body, 'Question?' %></span>&nbsp;&nbsp;
+		<%= mark_required(@question, :body) %><%= f.label :body, 'Question?' %></span>&nbsp;&nbsp;
 		<span class='error'> <%= get_error(@question, :body) %></span><br/>
     <%= f.text_area :body, :rows => 5, :cols => 70 %>
   </div>
 
   <div class="field">
     <span class = "label_bold">
-			<%= f.label :type, "Type" %>
+			<%= mark_required(@question, :type) %><%= f.label :type, "Type" %>
 		</span><br/>
     
     <% TYPE.each do |type| %>
@@ -19,7 +19,7 @@
   </div>
   
   <div>
-    <span id = "for_option" class = "hide label_bold"> Options &nbsp;&nbsp; </span>
+    <span id = "for_option" class = "hide label_bold"> *Options &nbsp;&nbsp; </span>
     <span class = "label_bold">*Answer</span>&nbsp;&nbsp;
 		<span class='error'><%= get_error(@question, :answers) %></span>
   </div>
@@ -42,12 +42,12 @@
 <div id = "form_right">
 
   <div class="field" id = "ques_category">
-    *<%= label_tag "question_category_id", "Category" %><span class='error'> <%= get_error(@question, :category_id) %></span> <br/>
+    <%= mark_required(@question, :category_id) %><%= label_tag "question_category_id", "Category" %><span class='error'> <%= get_error(@question, :category_id) %></span> <br/>
     <%= f.select :category_id, Category.all.collect {|c| [c.name, c.id]}, {:prompt => 'Select--'} %>
   </div>
 
   <div class="field" id = "ques_level">
-    *<%= f.label :level %><span class='error'> <%= get_error(@question, :level) %></span> <br/>
+    <%= mark_required(@question, :level) %><%= f.label :level %><span class='error'> <%= get_error(@question, :level) %></span> <br/>
     <%= f.select :level, LEVEL, {:prompt => 'Select--'} %>
   </div>
   
