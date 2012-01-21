@@ -75,45 +75,34 @@ class Question < ActiveRecord::Base
     end
   end
   
-  
-  def self.get_ques_by_tags(tags)
-    unless tags.empty?
-      ques = []
-      tags.split(/,/).each do |tag|
-        ques.push(Question.tagged_with(tag))
-        ques = ques.flatten.uniq
-      end
-      return ques
-    end
-  end
-  
-  def self.search(tags, type_hash, category, level_hash)
-    sql = ["SELECT questions.* FROM questions WHERE category_id IN (?) ", category]
-    
+  scope :search, lambda {|tags, type_hash, category, level_hash|
     if type_hash
       type = []
       type_hash.each { |index, val| type.push(val) }
-      unless type.empty?
-        sql[0] += "AND type IN (?) "
-        sql.push(type)
-      end
     end
     
     level = []
     level_hash.each { |index, val| level.push(index) unless val.empty? }
-  
-    unless level.empty?
-      sql[0] += "AND level IN (?)"
-      sql.push(level)
+    
+    sql_query = ""
+    
+    unless tags.empty?
+      sql_query = "(" + tags.split(/,/).map { |tag| sanitize_sql(["tags.name LIKE ?", tag.to_s]) }.join(" OR ") + ") AND "
+      join_query = [:taggings => :tag]
     end
     
-    if tags
-      sql[0] += "AND id IN (?) "
-      sql.push(tags)
-    end
-  
-    find_by_sql(sql)
-  end
+    sql_q = {:category_id => category.join(',')}
+    sql_q.merge!({:type => type}) if type
+    sql_q.merge!({:level => level}) unless level.empty?
+    sql_query += sanitize_sql(sql_q)
+    
+    {
+      :select => 'Distinct questions.*',
+      :joins => join_query,
+      :conditions => sql_query,
+      :include => [:options]
+    }
+  }
   
   def self.download(name)
     files = Dir.glob(Rails.root.to_s + ZIP_FILE_PATH + "*")
@@ -122,6 +111,38 @@ class Question < ActiveRecord::Base
         ar.add_file(file)
       end
     end
+  end
+  
+  def self.count_questions_by_level(questions, level)
+    beg_temp, int_temp, mast_temp, beg, int, mast = 0,0,0,0,0,0
+    questions_temp = []
+    level.each do |index, val|
+      unless val.empty?
+        if index == "0"
+          beg = val.to_i
+        elsif index == "1"
+          int = val.to_i
+        elsif index == "2"
+          mast = val.to_i
+        end
+      end
+    end
+    unless questions.empty?
+      questions = questions.shuffle.shuffle
+      questions.each do |question|
+        if question.level.to_i == 0 && beg_temp < beg
+          questions_temp.push(question)
+          beg_temp += 1
+        elsif question.level.to_i == 1 && int_temp < int
+          questions_temp.push(question)
+          int_temp += 1
+        elsif question.level.to_i == 2 && mast_temp < mast
+          questions_temp.push(question)
+          mast_temp += 1
+        end
+      end
+    end
+    return questions_temp, beg_temp, int_temp, mast_temp
   end
   
   private

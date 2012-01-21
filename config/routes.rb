@@ -6,18 +6,21 @@ PriyankQuestionaire::Application.routes.draw do
       get 'ques_tags'
       get 'make_test'
       get 'fetch_questions', :as => 'fetch'
-      get 'show_fetch_ques/:id', :action => 'show_fetch_ques', :as => 'show_fetch_ques'
       match 'tags/:name', :action => 'tags_index', :as => 'tags_index'
       match 'level/:id', :action => 'level_index', :as => 'level_index'
       match 'category/:id', :action => 'category_index', :as => 'category_index'
       match 'download/:test_name', :action => 'download', :as => 'download'
       get 'show_search'
     end
+    
+    member do
+      get 'show_fetch_ques', :action => 'show_fetch_ques', :as => 'show_fetch_ques'
+    end
   end
   
-  resources :subjective, :except => [:index, :create, :new, :edit, :destroy], :controller => :questions
-  resources :multiple_choice, :except => [:index, :create, :new, :edit, :destroy], :controller => :questions
-  resources :multiple_choice_answer, :except => [:index, :create, :new, :edit, :destroy], :controller => :questions
+  resources :subjective, :only => [:show, :destroy], :controller => :questions
+  resources :multiple_choice, :only => [:show, :destroy], :controller => :questions
+  resources :multiple_choice_answer, :only => [:show, :destroy], :controller => :questions
   
   devise_for :admins, :controllers => { :omniauth_callbacks => "admins/omniauth_callbacks"}
   

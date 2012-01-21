@@ -233,6 +233,7 @@ div#write a:hover {
 
 .title_ques {
   font-size : 14px !important;
+  width:75%;
 }
 br {
   clear:both;

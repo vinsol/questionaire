@@ -5,12 +5,12 @@
   
     <div class = "show_question <%= cycle('list_line_odd', 'list_line_even') %>">
     
-      <p class = "title_ques float_left" style = "margin-bottom:10px"><b>Question: </b><%= question.body %></p>
+      <p class = "title_ques float_left" style = "margin-bottom:10px"><b>Question: </b><%= truncate(question.body, :length => 180) %></p>
       
       <% if question.provider %>
-        <p class = "float_right" style = "margin: 0 10px 10px 0"><b>Provider: </b><%= question.provider %></p>
-      <% end %><br/>
-      
+        <p class = "float_right" style = "margin: 30px 10px 10px 0"><b>Provider: </b><%= question.provider %></p>
+      <% end %>
+      <br />
       <p class = "extras">
         &lt;<b>Type: </b><%= question.type.titleize %>&gt;&nbsp;&nbsp;&nbsp;
         

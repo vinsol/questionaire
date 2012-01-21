@@ -13,21 +13,21 @@
 </div>
 
 <script>
-$('.pagination a').attr('data-remote', 'true');
+  $('.pagination a').attr('data-remote', 'true');
 
-$(document).ready(function() {
-  $("#search").keyup(function(e) {
-		// DOnt send ajax if keypressed is enter and esc/tab
-    if(e.which == 27 || e.which == 13 || e.which == 9 || e.which == 18) {
-      e.preventDefault();
-    } else {
-      $.ajax({
-        url: '<%= questions_path %>', 
-        dataType: 'script',
-        type: 'get', 
-        data: 'text='+$("#search").val()
-      });
-    }
+  $(document).ready(function() {
+    $("#search").keyup(function(e) {
+		  // DOnt send ajax if keypressed is enter and esc/tab
+      if(e.which == 27 || e.which == 13 || e.which == 9 || e.which == 18) {
+        e.preventDefault();
+      } else {
+        $.ajax({
+          url: '<%= questions_path %>', 
+          dataType: 'script',
+          type: 'get', 
+          data: 'text='+$("#search").val()
+        });
+      }
+    });
   });
-});
 </script>

@@ -1,14 +1,9 @@
 <!-- please clean the code -->
-<% unless params[:level].select {|a,b| !b.empty? }.empty? %>
-
-  <% questions, beg, int, mast = count_questions_by_level(@questions.dup, params[:level]) %>
-  <% p mast %>
-  
-<% else %>
-
-  <% questions = @questions %>
-  
-<% end %>
+<%# unless params[:level].select {|a,b| !b.empty? }.empty? %>
+  <%# questions, beg, int, mast = count_questions_by_level(@questions.dup, params[:level]) %>
+<%# else %>
+  <%# questions = @questions %>
+<%# end %>
 
 <% valid_search = true %>
 
@@ -16,18 +11,18 @@
 
   <% unless l.empty? %>
 
-    <% if l_i == "0" && l.to_i > beg %>
-      <span class = "error"><b>Beginner::</b> <%= beg.to_s+"/"+l %> &nbsp;&nbsp; </span>
+    <% if l_i == "0" && l.to_i > @beg %>
+      <span class = "error"><b>Beginner::</b> <%= @beg.to_s+"/"+l %> &nbsp;&nbsp; </span>
       <% valid_search = false %>
     <% end %>
 
-    <% if l_i == "1" && l.to_i > int %>
-      <span class = "error"><b>Intermediate::</b> <%= int.to_s+"/"+l %> &nbsp;&nbsp; </span>
+    <% if l_i == "1" && l.to_i > @int %>
+      <span class = "error"><b>Intermediate::</b> <%= @int.to_s+"/"+l %> &nbsp;&nbsp; </span>
       <% valid_search = false %>
     <% end %>
 
-    <% if l_i == "2" && l.to_i > mast %>
-      <span class = "error"><b>Master::</b> <%= mast.to_s+"/"+l %> &nbsp;&nbsp; </span>
+    <% if l_i == "2" && l.to_i > @mast %>
+      <span class = "error"><b>Master::</b> <%= @mast.to_s+"/"+l %> &nbsp;&nbsp; </span>
       <% valid_search = false %>
     <% end %>
 
@@ -55,29 +50,11 @@
   
 <% end %>
 
-<% unless questions.empty? %>
+<div id="page_ques">
 
-  <% questions.each_with_index do |question, index| %>
+</div>
 
-    <div class = "show_question <%= cycle('list_line_odd', 'list_line_even') %>" style="padding:5px">
-  
-      <p class = "title_ques float_left" style = "margin:0"><b><%= index+1 %>. </b><%= question.body %></p>
-  
-      <div class = "float_right">
-        <%= link_to 'Show', show_fetch_ques_questions_path(question), :rel => "facebox" %>
-      </div><br/>
-  
-    </div>
-    
-  <% end %>
-  
-<% else %>
-
-  <p align = "center" class = "error">No Question found under this search</p>
-
-<% end %>
-
-<% make_doc(params[:name], params[:instructions], questions, params[:sets]) %>
+<% make_doc(params[:name], params[:instructions], @all_questions, params[:sets]) %>
 
 <% if valid_search %>
 
@@ -88,8 +65,3 @@
 
 <% end %>
 
-<script>
-jQuery(document).ready(function($) {
-  $('a[rel*=facebox]').facebox()
-})
-</script>

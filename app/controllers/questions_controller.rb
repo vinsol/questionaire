@@ -85,11 +85,16 @@ class QuestionsController < ApplicationController
   
   
   def fetch_questions
-    ques = Question.get_ques_by_tags(params[:as_values_tags])
-    @questions = Question.search(ques, params[:type], params[:category_id], params[:level])
+    unless params['page']
+      $all_questions = Question.search(params[:as_values_tags], params[:type], params[:category_id], params[:level])
+      unless params[:level].select {|a,b| !b.empty? }.empty?
+        $all_questions, @beg, @int, @mast = Question.count_questions_by_level($all_questions.dup, params[:level])
+      end
+      @all_questions = $all_questions
+    end
+    @questions = $all_questions.paginate :page => params[:page], :order => 'questions.updated_at DESC', :per_page => 10
   end
   
-  # include options
   def change_answer_div
     unless params[:id].blank?
       @question = Question.where(:id => params[:id]).includes(:options).first
