@@ -1,6 +1,6 @@
-<% unless @questions.empty? %>
+<% unless questions.empty? %>
   <% for_ques_bullet = params[:page] ? (params[:page].to_i-1)*10 : 0 %>
-  <% @questions.each_with_index do |question, index| %>
+  <% questions.each_with_index do |question, index| %>
 
     <div class = "show_question <%= cycle('list_line_odd', 'list_line_even') %>" style="padding:5px">
   
@@ -20,10 +20,16 @@
 
 <% end %>
 
-<%= will_paginate @questions %>
+<div class = 'pagination'>
+  <% questions.in_groups_of(10, false).length do |i| %>
+    <%= link_to_function i, 'paging()' %>
+  <% end %>
+</div>
+
+<%#= will_paginate @questions %>
 
 <script>
-$('.pagination a').attr('data-remote', 'true');
+//$('.pagination a').attr('data-remote', 'true');
 
 jQuery(document).ready(function($) {
   $('a[rel*=facebox]').facebox()

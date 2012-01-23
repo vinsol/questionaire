@@ -1,9 +1,9 @@
 <!-- please clean the code -->
-<%# unless params[:level].select {|a,b| !b.empty? }.empty? %>
-  <%# questions, beg, int, mast = count_questions_by_level(@questions.dup, params[:level]) %>
-<%# else %>
-  <%# questions = @questions %>
-<%# end %>
+<% unless params[:level].select {|a,b| !b.empty? }.empty? %>
+  <% questions, beg, int, mast = count_questions_by_level(@questions.dup, params[:level]) %>
+<% else %>
+  <% questions = @questions %>
+<% end %>
 
 <% valid_search = true %>
 
@@ -11,18 +11,18 @@
 
   <% unless l.empty? %>
 
-    <% if l_i == "0" && l.to_i > @beg %>
-      <span class = "error"><b>Beginner::</b> <%= @beg.to_s+"/"+l %> &nbsp;&nbsp; </span>
+    <% if l_i == "0" && l.to_i > beg %>
+      <span class = "error"><b>Beginner::</b> <%= beg.to_s+"/"+l %> &nbsp;&nbsp; </span>
       <% valid_search = false %>
     <% end %>
 
-    <% if l_i == "1" && l.to_i > @int %>
-      <span class = "error"><b>Intermediate::</b> <%= @int.to_s+"/"+l %> &nbsp;&nbsp; </span>
+    <% if l_i == "1" && l.to_i > int %>
+      <span class = "error"><b>Intermediate::</b> <%= int.to_s+"/"+l %> &nbsp;&nbsp; </span>
       <% valid_search = false %>
     <% end %>
 
-    <% if l_i == "2" && l.to_i > @mast %>
-      <span class = "error"><b>Master::</b> <%= @mast.to_s+"/"+l %> &nbsp;&nbsp; </span>
+    <% if l_i == "2" && l.to_i > mast %>
+      <span class = "error"><b>Master::</b> <%= mast.to_s+"/"+l %> &nbsp;&nbsp; </span>
       <% valid_search = false %>
     <% end %>
 
@@ -50,11 +50,51 @@
   
 <% end %>
 
-<div id="page_ques">
+<% unless questions.empty? %>
 
-</div>
+  <% questions_per_pages = questions.in_groups_of(10, false) %>
+  
+    <% questions_per_pages.each_with_index do |questions_per_page, index| %>
+      <div id = "<%= index+1 %>" class = "pages<%= ' hide' unless index == 0 %>">
+      <% questions_per_page.each_with_index do |question, i| %>
+      
+        <div class = "show_question <%= cycle('list_line_odd', 'list_line_even') %>" style="padding:5px">
+      
+          <p class = "title_ques float_left" style = "margin:0"><b><%= (index*10)+(i+1) %>. </b><%= truncate(question.body, :length => 50) %></p>
+      
+          <div class = "float_right">
+            <%= link_to 'Show', show_fetch_ques_question_path(question), :rel => "facebox" %>
+          </div><br/>
+      
+        </div>
+      
+      <% end %>
+      </div>
+    <% end %>
+  
+  </div>
+  
+  <% if questions_per_pages.length > 1 %>
+  
+    <div class = 'pagination'>
+      <%= link_to_function '← Previous', "previous_page()", :id => 'previous', :class => 'hide' %>
 
-<% make_doc(params[:name], params[:instructions], @all_questions, params[:sets]) %>
+      <% (1..questions_per_pages.length).each do |i| %>
+        <%= link_to_function i, "paging(#{i}, this)", :class => "page_links #{'current' if i == 1}" %>
+      <% end %>
+
+      <%= link_to_function 'Next →', 'next_page()', :id => 'next' %>
+    </div><br />
+    
+  <% end %>
+  
+<% else %>
+
+  <p align = "center" class = "error">No Question found under this search</p>
+
+<% end %>
+
+<% make_doc(params[:name], params[:instructions], questions, params[:sets]) %>
 
 <% if valid_search %>
 
@@ -65,3 +105,10 @@
 
 <% end %>
 
+<script>
+
+jQuery(document).ready(function($) {
+  $('a[rel*=facebox]').facebox()
+})
+
+</script>
