@@ -85,15 +85,9 @@ class QuestionsController < ApplicationController
   
   
   def fetch_questions
-    unless params['page']
-      $_all_questions = Question.search(params[:as_values_tags], params[:type], params[:category_id], params[:level])
-      unless params[:level].select {|a,b| !b.empty? }.empty?
-        $_all_questions, @beg, @int, @mast = Question.count_questions_by_level($_all_questions.dup, params[:level])
-      end
-      @all_questions = $_all_questions
-    end
-    @questions = $_all_questions.paginate :page => params[:page], :order => 'questions.updated_at DESC', :per_page => 10
+    @questions = Question.search(params[:as_values_tags], params[:type], params[:category_id], params[:level])
   end
+  
   
   def change_answer_div
     unless params[:id].blank?
