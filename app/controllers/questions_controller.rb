@@ -19,7 +19,7 @@ class QuestionsController < ApplicationController
 
 
   def new
-    @question = Question.new
+    @question = Question.new(:type => 'MultipleChoice')
     @type = @question.type
   end
 
