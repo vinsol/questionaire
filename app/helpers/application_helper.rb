@@ -16,37 +16,26 @@ module ApplicationHelper
   
   def less_ques_warning(level, beg, int, mast)
     valid_search = true
+    content = []
     level.each do |l_i, l|
       unless l.empty?
         if l_i == "0" && l.to_i > beg
-          content_tag(:span, :class => "error") do
-            content_tag(:b, "Beginner::")
-            beg.to_s+"/"+l
-          end
-          #<span class = "error"><b>Beginner::</b> <%= beg.to_s+"/"+l %> &nbsp;&nbsp; </span>
+          content << "<span class = 'error'><b>Beginner::</b> #{beg.to_s}/#{l} &nbsp;&nbsp; </span>"
           valid_search = false
         end
 
         if l_i == "1" && l.to_i > int
-          content_tag(:span, :class => "error") do
-            content_tag(:b, "Intermediate::")
-            int.to_s+"/"+l
-          end
-          #<span class = "error"><b>Intermediate::</b> <%= int.to_s+"/"+l %> &nbsp;&nbsp; </span>
+          content << "<span class = 'error'><b>Intermediate::</b> #{int.to_s}/#{l} &nbsp;&nbsp; </span>"
           valid_search = false
         end
 
         if l_i == "2" && l.to_i > mast
-          content_tag(:span, :class => "error") do
-            content_tag(:b, "Master::")
-            mast.to_s+"/"+l
-          end
-          #<span class = "error"><b>Master::</b> <%= mast.to_s+"/"+l %> &nbsp;&nbsp; </span>
+          content << "<span class = 'error'><b>Master::</b> #{mast.to_s}/#{l} &nbsp;&nbsp; </span>"
           valid_search = false
         end
-        valid_search
       end
     end
+    return valid_search, content
   end
   
   def make_doc(name, instructions, questions, sets)
