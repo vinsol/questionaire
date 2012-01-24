@@ -17,7 +17,6 @@ class Question < ActiveRecord::Base
   accepts_nested_attributes_for :options, :allow_destroy => true, :reject_if => lambda {|c| c['body'].blank? && c['answer'] == 'false'}
   
   before_save :valid_provider
-  # Use constant for Subjective
   before_save :atleast_two_options, :if => Proc.new { |ques| ques.type != TYPE[1] }
   before_save :valid_answer
   before_save :unique_options_body, :if => Proc.new { |ques| ques.type != TYPE[1] }
@@ -115,12 +114,10 @@ class Question < ActiveRecord::Base
   
   private
   
-  ## Please DO NOT REPEAT - comparison with true
   def answers?(opts)
     opts.any? {|opt| opt.answer}
   end
   
-  ## Please DO NOT REPEAT - comparison with true
   def options?(opts)
     opts.empty? ? false : !opts.all? {|opt| opt.body.blank?}
   end
