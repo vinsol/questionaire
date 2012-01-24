@@ -14,30 +14,6 @@ module ApplicationHelper
 		"tab_color" if params[:controller] == controller && params[:action] == action
 	end
   
-  def less_ques_warning(level, beg, int, mast)
-    valid_search = true
-    content = []
-    level.each do |l_i, l|
-      unless l.empty?
-        if l_i == "0" && l.to_i > beg
-          content << "<span class = 'error'><b>Beginner::</b> #{beg.to_s}/#{l} &nbsp;&nbsp; </span>"
-          valid_search = false
-        end
-
-        if l_i == "1" && l.to_i > int
-          content << "<span class = 'error'><b>Intermediate::</b> #{int.to_s}/#{l} &nbsp;&nbsp; </span>"
-          valid_search = false
-        end
-
-        if l_i == "2" && l.to_i > mast
-          content << "<span class = 'error'><b>Master::</b> #{mast.to_s}/#{l} &nbsp;&nbsp; </span>"
-          valid_search = false
-        end
-      end
-    end
-    return valid_search, content
-  end
-  
   def make_doc(name, instructions, questions, sets)
     styles = {}
     styles['CS_TITLE'] = CharacterStyle.new

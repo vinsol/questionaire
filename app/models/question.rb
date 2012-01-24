@@ -18,7 +18,7 @@ class Question < ActiveRecord::Base
   
   before_save :valid_provider
   before_save :atleast_two_options, :if => Proc.new { |ques| ques.type != TYPE[1] }
-  before_save :valid_answer
+  before_save :valid_answer, :if => Proc.new { |ques| ques.type != TYPE[1] }
   before_save :unique_options_body, :if => Proc.new { |ques| ques.type != TYPE[1] }
   after_update :update_questions_count, :if => Proc.new { |ques| ques.category_id_changed? }
   

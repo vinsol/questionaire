@@ -10,6 +10,7 @@ module QuestionsHelper
   
   def count_questions_by_level(questions, level)
     beg_temp, int_temp, mast_temp, beg, int, mast = 0,0,0,0,0,0
+    
     level.each do |index, val|
       unless val.empty?
         if index == "0"
@@ -21,6 +22,7 @@ module QuestionsHelper
         end
       end
     end
+    
     unless questions.empty?
       questions.each do |question|
         if question.level.to_i == 0 && beg_temp < beg
@@ -32,6 +34,25 @@ module QuestionsHelper
         end
       end
     end
-    return beg_temp, int_temp, mast_temp
+    
+    valid_search = true
+    content = []
+    
+    level.each do |l_i, l|
+      unless l.empty?
+        if l_i == "0" && l.to_i > beg_temp
+          content << "<span class = 'error'><b>Beginner::</b> #{beg_temp.to_s}/#{l}&nbsp;&nbsp;</span>" 
+          valid_search = false
+        elsif l_i == "1" && l.to_i > int_temp
+          content << "<span class = 'error'><b>Intermediate::</b> #{int_temp.to_s}/#{l}&nbsp;&nbsp;</span>"
+          valid_search = false
+        elsif l_i == "2" && l.to_i > mast_temp
+          content << "<span class = 'error'><b>Master::</b> #{mast_temp.to_s}/#{l}&nbsp;&nbsp;</span>" 
+          valid_search = false
+        end
+      end
+    end
+    
+    return content, valid_search
   end
 end

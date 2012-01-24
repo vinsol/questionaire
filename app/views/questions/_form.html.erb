@@ -34,9 +34,11 @@
     if (val == "Subjective") {
       $("#for_option").addClass("hide");
       $("#for_option_error").addClass("hide");
+      //$('#for_sub').removeClass('hide');
     } else {
       $("#for_option").removeClass("hide");
       $("#for_option_error").removeClass("hide");
+      //$('#for_sub').addClass('hide');
     }
      $.ajax({
       url: '<%= change_answer_div_questions_path %>', 

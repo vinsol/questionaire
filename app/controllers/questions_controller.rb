@@ -81,7 +81,7 @@ class QuestionsController < ApplicationController
   ## Use where
   def show_fetch_ques
     @question = Question.where(:id => params[:id]).first
-    render :partial => "show_fetch_ques"
+    render :partial => "fetch_ques"
   end
   
   
