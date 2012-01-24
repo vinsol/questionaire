@@ -19,9 +19,9 @@ PriyankQuestionaire::Application.routes.draw do
     end
   end
   
-  resources :subjective, :only => [:show, :destroy], :controller => :questions
-  resources :multiple_choice, :only => [:show, :destroy], :controller => :questions
-  resources :multiple_choice_answer, :only => [:show, :destroy], :controller => :questions
+  resources :subjective, :only => [:show, :destroy, :update], :controller => :questions
+  resources :multiple_choice, :only => [:show, :destroy, :update], :controller => :questions
+  resources :multiple_choice_answer, :only => [:show, :destroy, :update], :controller => :questions
   
   devise_for :admins, :controllers => { :omniauth_callbacks => "admins/omniauth_callbacks"}
   

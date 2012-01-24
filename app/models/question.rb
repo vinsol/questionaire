@@ -1,5 +1,5 @@
 class Question < ActiveRecord::Base
-
+  
   belongs_to :category, :counter_cache => true
 
   has_many :options, :dependent => :destroy
@@ -74,14 +74,25 @@ class Question < ActiveRecord::Base
     end
   end
   
-  scope :search, lambda {|tags, type_hash, category, level_hash|
+  def self.search_query(tags, type_hash, category, level_hash)
+    level = []
+    level_hash.each { |index, val| level.push(index) unless val.empty? }
+    questions = []
+    unless level.empty?
+      level.each do |l|
+        questions += search(tags, type_hash, category, l, level_hash[l].to_i)
+      end
+      questions
+    else
+      search(tags, type_hash, category, level)
+    end
+  end
+  
+  scope :search, lambda {|tags, type_hash, category, level, limit_val = nil|
     if type_hash
       type = []
       type_hash.each { |index, val| type.push(val) }
     end
-    
-    level = []
-    level_hash.each { |index, val| level.push(index) unless val.empty? }
     
     sql_query = ""
     
@@ -96,10 +107,12 @@ class Question < ActiveRecord::Base
     sql_query += sanitize_sql(sql_q)
     
     {
-      :select => 'Distinct questions.*',
+      :select => 'questions.*',
       :joins => join_query,
       :conditions => sql_query,
-      :include => [:options]
+      :include => [:options],
+      :group => 'RAND()',
+      :limit => limit_val
     }
   }
   

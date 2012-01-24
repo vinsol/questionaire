@@ -1,8 +1,6 @@
 
 <% unless params[:level].select {|a,b| !b.empty? }.empty? %>
-  <% questions, beg, int, mast = count_questions_by_level(@questions.dup, params[:level]) %>
-<% else %>
-  <% questions = @questions %>
+  <% beg, int, mast = count_questions_by_level(@questions.dup, params[:level]) %>
 <% end %>
 
 <% valid_search, content = less_ques_warning(params[:level], beg, int, mast) %>
@@ -30,9 +28,9 @@
 <% end %>
 
 <div id = "page_ques">
-  <% unless questions.empty? %>
+  <% unless @questions.empty? %>
     <% for_ques_bullet = params[:page] ? (params[:page].to_i-1)*10 : 0 %>
-    <% questions.each_with_index do |question, index| %>
+    <% @questions.each_with_index do |question, index| %>
 
       <div class = "show_question <%= cycle('list_line_odd', 'list_line_even') %>" style="padding:5px">
     
@@ -53,7 +51,7 @@
   <% end %>
 </div>
 
-<% make_doc(params[:name], params[:instructions], questions, params[:sets]) %>
+<% make_doc(params[:name], params[:instructions], @questions, params[:sets]) %>
 
 <% if valid_search %>
 

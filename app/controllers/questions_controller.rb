@@ -80,13 +80,13 @@ class QuestionsController < ApplicationController
   
   ## Use where
   def show_fetch_ques
-    @question = Question.find(params[:id])
+    @question = Question.where(:id => params[:id]).first
     render :partial => "show_fetch_ques"
   end
   
   
   def fetch_questions
-    @questions = Question.search(params[:as_values_tags], params[:type], params[:category_id], params[:level])
+    @questions = Question.search_query(params[:as_values_tags], params[:type], params[:category_id], params[:level])
   end
   
   

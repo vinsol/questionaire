@@ -45,15 +45,9 @@
   
   <% if !@question.tag_list.empty? %>
     &lt;<b>Tags: </b>
-
     <!-- Move in helper -->
 		<!-- Use link_to_if -->
-    <% if params[:controller] == "questions" && params[:action] == "show" %>
-      <%= @question.tag_list.collect { |tag| link_to tag, tags_index_questions_path(tag) }.join(", ").html_safe %>
-    <% else %>
-      <%= @question.tag_list %>
-    <% end %>
-
+    <%= tags_in_details(params[:controller], params[:action]) %>
     &gt;
   <% end %>
   
