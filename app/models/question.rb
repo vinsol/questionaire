@@ -75,20 +75,19 @@ class Question < ActiveRecord::Base
   end
   
   def self.search_query(tags, type_hash, category, level_hash)
-    level = []
-    level_hash.each { |index, val| level.push(index) unless val.empty? }
+
     questions = []
-    unless level.empty?
-      level.each do |l|
-        questions += search(tags, type_hash, category, l, level_hash[l].to_i)
-      end
-      questions
+
+    unless level_hash.all? {|index, val| val.empty? }
+      level_hash.each { |level, count| questions += search(tags, type_hash, category, level, count.to_i) }
     else
-      search(tags, type_hash, category, level)
+      questions = search(tags, type_hash, category)
     end
+    
+    questions
   end
   
-  scope :search, lambda {|tags, type_hash, category, level, limit_val = nil|
+  scope :search, lambda {|tags, type_hash, category, level = false, limit_val = nil|
     if type_hash
       type = []
       type_hash.each { |index, val| type.push(val) }
@@ -103,11 +102,11 @@ class Question < ActiveRecord::Base
     
     sql_q = {:category_id => category.join(',')}
     sql_q.merge!({:type => type}) if type
-    sql_q.merge!({:level => level}) unless level.empty?
+    sql_q.merge!({:level => level}) if level
     sql_query += sanitize_sql(sql_q)
     
     {
-      :select => 'questions.*',
+      :select => 'DISTINCT questions.*',
       :joins => join_query,
       :conditions => sql_query,
       :include => [:options],
