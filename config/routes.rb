@@ -6,6 +6,7 @@ PriyankQuestionaire::Application.routes.draw do
       get 'ques_tags'
       get 'make_test'
       get 'fetch_questions', :as => 'fetch'
+      # Remove as 
       match 'tags/:name', :action => 'tags_index', :as => 'tags_index'
       match 'level/:id', :action => 'level_index', :as => 'level_index'
       match 'category/:id', :action => 'category_index', :as => 'category_index'

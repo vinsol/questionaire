@@ -1,1 +1,1 @@
- $("#showing_ques").html("<%= escape_javascript(render :partial => "showing_fetch_ques", :locals => { :questions => @questions }) %>")
+ $("#showing_ques").html("<%= escape_javascript(render :partial => 'list', :locals => { :questions => @questions }) %>")

@@ -78,7 +78,7 @@ class QuestionsController < ApplicationController
     
   end
   
-
+  ## Use where
   def show_fetch_ques
     @question = Question.find(params[:id])
     render :partial => "show_fetch_ques"
