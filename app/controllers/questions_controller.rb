@@ -49,7 +49,7 @@ class QuestionsController < ApplicationController
       redirect_to(@question, :notice => 'Question was successfully updated.') 
     else
       @type = params[:question][:type]
-      render :action => "edit" 
+      render :action => "edit"
     end
   end
 
@@ -71,6 +71,7 @@ class QuestionsController < ApplicationController
   
   def category_index
     @questions = Question.where("category_id = ?", params[:id]).paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+    @name = Category.find(params[:id]).try(:name).try(:upcase)
   end
 
   def make_test
