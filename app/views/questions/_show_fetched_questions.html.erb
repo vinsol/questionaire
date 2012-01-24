@@ -1,4 +1,4 @@
-<!-- please clean the code -->
+
 <% unless params[:level].select {|a,b| !b.empty? }.empty? %>
   <% questions, beg, int, mast = count_questions_by_level(@questions.dup, params[:level]) %>
 <% else %>
