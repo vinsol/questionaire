@@ -1,7 +1,8 @@
 <p class = "extras">
   &lt;<b>Type: </b>
 	<%= question.type.titleize %>&gt;&nbsp;&nbsp;&nbsp;
-  
+
+  <!-- Make these helpers -->
   <% unless params[:action] == "level_index" %>
     &lt;<b>Level: </b><%= LEVEL[question.level][0] %>&gt;&nbsp;&nbsp;&nbsp;
   <% end %>
