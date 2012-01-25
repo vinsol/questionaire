@@ -1,8 +1,9 @@
 class QuestionsController < ApplicationController
   
-  before_filter :admin_signed_in
-  before_filter :get_question_by_id, :only => [:show, :edit, :update, :destroy]
-  
+
+  before_filter :find_question, :only => [:show, :edit, :update, :destroy]
+
+  ## Thinking sphinx on body??
   def index
     unless(params[:text].blank?)
       #### search on question body using ajax ####
@@ -122,7 +123,7 @@ class QuestionsController < ApplicationController
 
   private
   
-  def get_question_by_id
+  def find_question
     flash[:notice] = "Question not found." and redirect_to :root unless @question = Question.where(:id => params[:id]).first
   end
   

@@ -1,5 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  ## Check it doesnt break anything
+  before_filter :admin_signed_in
+  
   
   def after_sign_out_path_for(resource_or_scope)
     session[:admin_id] = nil
