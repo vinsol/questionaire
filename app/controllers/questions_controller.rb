@@ -1,8 +1,9 @@
 class QuestionsController < ApplicationController
   
-  before_filter :admin_signed_in
-  before_filter :get_question_by_id, :only => [:show, :edit, :update, :destroy]
-  
+
+  before_filter :find_question, :only => [:show, :edit, :update, :destroy]
+
+  ## Thinking sphinx on body??
   def index
     unless(params[:text].blank?)
       #### search on question body using ajax ####
@@ -61,17 +62,21 @@ class QuestionsController < ApplicationController
   
 
   def tags_index
-    @questions = Question.tagged_with(params[:name]).paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+    @questions = Question.tagged_with(params[:tag_name]).paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
   end
   
-
+  # params => level_id
   def level_index
-    @questions = Question.where("level = ?", params[:id]).paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+    flash[:notice] = "No Question found for this level!" and redirect_to :root unless LEVEL.any? {|l| l[1] == params[:level_id].to_i }
+
+    @questions = Question.where("level = ?", params[:level_id]).paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
   end
   
+  #params => category_id
   def category_index
-    @questions = Question.where("category_id = ?", params[:id]).paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
-    @name = Category.where(:id => params[:id]).first.try(:name).try(:upcase)
+    flash[:notice] = "No Question found for this category!" and redirect_to :root unless @category = Category.where(:id => params[:category_id]).first
+      
+    @questions = @category.try(:questions).try(:paginate, :page => params[:page], :order => 'updated_at DESC', :per_page => 5)
   end
 
   def make_test
@@ -122,7 +127,7 @@ class QuestionsController < ApplicationController
 
   private
   
-  def get_question_by_id
+  def find_question
     flash[:notice] = "Question not found." and redirect_to :root unless @question = Question.where(:id => params[:id]).first
   end
   

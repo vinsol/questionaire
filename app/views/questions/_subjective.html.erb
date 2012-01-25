@@ -1,10 +1,12 @@
-<% unless params[:id].blank? %>
 
-  <%= text_area_tag "question[options_attributes][1][body]", @question.options.first.body, :rows => 5, :cols => 70 %>
-  <%= hidden_field_tag "question[options_attributes][1][answer]", true %>
+<%= text_area_tag "question[options_attributes][1][body]", @question.try(:options).try(:first).try(:body), :rows => 5, :cols => 70 %>
+<%= hidden_field_tag "question[options_attributes][1][answer]", true %>
+
+<% unless params[:id].blank? %>
+  
   <%= hidden_field_tag 'question[options_attributes][1][id]', @question.options.first.id %>
   
-	<% q_length = @question.options.size %>
+  <% q_length = @question.options.size %>
   <% if q_length >= 2 %>
   
     <% (1...q_length).each do |i| %>
@@ -13,10 +15,5 @@
     <% end %>
     
   <% end %>
-  
-<% else %>
-
-  <%= text_area_tag "question[options_attributes][1][body]", nil, :rows => 5, :cols => 70 %>
-  <%= hidden_field_tag "question[options_attributes][1][answer]", true %>
   
 <% end %>

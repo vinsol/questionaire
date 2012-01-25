@@ -8,9 +8,9 @@ PriyankQuestionaire::Application.routes.draw do
       get 'fetch_questions', :as => 'fetch'
       # Remove as
       #### if as is removed then these routes will not have any name like ***_path ####
-      match 'tags/:name', :action => 'tags_index', :as => 'tags_index'
-      match 'level/:id', :action => 'level_index', :as => 'level_index'
-      match 'category/:id', :action => 'category_index', :as => 'category_index'
+      match 'tags/:tag_name', :action => 'tags_index', :as => 'tags_index'
+      match 'level/:level_id', :action => 'level_index', :as => 'level_index'
+      match 'category/:category_id', :action => 'category_index', :as => 'category_index'
       match 'download/:test_name', :action => 'download', :as => 'download'
       get 'show_search'
     end

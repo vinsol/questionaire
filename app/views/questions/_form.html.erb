@@ -19,14 +19,9 @@
 
 <script>
 
-  $(document).ready(change_answer_div("<%= @type %>"));
-
-  function change_answer_div(val) {
-    if ("<%= !@question.new_record? %>") {
-      var id = "<%= params[:id] %>";
-    } else {
-      var id = null;
-    }
+  $(document).ready(for_ques_ans_tags("<%= @type %>"));
+  
+  function for_ques_ans_tags(val) {
     if (val == "Subjective") {
       $("#for_option").addClass("hide");
       $("#for_option_error").addClass("hide");
@@ -36,7 +31,18 @@
       $("#for_option_error").removeClass("hide");
       $('#for_sub').addClass('hide');
     }
-     $.ajax({
+  }
+  
+  function change_answer_div(val) {
+    if ("<%= !@question.new_record? %>") {
+      var id = "<%= params[:id] %>";
+    } else {
+      var id = null;
+    }
+    
+    for_ques_ans_tags(val);
+    
+    $.ajax({
       url: '<%= change_answer_div_questions_path %>', 
       dataType: 'script',
       type: 'get', 

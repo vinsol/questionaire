@@ -1,34 +1,16 @@
 
-<% unless params[:id].blank? %>
-
-  <% (OPTIONS_RANGE[:min]..OPTIONS_RANGE[:max]).each do |index| %>
+<% (OPTIONS_RANGE[:min]..OPTIONS_RANGE[:max]).each do |index| %>
   
-    <% if @question.options[index-1] %>
-    
-      <%= text_field_tag "question[options_attributes][#{index}][body]", @question.options[index-1].body %>&nbsp;&nbsp;&nbsp;&nbsp;
-      <%= radio_button_tag "answer", value = index, @question.options[index-1].answer %>
-      <%= hidden_field_tag "question[options_attributes][#{index}][id]", @question.options[index-1].id %>
-      <%= hidden_field_tag "question[options_attributes][#{index}][_destroy]", false %><br/>
-      
-    <% else %>
-    
-      <%= text_field_tag "question[options_attributes][#{index}][body]" %>&nbsp;&nbsp;&nbsp;&nbsp;
-      <%= radio_button_tag "answer", value = index %><br/>
-      
-    <% end %>
-    
-    <%= hidden_field_tag "question[options_attributes][#{index}][answer]", false %>
+  <%= text_field_tag "question[options_attributes][#{index}][body]", @question.try(:options)[index-1].try(:body) %>&nbsp;&nbsp;&nbsp;&nbsp;
+  <%= radio_button_tag "answer", value = index, @question.try(:options)[index-1].try(:answer) || index == 1 %><br/>
+  
+  <% if @question.try(:options)[index-1] %>
+  
+    <%= hidden_field_tag "question[options_attributes][#{index}][id]", @question.try(:options)[index-1].try(:id) %>
+    <%= hidden_field_tag "question[options_attributes][#{index}][_destroy]", false %>
     
   <% end %>
   
-<% else %>
-
-  <% (OPTIONS_RANGE[:min]..OPTIONS_RANGE[:max]).each do |index| %>
-  
-    <%= text_field_tag "question[options_attributes][#{index}][body]" %>&nbsp;&nbsp;&nbsp;&nbsp;
-		<%= radio_button_tag "answer", value = index, (index == 1) %><br/>
-    <%= hidden_field_tag "question[options_attributes][#{index}][answer]", false %>
-    
-  <% end %>
+  <%= hidden_field_tag "question[options_attributes][#{index}][answer]", false %>
   
 <% end %>
