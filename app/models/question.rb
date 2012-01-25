@@ -18,7 +18,7 @@ class Question < ActiveRecord::Base
   
   before_save :valid_provider
   before_save :atleast_two_options, :if => Proc.new { |ques| ques.type != TYPE[1] }
-  before_save :valid_answer, :if => Proc.new { |ques| ques.type != TYPE[1] }
+  before_save :valid_answer
   before_save :unique_options_body, :if => Proc.new { |ques| ques.type != TYPE[1] }
   after_update :update_questions_count, :if => Proc.new { |ques| ques.category_id_changed? }
   
@@ -57,12 +57,7 @@ class Question < ActiveRecord::Base
   
   ## Use constant
   def valid_answer
-    if type != TYPE[1]
-      errors.add('answers', "can't be blank") and return false unless answers?(@options)
-      @options.each { |opt| errors.add('answers', 'is invalid') and return false if opt.answer && opt.body.blank? }
-    else
-      errors.add('answers', "can't be blank") and return false if @options[0].body.blank?
-    end
+    errors.add('answers', "can't be blank") and return false unless answers?(@options)
   end
   
   

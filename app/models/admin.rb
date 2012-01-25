@@ -14,7 +14,7 @@ class Admin < ActiveRecord::Base
 
   ## Use rails 3 format
   def send_notification
-    Notifier.deliver_contact(email, "Added at vinsol's questionaire", "Your email id has been added at vinsol's questionnaire as admin.")
+    Notifier.contact(email, "Added at vinsol's questionaire", "Your email id has been added at vinsol's questionnaire as admin.").deliver
   end
   
   def self.find_for_googleapps_oauth(access_token, signed_in_resource=nil)

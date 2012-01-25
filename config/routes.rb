@@ -6,7 +6,8 @@ PriyankQuestionaire::Application.routes.draw do
       get 'ques_tags'
       get 'make_test'
       get 'fetch_questions', :as => 'fetch'
-      # Remove as 
+      # Remove as
+      #### if as is removed then these routes will not have any name like ***_path ####
       match 'tags/:name', :action => 'tags_index', :as => 'tags_index'
       match 'level/:id', :action => 'level_index', :as => 'level_index'
       match 'category/:id', :action => 'category_index', :as => 'category_index'
@@ -19,9 +20,9 @@ PriyankQuestionaire::Application.routes.draw do
     end
   end
   
-  resources :subjective, :only => [:show, :destroy, :update], :controller => :questions
-  resources :multiple_choice, :only => [:show, :destroy, :update], :controller => :questions
-  resources :multiple_choice_answer, :only => [:show, :destroy, :update], :controller => :questions
+  resources :subjective, :only => :show, :controller => :questions
+  resources :multiple_choice, :only => :show, :controller => :questions
+  resources :multiple_choice_answer, :only => :show, :controller => :questions
   
   devise_for :admins, :controllers => { :omniauth_callbacks => "admins/omniauth_callbacks"}
   

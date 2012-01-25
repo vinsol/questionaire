@@ -1,10 +1,16 @@
 module QuestionsHelper
   
-  def tags_in_details(controller, action)
-    if controller == "questions" && action == "show"
-      @question.tag_list.collect { |tag| link_to tag, tags_index_questions_path(tag) }.join(", ").html_safe
+  def tags_in_details
+  
+    @question.tag_list.collect { |tag| link_to_if params[:controller] == "questions" && params[:action] == "show", tag, tags_index_questions_path(tag) }.join(", ").html_safe
+    
+  end
+  
+  def correct_answer_tag
+    if params[:controller] == "questions" && params[:action] == "show"
+      image_tag("correct.jpg", :size => "25x15")
     else
-      @question.tag_list
+      image_tag("popup_check4.png", :size => "30x15")
     end
   end
   

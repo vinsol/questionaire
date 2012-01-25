@@ -71,7 +71,7 @@ class QuestionsController < ApplicationController
   
   def category_index
     @questions = Question.where("category_id = ?", params[:id]).paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
-    @name = Category.find(params[:id]).try(:name).try(:upcase)
+    @name = Category.where(:id => params[:id]).first.try(:name).try(:upcase)
   end
 
   def make_test
@@ -115,16 +115,15 @@ class QuestionsController < ApplicationController
     
     unless FileTest.exists?(Rails.root.to_s + ZIP_FILE_PATH + name +'.zip')
       Question.download(name)
-      send_file Rails.root.to_s + ZIP_FILE_PATH + name + '.zip', :type => "application/zip"
-    else
-      send_file Rails.root.to_s + ZIP_FILE_PATH + name+ '.zip', :type => "application/zip"
     end
+    
+    send_file Rails.root.to_s + ZIP_FILE_PATH + name + '.zip', :type => "application/zip"
   end
 
   private
   
   def get_question_by_id
-    @question = Question.where(:id => params[:id]).first
+    flash[:notice] = "Question not found." and redirect_to :root unless @question = Question.where(:id => params[:id]).first
   end
   
 end

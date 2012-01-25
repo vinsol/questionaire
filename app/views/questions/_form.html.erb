@@ -2,7 +2,7 @@
 	<%= stylesheet_link_tag 'ques_form' %>
 <% end %>
 
-<%= form_for(@question, :as => :question) do |f| %>
+<%= form_for(@question, :as => :question, :url => "/questions/#{@question.id}") do |f| %>
   
   <%= render "question", :f => f %>
   
@@ -34,11 +34,11 @@
     if (val == "Subjective") {
       $("#for_option").addClass("hide");
       $("#for_option_error").addClass("hide");
-      //$('#for_sub').removeClass('hide');
+      $('#for_sub').removeClass('hide');
     } else {
       $("#for_option").removeClass("hide");
       $("#for_option_error").removeClass("hide");
-      //$('#for_sub').addClass('hide');
+      $('#for_sub').addClass('hide');
     }
      $.ajax({
       url: '<%= change_answer_div_questions_path %>', 

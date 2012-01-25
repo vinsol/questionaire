@@ -22,13 +22,15 @@
   </div>
   
   <div>
-    <span id = "for_option" class = "hide label_bold"> *Options &nbsp;&nbsp; </span>
+    <span id = "for_option" class = "hide label_bold"> *Options </span>
     <span class = "label_bold">*Answer</span>&nbsp;&nbsp;
 		<span class='error'><%= get_error(@question, :answers) %></span>
+		<scan class='error' id = "for_sub"><%= get_error(@question, :'options.body') %></span>
   </div>
 
   <div id = "for_option_error">
 		<span class='error'><%= get_error(@question, :options) %></span>
+		<scan class='error'><%= get_error(@question, :'options.body') %></span>
 	</div>
   
   <div class="field" id = "answer_type">

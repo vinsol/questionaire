@@ -1,9 +1,8 @@
-
+<% valid_search = true %>
 <% unless params[:level].select {|a,b| !b.empty? }.empty? %>
   <% warning, valid_search = count_questions_by_level(@questions.dup, params[:level]) %>
+  <%= raw warning.join(" ") %>
 <% end %>
-
-<%= raw warning.join(" ") %>
 
 <% unless valid_search %>
   <br /><span class = "error"> <b>Warning:</b> Please modify your search</span>

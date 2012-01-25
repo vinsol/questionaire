@@ -21,11 +21,7 @@
           <script>$("li").last().css('font-size','14px')</script>
   				
 					<!-- Move in helper -->
-          <% if params[:controller] == "questions" && params[:action] == "show" %>
-            <%= image_tag("correct.jpg", :size => "25x15") %>
-          <% else %>
-            <%= image_tag("popup_check4.png", :size => "30x15") %>
-          <% end %>
+          <%= correct_answer_tag %>
   
         <% end %>
       </li>
@@ -47,7 +43,7 @@
     &lt;<b>Tags: </b>
     <!-- Move in helper -->
 		<!-- Use link_to_if -->
-    <%= tags_in_details(params[:controller], params[:action]) %>
+    <%= tags_in_details %>
     &gt;
   <% end %>
   
