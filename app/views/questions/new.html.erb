@@ -1,4 +1,8 @@
 <h2 style='margin-bottom:0;'>Add Question</h2>
 
-<%= render 'form' %>
+<%= form_for(@question, :as => :question, :url => questions_path) do |f| %>
+
+  <%= render 'form' , :f => f %>
+
+<% end %>
 
