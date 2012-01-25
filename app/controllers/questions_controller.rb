@@ -65,14 +65,15 @@ class QuestionsController < ApplicationController
     @questions = Question.tagged_with(params[:name]).paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
   end
   
-
+  # params => level_id
   def level_index
     @questions = Question.where("level = ?", params[:id]).paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
   end
   
+  #params => category_id
   def category_index
-    @questions = Question.where("category_id = ?", params[:id]).paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
-    @name = Category.where(:id => params[:id]).first.try(:name).try(:upcase)
+    @category =  Category.where(:id => params[:id]).first
+    @questions = @category.questions.paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
   end
 
   def make_test
