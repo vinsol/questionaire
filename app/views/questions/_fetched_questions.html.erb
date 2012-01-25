@@ -1,5 +1,7 @@
 <% valid_search = true %>
+<!-- Optimize -->
 <% unless params[:level].select {|a,b| !b.empty? }.empty? %>
+	<!-- Why have you used dup -->
   <% warning, valid_search = count_questions_by_level(@questions.dup, params[:level]) %>
   <%= raw warning.join(" ") %>
 <% end %>
@@ -11,40 +13,31 @@
 <h2 align ="center"><%= params[:name] %></h2>
 
 <% unless params[:instructions].empty? %>
-
   <p style="margin-bottom:0"><b>Instructions::</b>
-  
     <p style="margin-top:2px">
       <% params[:instructions].split(/\n/).each do |inst| %>
         <%= inst %><br/>
       <% end %>
     </p>
-  
   </p>
-  
 <% end %>
 
+<!-- Optimize -->
 <div id = "page_ques">
   <% unless @questions.empty? %>
     <% for_ques_bullet = params[:page] ? (params[:page].to_i-1)*10 : 0 %>
     <% @questions.each_with_index do |question, index| %>
 
       <div class = "show_question <%= cycle('list_line_odd', 'list_line_even') %>" style="padding:5px">
-    
         <p class = "title_ques float_left" style = "margin:0"><b><%= index+1+for_ques_bullet %>. </b><%= truncate(question.body, :length => 50) %></p>
-    
         <div class = "float_right">
           <%= link_to 'Show', show_fetch_ques_question_path(question), :rel => "facebox" %>
         </div><br/>
-    
       </div>
       
     <% end %>
-    
   <% else %>
-
     <p align = "center" class = "error">No Question found under this search</p>
-
   <% end %>
 </div>
 

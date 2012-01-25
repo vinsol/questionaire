@@ -30,6 +30,8 @@ module QuestionsHelper
     content
   end
   
+  
+  # Are you writing code in C?
   def count_questions_by_level(questions, level)
     beg_temp, int_temp, mast_temp, beg, int, mast = 0,0,0,0,0,0
     
