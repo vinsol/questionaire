@@ -69,10 +69,11 @@ class Question < ActiveRecord::Base
     end
   end
   
+  
   def self.search_query(tags, type_hash, category, level_hash)
-
     questions = []
-
+    
+    # use hash methods
     unless level_hash.all? {|index, val| val.empty? }
       level_hash.each { |level, count| questions += search(tags, type_hash, category, level, count.to_i) }
     else
@@ -83,27 +84,27 @@ class Question < ActiveRecord::Base
   end
   
   scope :search, lambda {|tags, type_hash, category, level = false, limit_val = nil|
+    conditions = ""
+    # Use hash methods
     if type_hash
       type = []
       type_hash.each { |index, val| type.push(val) }
     end
     
-    sql_query = ""
-    
     unless tags.empty?
-      sql_query = "(" + tags.split(/,/).map { |tag| sanitize_sql(["tags.name LIKE ?", tag.to_s]) }.join(" OR ") + ") AND "
+      conditions = "(" + tags.split(/,/).map { |tag| sanitize_sql(["tags.name LIKE ?", tag.to_s]) }.join(" OR ") + ") AND "
       join_query = [:taggings => :tag]
     end
     
-    sql_q = {:category_id => category.join(',')}
-    sql_q.merge!({:type => type}) if type
-    sql_q.merge!({:level => level}) if level
-    sql_query += sanitize_sql(sql_q)
+    sub_conditions = {:category_id => category.join(',')}
+    sub_conditions.merge!({:type => type}) if type
+    sub_conditions.merge!({:level => level}) if level
+    conditions += sanitize_sql(sub_conditions)
     
     {
       :select => 'DISTINCT questions.*',
       :joins => join_query,
-      :conditions => sql_query,
+      :conditions => conditions,
       :include => [:options],
       :group => 'RAND()',
       :limit => limit_val

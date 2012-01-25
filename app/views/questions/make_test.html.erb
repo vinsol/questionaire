@@ -15,7 +15,8 @@
     </div>
 
     <div class="field">
-      <p><b>*<%= label_tag :instructions %></b>&nbsp;&nbsp;<span class = "error" id = "error4"></span></p>
+      <p><b>*<%= label_tag :instructions %></b>&nbsp;&nbsp;
+				<span class = "error" id = "error4"></span></p>
       <%= text_area_tag :instructions, nil, :rows => 3, :cols => 48 %>
     </div>
         
@@ -30,7 +31,8 @@
 				<p><b><%= label_tag :type %></b></p>
 
 				<% TYPE.each do |type| %>
-          <p><%= check_box_tag 'type['+type.underscore+']', type %> <%= label_tag 'type_'+type.underscore, type.titleize %></p>
+          <p><%= check_box_tag "type[#{type.underscore}]", type %> 
+					<%= label_tag 'type_'+type.underscore, type.titleize %></p>
         <% end %>
       </div>
       
