@@ -76,7 +76,10 @@ module ApplicationHelper
       end
       
       unless questions.empty?
+        # Question shuffle
+        # Move to model
         questions = questions.shuffle.sort_by{rand}.shuffle
+        
         questions.each_with_index do |question, index|
           document.paragraph(styles['PS_QUES']) do |q|
             q.apply(styles['BOLD']) << (index+1).to_s+". "
@@ -84,6 +87,8 @@ module ApplicationHelper
           end
           
           unless question.type == "Subjective"
+            # Option shuffle
+            # Move to model
             options = question.options.shuffle.sort_by{rand}.shuffle
             bullets = ["(a.) ", "(b.) ", "(c.) ", "(d.) "]
             answers_doc.paragraph(styles['PS_ANS']) do |a|
@@ -112,6 +117,8 @@ module ApplicationHelper
         e.apply(styles['BOLD']) << "--------------- GOOD LUCK ---------------"
       end
       
+      # Make paths constants
+      # Where should these go??
       File.open( 'public/temp_test/set'+i.to_s+'.rtf', 'w+') {|file| file.write(document.to_rtf)}
       File.open( 'public/temp_test/set'+i.to_s+'_answers.rtf', 'w+') {|file| file.write(answers_doc.to_rtf)}
     end
