@@ -16,7 +16,7 @@ PriyankQuestionaire::Application.routes.draw do
     end
     
     member do
-      get 'show_fetch_ques', :action => 'show_fetch_ques', :as => 'show_fetch_ques'
+      get 'show_fetch_ques', :action => 'show_fetch_ques'
     end
   end
   
