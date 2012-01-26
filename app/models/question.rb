@@ -120,6 +120,14 @@ class Question < ActiveRecord::Base
     end
   end
   
+  def self.questions_shuffle(questions)
+    questions.shuffle.sort_by{rand}.shuffle
+  end
+  
+  def self.options_shuffle(question)
+    question.options.shuffle.sort_by{rand}.shuffle
+  end
+  
   private
   
   def answers?(opts)

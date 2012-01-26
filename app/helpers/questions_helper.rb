@@ -33,45 +33,24 @@ module QuestionsHelper
   
   # Are you writing code in C?
   def count_questions_by_level(questions, level)
-    beg_temp, int_temp, mast_temp, beg, int, mast = 0,0,0,0,0,0
-    
-    level.each do |index, val|
-      unless val.empty?
-        if index == "0"
-          beg = val.to_i
-        elsif index == "1"
-          int = val.to_i
-        elsif index == "2"
-          mast = val.to_i
-        end
-      end
-    end
-    
-    unless questions.empty?
-      questions.each do |question|
-        if question.level.to_i == 0 && beg_temp < beg
-          beg_temp += 1
-        elsif question.level.to_i == 1 && int_temp < int
-          int_temp += 1
-        elsif question.level.to_i == 2 && mast_temp < mast
-          mast_temp += 1
-        end
-      end
-    end
+
+    beg = questions.select {|b| b.level == 0}.length
+    int = questions.select {|b| b.level == 1}.length
+    mast = questions.select {|b| b.level == 2}.length
     
     valid_search = true
     content = []
     
     level.each do |l_i, l|
       unless l.empty?
-        if l_i == "0" && l.to_i > beg_temp
-          content << "<span class = 'error'><b>Beginner::</b> #{beg_temp.to_s}/#{l}&nbsp;&nbsp;</span>" 
+        if l_i == "0" && l.to_i > beg
+          content << "<span class = 'error'><b>Beginner::</b> #{beg.to_s}/#{l}&nbsp;&nbsp;</span>" 
           valid_search = false
-        elsif l_i == "1" && l.to_i > int_temp
-          content << "<span class = 'error'><b>Intermediate::</b> #{int_temp.to_s}/#{l}&nbsp;&nbsp;</span>"
+        elsif l_i == "1" && l.to_i > int
+          content << "<span class = 'error'><b>Intermediate::</b> #{int.to_s}/#{l}&nbsp;&nbsp;</span>"
           valid_search = false
-        elsif l_i == "2" && l.to_i > mast_temp
-          content << "<span class = 'error'><b>Master::</b> #{mast_temp.to_s}/#{l}&nbsp;&nbsp;</span>" 
+        elsif l_i == "2" && l.to_i > mast
+          content << "<span class = 'error'><b>Master::</b> #{mast.to_s}/#{l}&nbsp;&nbsp;</span>" 
           valid_search = false
         end
       end

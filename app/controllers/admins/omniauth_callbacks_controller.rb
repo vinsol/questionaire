@@ -1,5 +1,5 @@
 class Admins::OmniauthCallbacksController < ApplicationController
-
+  
   def google_apps
     # implement the method below in your model
     

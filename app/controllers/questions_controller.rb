@@ -2,7 +2,9 @@ class QuestionsController < ApplicationController
   
 
   before_filter :find_question, :only => [:show, :edit, :update, :destroy]
-
+  
+#  before_filter :admin_signed_in
+  
   ## Thinking sphinx on body??
   def index
     unless(params[:text].blank?)
