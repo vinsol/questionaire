@@ -15,22 +15,22 @@
   <% end %><br/>
 	<div class="mainMenu" id = "mainMenu">
 		<ul class="firstlist" >
-		  <%# if session["devise.googleapps_data"] %>
+		  <% if session["devise.googleapps_data"] %>
 			  <li id = "firstlist_1" ><%= link_to "Home", questions_path, :class => class_name("questions", "index") %></li>
 			  <li id = "firstlist_2" ><%= link_to "Post Question", new_question_path, :class => class_name("questions", "new") || class_name("questions", "edit") %></li>
 			  <li id = "firstlist_3" ><%= link_to "Make Test", make_test_questions_path, :class => class_name("questions", "make_test") %></li>
 			  <!--<li id = "firstlist_4" ><%#= link_to "Previous Tests", questions_path %></li>-->
-			<%# else %>
-			  <!--<li id = "firstlist_5" ><%= link_to "Login", questions_path %></li>-->
-			<%# end %>
+			<% else %>
+			  <li id = "firstlist_5" ><%= link_to "Login", questions_path %></li>
+			<% end %>
 		</ul>
 		<ul class="seclist">
-		  <%# if session["devise.googleapps_data"] %>
+		  <% if session["devise.googleapps_data"] %>
 		    <li id = "seclist_1"><%= link_to "Logout", destroy_admin_session_path, :class => class_name("devise/sessions", "destroy") %></li>
 			  <li id = "seclist_2"><%= link_to "Add Admin", new_admin_path, :class => class_name("admins", "new") %></li>
 			  <li id = "seclist_3"><%= link_to "View Admins", admins_path, :class => class_name("admins", "index") %></li>
 			  <!--<li id = "seclist_3"><%#= link_to "Account Settings", questions_path %></li>-->
-			<%# end %>
+			<% end %>
 		</ul>
 		<br style="clear:both" />
 	</div>
@@ -47,7 +47,7 @@
 				</td>
 				<td>
 					<div class="rightContent">
-					  <%# if session["devise.googleapps_data"] %>
+					  <% if session["devise.googleapps_data"] %>
 						  <div class="leftsub">
 						    <h4 style="margin:5px 0 0;">Tags</h4>
 						    <div id = "tag_view" >
@@ -87,14 +87,14 @@
 							    <% end %>
 							  </p>
 						  </div>
-						<%# else %>
-						  <!--<div class="leftsub">
-						    <%#= image_tag("questionaire.jpg", :height => "230", :width => "100%") %>
+						<% else %>
+						  <div class="leftsub">
+						    <%= image_tag("questionaire.jpg", :height => "230", :width => "100%") %>
 							  <h4 style="margin:5px 0 5px 0;">About</h4>
 							  <p style="margin:10px 0 10px 0;">Now setting a question paper is just a click away. This app stores questions no matter subjective or multiple choice or no matter what is its danger level. Just login and get going.</p>
 							  <p class = "error"><b>Note:</b> Login is based on Vinsol's account </p>
-						  </div>-->
-						<%# end %>
+						  </div>
+						<% end %>
 					</div><br style="clear:both" />
 				</td>
 			</tr>

@@ -1,9 +1,7 @@
 module QuestionsHelper
   
   def tags_in_details
-  
     @question.tag_list.collect { |tag| link_to_if params[:controller] == "questions" && params[:action] == "show", tag, tags_index_questions_path(tag) }.join(", ").html_safe
-    
   end
   
   def correct_answer_tag
@@ -30,7 +28,6 @@ module QuestionsHelper
     content
   end
   
-  
   # Are you writing code in C?
   def count_questions_by_level(questions, level)
 
@@ -38,24 +35,12 @@ module QuestionsHelper
     int = questions.select {|b| b.level == 1}.length
     mast = questions.select {|b| b.level == 2}.length
     
-    valid_search = true
     content = []
     
-    level.each do |l_i, l|
-      unless l.empty?
-        if l_i == "0" && l.to_i > beg
-          content << "<span class = 'error'><b>Beginner::</b> #{beg.to_s}/#{l}&nbsp;&nbsp;</span>" 
-          valid_search = false
-        elsif l_i == "1" && l.to_i > int
-          content << "<span class = 'error'><b>Intermediate::</b> #{int.to_s}/#{l}&nbsp;&nbsp;</span>"
-          valid_search = false
-        elsif l_i == "2" && l.to_i > mast
-          content << "<span class = 'error'><b>Master::</b> #{mast.to_s}/#{l}&nbsp;&nbsp;</span>" 
-          valid_search = false
-        end
-      end
-    end
-    
-    return content, valid_search
+    content << "<span class='error'><b>Beginner::</b> #{beg}/#{level['0']}&nbsp;&nbsp;</span>" if level["0"].to_i > beg
+    content << "<span class='error'><b>Intermediate::</b> #{int}/#{level['1']}&nbsp;&nbsp;</span>" if level["1"].to_i > int
+    content << "<span class='error'><b>Master::</b> #{mast}/#{level['2']}&nbsp;&nbsp;</span>" if level["2"].to_i > mast
+          
+    return content, content.empty?
   end
 end

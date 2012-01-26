@@ -72,10 +72,9 @@ class Question < ActiveRecord::Base
   
   def self.search_query(tags, type_hash, category, level_hash)
     questions = []
-    
     # use hash methods
-    unless level_hash.all? {|index, val| val.empty? }
-      level_hash.each { |level, count| questions += search(tags, type_hash, category, level, count.to_i) }
+    unless level_hash.values.all? {|val| val.empty? }
+      level_hash.each { |level, count| questions += search(tags, type_hash, category, level, count.to_i) unless count.empty?}
     else
       questions = search(tags, type_hash, category)
     end
@@ -86,10 +85,7 @@ class Question < ActiveRecord::Base
   scope :search, lambda {|tags, type_hash, category, level = false, limit_val = nil|
     conditions = ""
     # Use hash methods
-    if type_hash
-      type = []
-      type_hash.each { |index, val| type.push(val) }
-    end
+    type = type_hash.values if type_hash
     
     unless tags.empty?
       conditions = "(" + tags.split(/,/).map { |tag| sanitize_sql(["tags.name LIKE ?", tag.to_s]) }.join(" OR ") + ") AND "

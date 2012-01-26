@@ -1,6 +1,6 @@
 class AdminsController < ApplicationController
 
-#  before_filter :admin_signed_in  
+  before_filter :admin_signed_in  
   
   def index
     @admins = Admin.all
