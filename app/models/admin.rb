@@ -12,7 +12,6 @@ class Admin < ActiveRecord::Base
   
   after_create :send_notification
 
-  ## Use rails 3 format
   def send_notification
     Notifier.contact(email, "Added at vinsol's questionaire", "Your email id has been added at vinsol's questionnaire as admin.").deliver
   end
