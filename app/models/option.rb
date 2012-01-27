@@ -5,4 +5,5 @@ class Option < ActiveRecord::Base
   
   validates :body, :presence => true
   
+  validates_uniqueness_of :body, :scope => :question_id
 end

@@ -4,6 +4,7 @@ class Question < ActiveRecord::Base
 
   has_many :options, :dependent => :destroy
   has_many :answers, :class_name => "Option", :conditions => { :answer => true }
+  
   belongs_to :admin
   
   acts_as_taggable
