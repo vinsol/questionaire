@@ -48,9 +48,10 @@
   
     <div class = 'pagination'>
       <%= link_to_function '← Previous', "previous_page()", :id => 'previous', :class => 'hide' %>
-
-      <% (1..questions_per_pages.length).each do |i| %>
-        <%= link_to_function i, "paging(#{i}, this)", :class => "page_links #{'current' if i == 1}" %>
+      <% i = 0 %>
+      <% until i == questions_per_pages.length %>
+        <%= link_to_function i+1, "paging(#{i+1}, this)", :class => "page_links #{'current' if i+1 == 1}" %>
+        <% i += 1 %>
       <% end %>
 
       <%= link_to_function 'Next →', 'next_page()', :id => 'next' %>
