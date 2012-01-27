@@ -19,6 +19,7 @@ class AdminsController < ApplicationController
     end
   end
   
+  ## redirect_to appropriate page with notice if not found
   def show
     @admin = Admin.where(:id => params[:id]).first
   end
