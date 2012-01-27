@@ -26,6 +26,7 @@ class Question < ActiveRecord::Base
   
   attr_accessor :tag
   
+  ## Put in options => use validates_uniquess of answer, scope => question
   def unique_options_body
     valid_temp_opts = @options.collect {|opt| opt.body.strip unless opt.body.blank? }.compact
     errors.add('options', 'duplicate options not allowed') and return false if valid_temp_opts.uniq!
