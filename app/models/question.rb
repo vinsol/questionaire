@@ -3,6 +3,8 @@ class Question < ActiveRecord::Base
   belongs_to :category, :counter_cache => true
 
   has_many :options, :dependent => :destroy
+  validates_associated :options
+  
   has_many :answers, :class_name => "Option", :conditions => { :answer => true }
   belongs_to :admin
   
@@ -20,7 +22,7 @@ class Question < ActiveRecord::Base
   before_save :valid_provider
   before_save :atleast_two_options, :if => Proc.new { |ques| ques.type != TYPE[1] }
   before_save :valid_answer
-  before_save :unique_options_body, :if => Proc.new { |ques| ques.type != TYPE[1] }
+  # before_save :unique_options_body, :if => Proc.new { |ques| ques.type != TYPE[1] }
   after_update :update_questions_count, :if => Proc.new { |ques| ques.category_id_changed? }
   
   attr_accessible :type, :body, :options_attributes, :tag, :category_id, :level, :provider, :admin_id
@@ -28,6 +30,7 @@ class Question < ActiveRecord::Base
   attr_accessor :tag
   
   ## Put in options => use validates_uniquess of answer, scope => question
+  ## https://github.com/rails/rails/issues/1572
   def unique_options_body
     valid_temp_opts = @options.collect {|opt| opt.body.strip unless opt.body.blank? }.compact
     errors.add('options', 'duplicate options not allowed') and return false if valid_temp_opts.uniq!
