@@ -322,7 +322,11 @@ table#show_admins td {
   padding:2px 10px
 }
 
-#page_ques {
-  overflow:auto;
-  max-height: 365px;
+.hide {
+  display: none;
+}
+
+.current {
+  color: #000000 !important;
+  font-size:15px !important;
 }

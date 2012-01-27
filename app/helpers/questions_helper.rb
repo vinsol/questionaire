@@ -14,17 +14,11 @@ module QuestionsHelper
   
   def extras question
     content = []
-    unless params[:action] == "level_index"
-      content << "&lt;<b>Level: </b>#{LEVEL[question.level][0]}&gt;&nbsp;&nbsp;&nbsp;"
-    end
-    
-    unless params[:action] == "category_index"
-      content << "&lt;<b>Category: </b>#{question.category.name}&gt;&nbsp;&nbsp;&nbsp;"
-    end
-    
-    unless question.tag_list.empty?
-      content << "&lt;<b>Tags: </b>#{question.tag_list}&gt;"
-    end
+
+    content << "&lt;<b>Level: </b>#{LEVEL[question.level][0]}&gt;&nbsp;&nbsp;&nbsp;" unless params[:action] == "level_index"
+    content << "&lt;<b>Category: </b>#{question.category.name}&gt;&nbsp;&nbsp;&nbsp;" unless params[:action] == "category_index"
+    content << "&lt;<b>Tags: </b>#{question.tag_list}&gt;" unless question.tag_list.empty?
+
     content
   end
   

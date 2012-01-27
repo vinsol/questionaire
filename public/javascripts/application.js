@@ -23,7 +23,7 @@ $(document).ready( function() {
       if($(types[i]).attr('checked') == 'checked') {
         return $(types[i]).val();
       }
-    }  
+    }
   }
 
   $("#question_submit").bind('click', map_answers);
