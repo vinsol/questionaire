@@ -4,6 +4,7 @@
 
   <%= render "question", :f => f %>
   
+	<!-- In controller do - current_admin.questions.build(params[:question])  -->
   <%= f.hidden_field :admin_id, :value => session[:admin_id] %>
   
   <div class="actions">
