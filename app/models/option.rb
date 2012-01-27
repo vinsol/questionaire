@@ -1,4 +1,3 @@
-## Add validations
 
 class Option < ActiveRecord::Base
 
