@@ -37,12 +37,25 @@ class Question < ActiveRecord::Base
     errors.add('options', 'duplicate options not allowed') and return false if valid_temp_opts.uniq!
   end
   
-  ### Please provide the relevant link here
   ### https://github.com/rails/rails/issues/3891 ###
   def update_questions_count
     Category.reset_counters(category_id_was, :questions)
     Category.reset_counters(category_id, :questions)
   end
+  
+  def valid_answer
+    errors.add('answers', "can't be blank") and return false if answers?(@options)
+  end
+  
+  
+  def atleast_two_options
+    opts_temp = @options.select {|opt| !opt.body.blank?}
+    if !options?(@options) || !(VALID_OPTIONS_RANGE[:min]..VALID_OPTIONS_RANGE[:max]).include?(opts_temp.length)
+      errors.add('options', 'Atleast two options')
+      return false 
+    end
+  end
+  
   
   def valid_provider
     if provider.blank?
@@ -61,22 +74,7 @@ class Question < ActiveRecord::Base
      data << json
     end
     data
-  end
-  
-  
-  def valid_answer
-    errors.add('answers', "can't be blank") and return false if answers?(@options)
-  end
-  
-  
-  def atleast_two_options
-    opts_temp = @options.select {|opt| !opt.body.blank?}
-    if !options?(@options) || !(VALID_OPTIONS_RANGE[:min]..VALID_OPTIONS_RANGE[:max]).include?(opts_temp.length)
-      errors.add('options', 'Atleast two options')
-      return false 
-    end
-  end
-  
+  end  
   
   def self.search_query(tags, type_hash, category, level_hash)
     questions = []
