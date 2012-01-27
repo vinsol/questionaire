@@ -21,6 +21,6 @@ class AdminsController < ApplicationController
   
   ## redirect_to appropriate page with notice if not found
   def show
-    @admin = Admin.where(:id => params[:id]).first
+    flash[:notice] = 'Admin not found' and redirect_to :root unless @admin = Admin.where(:id => params[:id]).first
   end
 end

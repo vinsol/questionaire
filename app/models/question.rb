@@ -3,6 +3,7 @@ class Question < ActiveRecord::Base
   belongs_to :category, :counter_cache => true
 
   has_many :options, :dependent => :destroy
+  has_many :answers, :class_name => "Option", :conditions => { :answer => true }
   belongs_to :admin
   
   acts_as_taggable
@@ -32,6 +33,7 @@ class Question < ActiveRecord::Base
     errors.add('options', 'duplicate options not allowed') and return false if valid_temp_opts.uniq!
   end
   
+  ## fix for counter_cache problem on update ##
   def update_questions_count
     Category.reset_counters(category_id_was, :questions)
     Category.reset_counters(category_id, :questions)
@@ -121,9 +123,8 @@ class Question < ActiveRecord::Base
     questions.shuffle.sort_by{rand}.shuffle
   end
   
-  ## Why is this a class method?
-  def self.options_shuffle(question)
-    question.options.shuffle.sort_by{rand}.shuffle
+  def options_shuffle
+    options.shuffle.sort_by{rand}.shuffle
   end
   
   private
