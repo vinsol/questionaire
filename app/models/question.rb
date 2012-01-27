@@ -121,11 +121,6 @@ class Question < ActiveRecord::Base
     questions.shuffle.sort_by{rand}.shuffle
   end
   
-  ## Why is this a class method?
-  def self.options_shuffle(question)
-    question.options.shuffle.sort_by{rand}.shuffle
-  end
-  
   private
   
   def answers?(opts)
