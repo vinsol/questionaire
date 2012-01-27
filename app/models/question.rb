@@ -33,7 +33,9 @@ class Question < ActiveRecord::Base
     errors.add('options', 'duplicate options not allowed') and return false if valid_temp_opts.uniq!
   end
   
-  ## fix for counter_cache problem on update ##
+  
+  ### Please provide the relevant link here
+  ## fix for counter_cache problem on update 
   def update_questions_count
     Category.reset_counters(category_id_was, :questions)
     Category.reset_counters(category_id, :questions)
@@ -58,7 +60,6 @@ class Question < ActiveRecord::Base
     data
   end
   
-  ## Use constant
   def valid_answer
     errors.add('answers', "can't be blank") and return false unless answers?(@options)
   end
@@ -75,7 +76,6 @@ class Question < ActiveRecord::Base
   
   def self.search_query(tags, type_hash, category, level_hash)
     questions = []
-    # use hash methods
     unless level_hash.values.all? {|val| val.empty? }
       level_hash.each { |level, count| questions += search(tags, type_hash, category, level, count.to_i) unless count.empty?}
     else
@@ -87,7 +87,6 @@ class Question < ActiveRecord::Base
   
   scope :search, lambda {|tags, type_hash, category, level = false, limit_val = nil|
     conditions = ""
-    # Use hash methods
     type = type_hash.values if type_hash
     
     unless tags.empty?
