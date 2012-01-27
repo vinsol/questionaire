@@ -3,7 +3,6 @@
 <% end %>
 
   <%= render "question", :f => f %>
-  
 	<!-- In controller do - current_admin.questions.build(params[:question])  -->
 	<!-- current_admin not working as discussed earlier -->
   <%= f.hidden_field :admin_id, :value => session[:admin_id] %>

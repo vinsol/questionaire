@@ -89,7 +89,7 @@ module ApplicationHelper
           unless question.type == "Subjective"
             # Option shuffle
             # Move to model
-            options = Option.options_shuffle(question)
+            options = question.options_shuffle
             
             bullets = ["(a.) ", "(b.) ", "(c.) ", "(d.) "]
             answers_doc.paragraph(styles['PS_ANS']) do |a|
