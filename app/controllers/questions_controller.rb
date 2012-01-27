@@ -9,9 +9,9 @@ class QuestionsController < ApplicationController
   def index
     unless(params[:text].blank?)
       #### search on question body using ajax ####
-      @questions = Question.where("body like ?", '%'+params[:text]+'%').paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+      @questions = Question.where("body like ?", '%'+params[:text]+'%').paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => PER_PAGE
     else
-      @questions = Question.paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+      @questions = Question.paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => PER_PAGE
     end
   end
 
@@ -64,12 +64,12 @@ class QuestionsController < ApplicationController
   
 
   def tags_index
-    @questions = Question.tagged_with(params[:tag_name]).paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+    @questions = Question.tagged_with(params[:tag_name]).paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => PER_PAGE
   end
   
   def level_index
     flash[:notice] = "No Question found for this level!" and redirect_to :root unless LEVEL.any? {|l| l[1] == params[:level_id].to_i }
-    @questions = Question.where("level = ?", params[:level_id]).paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+    @questions = Question.where("level = ?", params[:level_id]).paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => PER_PAGE
   end
   
   def category_index
@@ -78,7 +78,7 @@ class QuestionsController < ApplicationController
       flash[:notice] = "No Question found for this category!" 
       return redirect_to :root 
     end  
-    @questions = @category.questions.paginate :page => params[:page], :order => 'updated_at DESC', :per_page => 5
+    @questions = @category.questions.paginate :page => params[:page], :order => 'updated_at DESC', :per_page => PER_PAGE
   end
 
 

@@ -22,6 +22,10 @@ module QuestionsHelper
     content
   end
   
+  def ques_number(index, i)
+    (index*10)+(i+1)
+  end
+  
   # Are you writing code in C?
   def count_questions_by_level(questions, level)
 

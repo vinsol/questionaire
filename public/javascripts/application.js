@@ -50,7 +50,7 @@ $(document).ready( function() {
         var body = hidden_ids[i].id.replace("id", "body");
         if($('#'+body).val() == "") {
           var destroy_id = body.replace("body", "_destroy");
-          document.getElementById(destroy_id).value = "1";
+          $('#'+destroy_id).val("1");
         }
       }
     }
@@ -69,38 +69,38 @@ function ques_validations() {
 	// Optimize is possible
 	// Validation for question paper name field
   if($("#name").val() == "") {
-    document.getElementById("error1").innerHTML = "can't be blank";
+    $("#error1").html("can't be blank");
     var c = true;
   } else {
-    document.getElementById("error1").innerHTML = "";
+    $("#error1").html("");
   }
   // Validation for question paper name field
   if($("#instructions").val() == "") {
-    document.getElementById("error4").innerHTML = "can't be blank";
+    $("#error4").html("can't be blank");
     var f = true;
   } else {
-    document.getElementById("error4").innerHTML = "";
+    $("#error4").html("");
   }
   
 	// Set number should be integer
   if($("#sets").val() == "") {
-    document.getElementById("error2").innerHTML = "can't be blank";
+    $("#error2").html("can't be blank");
     d = true;
   } else if(!($("#sets").val().match(/^\d+$/))) {
-    document.getElementById("error2").innerHTML = "number expected";
+    $("#error2").html("number expected");
     d = true;
   } else if($("#sets").val() < 1) {
-    document.getElementById("error2").innerHTML = "number > 0 expected";
+    $("#error2").html("number > 0 expected");
     d = true;
   } else {
-    document.getElementById("error2").innerHTML = "";
+    $("#error2").html("");
   }
   
   if ($("#category_id_").val() == "") {
-    document.getElementById("error5").innerHTML = "Please select a category";
+    $("#error5").html("Please select a category");
     g = true;
   } else {
-    document.getElementById("error5").innerHTML = "";
+    $("#error5").html("");
   }
   
 	// Question level should be integer
@@ -109,9 +109,9 @@ function ques_validations() {
   for(var i = 0; i < ques_level.length; i++) {
     if(ques_level[i].value != "") {
       if(ques_level[i].value.match(/^\d+$/)) {
-        document.getElementById("error3").innerHTML = "";
+        $("#error3").html("");
       } else {
-        document.getElementById("error3").innerHTML = "number expected";
+        $("#error3").html("number expected");
         e = true;
       }
     }

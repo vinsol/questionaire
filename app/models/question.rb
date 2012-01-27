@@ -3,7 +3,9 @@ class Question < ActiveRecord::Base
   belongs_to :category, :counter_cache => true
 
   has_many :options, :dependent => :destroy
+  
   has_many :answers, :class_name => "Option", :conditions => { :answer => true }
+  validates_associated :answers
   
   belongs_to :admin
   
@@ -28,12 +30,15 @@ class Question < ActiveRecord::Base
   
   attr_accessor :tag
   
+  ## Put in options => use validates_uniquess of answer, scope => question
+  ## https://github.com/rails/rails/issues/1572
   def unique_options_body
     valid_temp_opts = @options.collect {|opt| opt.body.strip unless opt.body.blank? }.compact
     errors.add('options', 'duplicate options not allowed') and return false if valid_temp_opts.uniq!
   end
   
-  ## fix for counter_cache problem on update ##
+  ### Please provide the relevant link here
+  ### https://github.com/rails/rails/issues/3891 ###
   def update_questions_count
     Category.reset_counters(category_id_was, :questions)
     Category.reset_counters(category_id, :questions)
@@ -58,9 +63,9 @@ class Question < ActiveRecord::Base
     data
   end
   
-  ## Use constant
+  
   def valid_answer
-    errors.add('answers', "can't be blank") and return false unless answers?(@options)
+    errors.add('answers', "can't be blank") and return false if answers?(@options)
   end
   
   
@@ -75,7 +80,6 @@ class Question < ActiveRecord::Base
   
   def self.search_query(tags, type_hash, category, level_hash)
     questions = []
-    # use hash methods
     unless level_hash.values.all? {|val| val.empty? }
       level_hash.each { |level, count| questions += search(tags, type_hash, category, level, count.to_i) unless count.empty?}
     else
@@ -87,7 +91,6 @@ class Question < ActiveRecord::Base
   
   scope :search, lambda {|tags, type_hash, category, level = false, limit_val = nil|
     conditions = ""
-    # Use hash methods
     type = type_hash.values if type_hash
     
     unless tags.empty?

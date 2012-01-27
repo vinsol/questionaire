@@ -1,6 +1,6 @@
 <% valid_search = true %>
 <!-- Optimize -->
-<% unless params[:level].all? {|a,b| b.empty? } %>
+<% unless params[:level].values.all? {|val| val.empty? } %>
 	<!-- Why have you used dup -->
   <% warning, valid_search = count_questions_by_level(@questions, params[:level]) %>
   <%= raw warning.join(" ") %>
@@ -13,12 +13,11 @@
 <h2 align ="center"><%= params[:name] %></h2>
 
 <% unless params[:instructions].empty? %>
-  <p style="margin-bottom:0"><b>Instructions::</b>
-    <p style="margin-top:2px">
-      <% params[:instructions].split(/\n/).each do |inst| %>
-        <%= inst %><br/>
-      <% end %>
-    </p>
+  <p id = "for_inst"><b>Instructions::</b></p>
+  <p id = "for_inst_body">
+    <% params[:instructions].split(/\n/).each do |inst| %>
+      <%= inst %><br/>
+    <% end %>
   </p>
 <% end %>
 
@@ -27,25 +26,23 @@
 
   <% questions_per_pages = @questions.in_groups_of(10, false) %>
   
-    <% questions_per_pages.each_with_index do |questions_per_page, index| %>
-      <div id = "<%= index+1 %>" class = "pages<%= ' hide' unless index == 0 %>">
-      <% questions_per_page.each_with_index do |question, i| %>
-      
-        <div class = "show_question <%= cycle('list_line_odd', 'list_line_even') %>" style="padding:5px">
-      
-          <p class = "title_ques float_left" style = "margin:0"><b><%= (index*10)+(i+1) %>. </b><%= truncate(question.body, :length => 50) %></p>
-      
-          <div class = "float_right">
-            <%= link_to 'Show', show_fetch_ques_question_path(question), :rel => "facebox" %>
-          </div><br/>
-      
-        </div>
-      
-      <% end %>
+  <% questions_per_pages.each_with_index do |questions_per_page, index| %>
+    <div id = "<%= index+1 %>" class = "pages<%= ' hide' unless index == 0 %>">
+    <% questions_per_page.each_with_index do |question, i| %>
+    
+      <div class = "show_question <%= cycle('list_line_odd', 'list_line_even') %>" style="padding:5px">
+    
+        <p class = "title_ques float_left" style = "margin:0"><b><%= ques_number(index, i) %>. </b><%= truncate(question.body, :length => 50) %></p>
+    
+        <div class = "float_right">
+          <%= link_to 'Show', show_fetch_ques_question_path(question), :rel => "facebox" %>
+        </div><br/>
+    
       </div>
+    
     <% end %>
-  
-  </div>
+    </div>
+  <% end %>
   
   <% if questions_per_pages.length > 1 %>
   
