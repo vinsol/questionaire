@@ -3,6 +3,7 @@ class Question < ActiveRecord::Base
   belongs_to :category, :counter_cache => true
 
   has_many :options, :dependent => :destroy
+  has_many :answers, :class_name => :options, :conditions => {:answer => true}
   belongs_to :admin
   
   acts_as_taggable
