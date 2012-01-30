@@ -81,7 +81,6 @@ function ques_validations() {
   } else {
     $("#error4").html("");
   }
-  
 	// Set number should be integer
   if($("#sets").val() == "") {
     $("#error2").html("can't be blank");
@@ -89,8 +88,8 @@ function ques_validations() {
   } else if(!($("#sets").val().match(/^\d+$/))) {
     $("#error2").html("number expected");
     d = true;
-  } else if($("#sets").val() < 1) {
-    $("#error2").html("number > 0 expected");
+  } else if($("#sets").val() < 1 || $("#sets").val() > 10) {
+    $("#error2").html("sets limit: 1-10");
     d = true;
   } else {
     $("#error2").html("");

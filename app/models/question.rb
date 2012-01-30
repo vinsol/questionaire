@@ -2,10 +2,9 @@ class Question < ActiveRecord::Base
   
   belongs_to :category, :counter_cache => true
 
-  has_many :options, :dependent => :destroy
+  has_many :options, :dependent => :destroy, :inverse_of => :question
   
   has_many :answers, :class_name => "Option", :conditions => { :answer => true }
-  validates_associated :answers
   
   belongs_to :admin
   
@@ -22,7 +21,7 @@ class Question < ActiveRecord::Base
   
   before_save :valid_provider
   before_save :atleast_two_options, :if => Proc.new { |ques| ques.type != TYPE[1] }
-  before_save :valid_answer
+  before_save :atleast_one_answer
   before_save :unique_options_body, :if => Proc.new { |ques| ques.type != TYPE[1] }
   after_update :update_questions_count, :if => Proc.new { |ques| ques.category_id_changed? }
   
@@ -43,8 +42,8 @@ class Question < ActiveRecord::Base
     Category.reset_counters(category_id, :questions)
   end
   
-  def valid_answer
-    errors.add('answers', "can't be blank") and return false if answers?(@options)
+  def atleast_one_answer
+    errors.add('answers', "can't be blank") and return false unless answers?(@options)
   end
   
   
