@@ -15,9 +15,9 @@
 			<%= f.label :type, "Type" %>
 		</span><br/>
     
-    <% TYPE.each do |type| %>
-      <%= f.radio_button :type, type, :checked => @type ? @type == type : type == TYPE[0], :onclick => "change_answer_div(this.value)" %>
-      <%= f.label :type, type.titleize %> &nbsp;
+    <% Question.descendants.each do |type| %>
+      <%= f.radio_button :type, type.name, :checked => @type ? @type == type.name : type.name == TYPE[0], :onclick => "change_answer_div(this.value)" %>
+      <%= f.label :type, type.name.titleize %> &nbsp;
     <% end %>
   </div>
   

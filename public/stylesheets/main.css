@@ -124,7 +124,7 @@ div.leftsub
 {
 	border-radius:10px;
 	background-color:#ffffff;
-	padding:2px 0 2px 10px;
+	padding:2px 0 5px 10px;
 	border: 2px outset white;
 	margin-bottom:30px;
 }
@@ -290,8 +290,8 @@ table#show_admins td {
 }
 
 #tag_view {
-  max-height: 175px;
-  overflow: hidden;
+  max-height: 200px;
+  overflow: auto;
 }
 
 #view_all_tags {

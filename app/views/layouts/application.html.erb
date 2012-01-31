@@ -48,36 +48,26 @@
 				<td>
 					<div class="rightContent">
 					  <% if session["devise.googleapps_data"] %>
-						  <div class="leftsub">
-						    <h4 style="margin:5px 0 0;">Tags</h4>
+						  <div class="leftsub" class = "for_toggle">
+						    <h4 style="margin:5px 0;" class = "click">Tags</h4>
 						    <div id = "tag_view" >
-						    <p style="margin:10px 0 10px 0" >
 						      <% Question.tag_counts.each do |tag| %>
 						        <div class = "tag_name"><%= link_to tag.name, tags_index_questions_path(tag.name) %></div>
 						        <div class = "tag_count"><%= tag.count %></div><br/>
 						      <% end %>
-						    </p>
-						    </div>
-						    <div id = "view_all_tags">
-						      <div style  = "float:right;">
-						        <%= link_to_function "View all", 'view_all_tags(this)' %>
-						      </div><br />
 						    </div>
 						  </div>
-						  <div class="leftsub">
-							  <h4 style="margin:5px 0 5px 0;">Level</h4>
-							  <p style="margin:10px 0 10px 0;">
+						  <div class="leftsub" class = "for_toggle">
+							  <h4 style="margin:5px 0;" class = "click">Level</h4>
 							    <% LEVEL.each_with_index do |level, index| %>
 							      <div class = "level_name"><%= link_to level[0], level_index_questions_path(level[1]) %></div>
 							      <div class = "level_count">
 							        <%= Question.count(:group => :level)[level[1]] ? Question.count(:group => :level)[level[1]] : 0 %>
 						        </div><br/>
 							    <% end %>
-							  </p>
 						  </div>
-						  <div class="leftsub">
-							  <h4 style="margin:5px 0 5px 0;">Category</h4>
-							  <p style="margin:10px 0 10px 0;">
+						  <div class="leftsub" class = "for_toggle">
+							  <h4 style="margin:5px 0;" class = "click">Category</h4>
 							    
 							    <% Category.all.each do |cat| %>
 							      <div class = "cat_name"><%= link_to cat.name, category_index_questions_path(cat.id) %></div>
@@ -85,25 +75,21 @@
 							        <%= cat.questions.size %>
 						        </div><br/>
 							    <% end %>
-							  </p>
 						  </div>
-						  <div class="leftsub">
-							  <h4 style="margin:5px 0 5px 0;">Type</h4>
-							  <p style="margin:10px 0 10px 0;">
-							    
+						  <div class="leftsub" class = "for_toggle">
+							  <h4 style="margin:5px 0;" class = "click">Type</h4>
 							    <% TYPE.each do |type| %>
-							      <div class = "type_name"><%= link_to type.titleize, type_questions_path(type) %></div>
+							      <div class = "type_name"><%= link_to type.titleize, "#{type.underscore}s" %></div>
 							      <div class = "type_count">
 							        <%= type.constantize.count %>
 						        </div><br/>
 							    <% end %>
-							  </p>
 						  </div>
 						<% else %>
 						  <div class="leftsub">
 						    <%= image_tag("questionaire.jpg", :height => "230", :width => "100%") %>
-							  <h4 style="margin:5px 0 5px 0;">About</h4>
-							  <p style="margin:10px 0 10px 0;">Now setting a question paper is just a click away. This app stores questions no matter subjective or multiple choice or no matter what is its danger level. Just login and get going.</p>
+							  <h4 style="margin:5px 0;">About</h4>
+							  <p style="margin:10px 0;">Now setting a question paper is just a click away. This app stores questions no matter subjective or multiple choice or no matter what is its danger level. Just login and get going.</p>
 							  <p class = "error"><b>Note:</b> Login is based on Vinsol's account </p>
 						  </div>
 						<% end %>
@@ -118,10 +104,11 @@
 
 <script>
   $(document).ready( function() {
-    var elem = document.getElementById('tag_view');
-    if(elem.offsetHeight < elem.scrollHeight) {
-      $('#view_all_tags').css('display', 'block');
-      $('#tag_view').css('max-height', '163px');
-    }
+    $($('.click').siblings()).css('display', 'none');
+    
+    $('.click').click(function() {
+      $($('.click').siblings()).css('display','none');
+      $($(this).siblings()).toggle('slow');
+    });
   });
 </script>

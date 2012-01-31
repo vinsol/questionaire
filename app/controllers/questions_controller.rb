@@ -101,11 +101,7 @@ class QuestionsController < ApplicationController
   
   
   def change_answer_div
-    unless params[:id].blank?
-      @question = Question.where(:id => params[:id]).includes(:options).first
-    else
-      @question = Question.new
-    end
+    params[:id].blank? ? @question = Question.new : @question = Question.where(:id => params[:id]).includes(:options).first
   end
   
 
