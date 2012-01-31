@@ -107,8 +107,12 @@
     $($('.click').siblings()).css('display', 'none');
     
     $('.click').click(function() {
-      $($('.click').siblings()).css('display','none');
-      $($(this).siblings()).toggle('slow');
+      if($($(this).siblings()).css('display') == 'none') {
+        $($('.click').siblings()).css('display','none');
+        $($(this).siblings()).toggle('slow');
+      } else {
+        $($(this).siblings()).toggle('slow');
+      }
     });
   });
 </script>
