@@ -87,6 +87,18 @@
 							    <% end %>
 							  </p>
 						  </div>
+						  <div class="leftsub">
+							  <h4 style="margin:5px 0 5px 0;">Type</h4>
+							  <p style="margin:10px 0 10px 0;">
+							    
+							    <% TYPE.each do |type| %>
+							      <div class = "type_name"><%= link_to type.titleize, type_questions_path(type) %></div>
+							      <div class = "type_count">
+							        <%= type.constantize.count %>
+						        </div><br/>
+							    <% end %>
+							  </p>
+						  </div>
 						<% else %>
 						  <div class="leftsub">
 						    <%= image_tag("questionaire.jpg", :height => "230", :width => "100%") %>

@@ -7,9 +7,11 @@ class QuestionsController < ApplicationController
   
   ## Thinking sphinx on body??
   def index
-    unless(params[:text].blank?)
+    if(params[:text].present?)
       #### search on question body using ajax ####
       @questions = Question.where("body like ?", '%'+params[:text]+'%').paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => PER_PAGE
+    elsif(params[:type])
+      @questions = params[:type].constantize.paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => PER_PAGE
     else
       @questions = Question.paginate :include => :category, :page => params[:page], :order => 'updated_at DESC', :per_page => PER_PAGE
     end

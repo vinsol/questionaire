@@ -11,6 +11,7 @@ PriyankQuestionaire::Application.routes.draw do
       match 'category/:category_id', :action => 'category_index', :as => 'category_index'
       match 'download/:test_name', :action => 'download', :as => 'download'
       get 'show_search'
+      get '/:type', :action => 'index', :as => 'type'
     end
     
     member do

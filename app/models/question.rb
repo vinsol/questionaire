@@ -2,7 +2,7 @@ class Question < ActiveRecord::Base
   
   belongs_to :category, :counter_cache => true
 
-  has_many :options, :dependent => :destroy, :inverse_of => :question
+  has_many :options, :dependent => :destroy, :autosave => false
   
   has_many :answers, :class_name => "Option", :conditions => { :answer => true }
   
@@ -16,8 +16,7 @@ class Question < ActiveRecord::Base
   validates :category_id, :presence => true
   validates :level, :presence => true
   
-  #### Priyank -- c['answer'] is been compared to string 'false' that's why the comparison is used as == 'false'
-  accepts_nested_attributes_for :options, :allow_destroy => true, :reject_if => lambda {|c| c['body'].blank? && c['answer'] == 'false'}
+  accepts_nested_attributes_for :options, :allow_destroy => true, :reject_if => lambda {|c| p c; c['body'].blank? && FALSE_VALUES.include?(c['answer'])}
   
   before_save :valid_provider
   before_save :atleast_two_options, :if => Proc.new { |ques| ques.type != TYPE[1] }
