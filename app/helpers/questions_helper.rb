@@ -14,7 +14,7 @@ module QuestionsHelper
   
   def extras question
     content = []
-
+    content << "&lt;<b>Type: </b>#{question.type.titleize}&gt;&nbsp;&nbsp;&nbsp;" unless params[:action] == "index" && params[:type]
     content << "&lt;<b>Level: </b>#{LEVEL[question.level][0]}&gt;&nbsp;&nbsp;&nbsp;" unless params[:action] == "level_index"
     content << "&lt;<b>Category: </b>#{question.category.name}&gt;&nbsp;&nbsp;&nbsp;" unless params[:action] == "category_index"
     content << "&lt;<b>Tags: </b>#{question.tag_list}&gt;" unless question.tag_list.empty?
