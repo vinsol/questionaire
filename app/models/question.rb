@@ -2,7 +2,7 @@ class Question < ActiveRecord::Base
   
   belongs_to :category, :counter_cache => true
 
-  has_many :options, :dependent => :destroy, :autosave => false
+  has_many :options, :dependent => :destroy
   
   has_many :answers, :class_name => "Option", :conditions => { :answer => true }
   
