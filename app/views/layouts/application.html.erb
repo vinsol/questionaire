@@ -79,7 +79,7 @@
 						  <div class="leftsub" class = "for_toggle">
 							  <h4 style="margin:5px 0;" class = "click">Type</h4>
 							    <% TYPE.each do |type| %>
-							      <div class = "type_name"><%= link_to type.titleize, "#{type.underscore}s" %></div>
+							      <div class = "type_name"><%= link_to type.titleize, type.underscore.pluralize %></div>
 							      <div class = "type_count">
 							        <%= type.constantize.count %>
 						        </div><br/>
