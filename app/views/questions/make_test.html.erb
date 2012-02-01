@@ -30,9 +30,9 @@
       <div class="field float_left">
 				<p><b><%= label_tag :type %></b></p>
 
-				<% Question.descendants.each do |type| %>
-          <p><%= check_box_tag "type[#{type.name.underscore}]", type.name %> 
-					<%= label_tag 'type_'+type.name.underscore, type.name.titleize %></p>
+				<% TYPE.each do |type| %>
+          <p><%= check_box_tag "type[#{type.underscore}]", type %> 
+					<%= label_tag 'type_'+type.underscore, type.titleize %></p>
         <% end %>
       </div>
       

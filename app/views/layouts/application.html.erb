@@ -7,6 +7,7 @@
   <%= javascript_include_tag :defaults, 'jquery.autoSuggest.minified','facebox', 'tab_color', 'nested_form' %>
   <%= csrf_meta_tag %>
 </head>
+
 <body>
  <div id="mainHead">
   <h1 style="float:left">Vinsol's Questionnaire</h1>
@@ -19,7 +20,6 @@
 			  <li id = "firstlist_1" ><%= link_to "Home", questions_path, :class => class_name("questions", "index") %></li>
 			  <li id = "firstlist_2" ><%= link_to "Post Question", new_question_path, :class => class_name("questions", "new") || class_name("questions", "edit") %></li>
 			  <li id = "firstlist_3" ><%= link_to "Make Test", make_test_questions_path, :class => class_name("questions", "make_test") %></li>
-			  <!--<li id = "firstlist_4" ><%#= link_to "Previous Tests", questions_path %></li>-->
 			<% else %>
 			  <li id = "firstlist_5" ><%= link_to "Login", questions_path %></li>
 			<% end %>
@@ -29,7 +29,6 @@
 		    <li id = "seclist_1"><%= link_to "Logout", destroy_admin_session_path, :class => class_name("devise/sessions", "destroy") %></li>
 			  <li id = "seclist_2"><%= link_to "Add Admin", new_admin_path, :class => class_name("admins", "new") %></li>
 			  <li id = "seclist_3"><%= link_to "View Admins", admins_path, :class => class_name("admins", "index") %></li>
-			  <!--<li id = "seclist_3"><%#= link_to "Account Settings", questions_path %></li>-->
 			<% end %>
 		</ul>
 		<br style="clear:both" />
