@@ -46,7 +46,7 @@ module ApplicationHelper
     styles['PS_ANS'].left_indent = 50
     styles['PS_END'].justification = ParagraphStyle::CENTER_JUSTIFY
     
-    files = Dir.glob(ZIP_FILE_PATH + '*')
+    files = Dir.glob(ZIP_FILE_PATH[1..-1] + '*')
     for file in files
       File.delete("#{file}")
     end

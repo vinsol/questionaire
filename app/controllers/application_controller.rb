@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   
-  helper_method  :admin_signed_in, :current_admin
+  helper_method  :admin_signed_in#, :current_admin
   
   def after_sign_out_path_for(resource_or_scope)
     session[:admin_id] = nil
@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  def current_admin
-    @current_admin ||= Admin.where(:id => session[:admin_id]).first
-  end
+#  def current_admin
+#    @current_admin ||= Admin.where(:id => session[:admin_id]).first
+#  end
 end
