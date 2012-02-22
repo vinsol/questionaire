@@ -5,8 +5,12 @@
 #
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
-admin1 = Admin.find_or_initialize_by_email("shreya@vinsol.com")
-admin1.save!
+
+
+#admin1 = Admin.find_or_initialize_by_email("shreya@vinsol.com")
+#admin1.save!
+#Admin.create([{:email => "priyank.gupta@vinsol.com"}])
+
 admin2 = Admin.find_or_initialize_by_email("priyank.gupta@vinsol.com")
 admin2.save!
 
