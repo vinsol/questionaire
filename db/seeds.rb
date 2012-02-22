@@ -7,7 +7,7 @@
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 admin1 = Admin.find_or_initialize_by_email("shreya@vinsol.com")
 admin1.save!
-admin2 = Admin.find_or_initialize_by_email("priyank.gupta@vinso.com")
+admin2 = Admin.find_or_initialize_by_email("priyank.gupta@vinsol.com")
 admin2.save!
 
 category1 = Category.find_or_initialize_by_name("Web")

@@ -58,7 +58,6 @@ ActiveRecord::Schema.define(:version => 20120117071024) do
   end
 
   add_index "questions", ["admin_id"], :name => "index_questions_on_admin_id"
-  add_index "questions", ["body"], :name => "fulltext_body"
   add_index "questions", ["category_id"], :name => "index_questions_on_category_id"
 
   create_table "taggings", :force => true do |t|
