@@ -1,13 +1,14 @@
 class AddAnswersToOptions < ActiveRecord::Migration
   
+  class Answer < ActiveRecord::Base
+  end
+  
   def self.up
-#    class Answer < ActiveRecord::Base
-#    end
     
     add_column :options, :answer, :boolean, :default => false
 
     Option.reset_column_information
-#    Answer.reset_column_information
+    Answer.reset_column_information
     
     Answer.all.each do |ans|
 #      Option.update_all(:answer => true, ["question_id = ? and body = ?", ans.question_id, ans.body])
