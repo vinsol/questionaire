@@ -1,6 +1,9 @@
 class AddAnswersToOptions < ActiveRecord::Migration
   
   def self.up
+#    class Answer < ActiveRecord::Base
+#    end
+    
     add_column :options, :answer, :boolean, :default => false
 
     Option.reset_column_information
